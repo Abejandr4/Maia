@@ -52,7 +52,6 @@ export function dayForDate(date: Date) {
   return Math.round((a.getTime() - MISSION_START.getTime()) / 86_400_000) + 1;
 }
 
-const hoursAgo = (h: number) => new Date(Date.now() - h * 3_600_000).toISOString();
 
 /** ISO time of a mission day at a given hour (for alerts and symptoms of the analysis). */
 const atDay = (day: number, hour = 9) => {
@@ -234,22 +233,7 @@ export const GOALS = {
   sleepTarget: daily.reference.sleep?.green_min ?? NaN,
 };
 
-export const FAMILY_MESSAGES = [
-  {
-    id: 'f1',
-    from: 'Leo',
-    text: 'We watched the station pass over tonight! The kids waved. Sleep well up there.',
-    time: hoursAgo(1.5),
-    unread: true,
-  },
-  {
-    id: 'f2',
-    from: 'Mom',
-    text: 'Remember to drink your water :) Love you.',
-    time: hoursAgo(26),
-    unread: false,
-  },
-];
+
 
 /* ------------------------------------------------------------------ */
 /* Body map — 10 sensor zones. Readings only where the analysis has data. */

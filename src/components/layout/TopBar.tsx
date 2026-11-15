@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { PageId } from '../../utils/types';
 import { ASTRONAUT, TODAY_DAY, dayForDate } from '../../utils/mockData';
+import { earth } from '../../data/maiaData';
+
+const EARTH_TODAY = earth.days[earth.days.length - 1].day_after_landing;
 import { contexts, type ContextRow } from '../../data/maiaData';
 import { useVitals } from '../../utils/VitalsContext';
 import { useNow } from '../../utils/hooks';
@@ -72,9 +75,8 @@ function Logo() {
 }
 
 export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }: TopBarProps) {
-  const { paused, voiceOn, setVoiceOn, evaMode, setEvaMode, alerts } = useVitals();
+  const { paused, voiceOn, setVoiceOn, evaMode, setEvaMode, alerts, place, setPlace } = useVitals();
   const now = useNow(15_000);
-  const [baseLocation, setBaseLocation] = useState<LocationId>('iss');
   const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
   const [navHidden, setNavHidden] = useState(false);
@@ -112,7 +114,7 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
 
   const toggle = (m: MenuId) => setOpenMenu((cur) => (cur === m ? null : m));
 
-  const location: LocationId = evaMode ? 'eva' : baseLocation;
+  const location: LocationId = evaMode ? 'eva' : place;
   const current = LOCATIONS.find((l) => l.id === location) ?? LOCATIONS[0];
 
   const chooseLocation = (id: LocationId) => {
@@ -121,7 +123,7 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
       setEvaMode(true);
       return;
     }
-    setBaseLocation(id);
+    setPlace(id);
     setEvaMode(false);
   };
 
@@ -152,7 +154,7 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
           {ASTRONAUT.fullName}<span className="topbar__role"> · {ASTRONAUT.role}</span>
         </span>
         <span className="topbar__person-meta">
-          Day {TODAY_DAY} · {clock} GMT ·{' '}
+          {place === 'earth' && !evaMode ? `R+${EARTH_TODAY} after landing` : `Day ${TODAY_DAY}`} · {clock} GMT ·{' '}
           <span className="topbar__live">
             <i className={`topbar__live-dot ${paused ? 'is-paused' : ''}`} aria-hidden="true" />
             {paused ? 'Sensor paused' : 'Sensor live'}

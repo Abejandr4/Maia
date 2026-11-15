@@ -223,3 +223,14 @@
 .env-here__facts dt { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-2); }
 .env-here__facts dd { margin: 4px 0 0; font-family: var(--font-mono); font-size: 18px; font-weight: 600; }
 @media (max-width: 760px) { .env-here__facts { grid-template-columns: 1fr; } }
+
+/* "Preview what your doctor sees": solid button so no shared/glass style can wash it out */
+.maia-doctor-btn {
+  /* compact outline pill, so it sits quietly next to the title */
+  background: #ffffff !important; background-image: none !important; color: #181816 !important;
+  border: 1px solid #181816 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  opacity: 1 !important; font-size: 13px !important; font-weight: 600; padding: 7px 14px !important;
+  min-height: 0 !important; height: auto !important; border-radius: 999px !important; box-shadow: none !important;
+  white-space: nowrap;
+}
+.maia-doctor-btn:hover { background: #181816 !important; color: #ffffff !important; }

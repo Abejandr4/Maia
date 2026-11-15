@@ -57,8 +57,8 @@ function timeAgo(iso: string, now: number) {
 }
 
 
-export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }: TopBarProps) {
-  const { paused, voiceOn, setVoiceOn, evaMode, setEvaMode, alerts, place, setPlace } = useVitals();
+export default function TopBar({ page, onNavigate, emergencySlot }: TopBarProps) {
+  const { paused, evaMode, setEvaMode, alerts, place, setPlace } = useVitals();
   const now = useNow(15_000);
   const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
@@ -234,50 +234,6 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
               >
                 See the evidence in Reports
                 <Icon name="chevron" size={14} />
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Settings */}
-        <div className="topbar__menu-wrap">
-          <button
-            type="button"
-            className="topbar__icon"
-            aria-haspopup="menu"
-            aria-expanded={openMenu === 'settings'}
-            aria-label="Settings"
-            onClick={() => toggle('settings')}
-          >
-            <Icon name="gear" size={19} />
-          </button>
-          {openMenu === 'settings' && (
-            <div className="topbar__menu" role="menu" aria-label="Settings">
-              <button
-                type="button"
-                role="menuitemcheckbox"
-                aria-checked={voiceOn}
-                className="topbar__menu-item"
-                onClick={() => setVoiceOn(!voiceOn)}
-              >
-                <span className="topbar__menu-check">
-                  <Icon name={voiceOn ? 'volume' : 'volumeOff'} size={15} />
-                </span>
-                Voice alerts: {voiceOn ? 'on' : 'muted'}
-              </button>
-              <button
-                type="button"
-                role="menuitem"
-                className="topbar__menu-item"
-                onClick={() => {
-                  setOpenMenu(null);
-                  onLogSymptom();
-                }}
-              >
-                <span className="topbar__menu-check">
-                  <Icon name="pencil" size={15} />
-                </span>
-                Log a symptom
               </button>
             </div>
           )}

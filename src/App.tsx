@@ -31,6 +31,16 @@ import { ASTRONAUT } from "./utils/mockData";
 /* Main app (after setup)                                              */
 /* ------------------------------------------------------------------ */
 
+
+/** Shown at the foot of every screen of the app. */
+function Disclaimer() {
+  return (
+    <footer className="app-disclaimer">
+      <b>Prototype · Not for medical use.</b> Sample data generated with Claude Opus 5.5 (synthetic, is_synthetic = yes) alongside public NASA data (OSDR).
+    </footer>
+  );
+}
+
 function Shell() {
   const [page, setPage] = useState<PageId>("home");
   const [logOpen, setLogOpen] = useState(false);
@@ -65,6 +75,7 @@ function Shell() {
       {evaMode && (
         <div className="eva-shell">
           <EvaVisor />
+          <Disclaimer />
         </div>
       )}
       <div
@@ -86,6 +97,7 @@ function Shell() {
           {page === "environment" && <EnvironmentPage />}
           {page === "report" && <ReportPage onLogSymptom={openLog} />}
         </main>
+        <Disclaimer />
 
         <Modal open={logOpen} onClose={closeLog} title="Log a symptom">
           <SymptomLog onClose={closeLog} onSubmit={addSymptom} />

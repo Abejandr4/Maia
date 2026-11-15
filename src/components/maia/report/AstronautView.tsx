@@ -61,7 +61,7 @@ interface Props {
   onShowDoctor: () => void;
 }
 
-export default function AstronautView({ note, setNote, sent, onSend, sizeKb, onLogSymptom, onShowDoctor }: Props) {
+export default function AstronautView({ note, setNote, sent, onSend, sizeKb, onLogSymptom }: Props) {
   const { symptoms } = useVitals();
   const changes = reportSection<{ changes: Change[] }>('Ordered changes')?.changes ?? [];
   const dq = reportSection<{ missing_days: Record<string, number[]> }>('Data quality');
@@ -243,15 +243,6 @@ export default function AstronautView({ note, setNote, sent, onSend, sizeKb, onL
           </button>
           <p className="muted small">Stored on this device until Earth confirms it arrived. If the link drops, the packet waits and retries.</p>
         </Card>
-
-        <button type="button" className="card maia-preview" onClick={onShowDoctor}>
-          <span>
-            <b>Preview what your doctor sees</b>
-            <br />
-            <span className="muted small">Flight surgeon view · read-only</span>
-          </span>
-          <span aria-hidden="true">↗</span>
-        </button>
 
         <Card title="What is sent">
           <ul className="maia-sent">

@@ -1,0 +1,361 @@
+day,measurement_id,value,band_low,band_high,band_side,ref_status,days_since_reading,stale,n_high_last6,n_low_last6,n_missing_last6,marked_change,phase,is_synthetic,source,evidence_level
+1,heart_rate,62.0,51.23375,69.76625,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+2,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+3,heart_rate,62.0,51.23375,69.76625,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+4,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+5,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+6,heart_rate,57.0,51.23375,69.76625,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+7,heart_rate,60.0,51.23375,69.76625,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+8,heart_rate,65.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+9,heart_rate,62.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+10,heart_rate,60.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+11,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+12,heart_rate,64.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+13,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+14,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+15,heart_rate,61.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+16,heart_rate,64.0,51.23375,69.76625,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+17,heart_rate,58.0,51.23375,69.76625,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+18,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+19,heart_rate,54.0,51.23375,69.76625,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+20,heart_rate,53.0,51.23375,69.76625,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+21,heart_rate,51.0,51.23375,69.76625,low,yellow,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+22,heart_rate,56.0,51.23375,69.76625,,yellow,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+23,heart_rate,55.0,51.23375,69.76625,,yellow,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+24,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+25,heart_rate,61.0,51.23375,69.76625,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+26,heart_rate,61.0,51.23375,69.76625,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+27,heart_rate,53.0,51.23375,69.76625,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+28,heart_rate,56.0,51.23375,69.76625,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+29,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+30,heart_rate,61.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+31,heart_rate,56.0,51.23375,69.76625,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+32,heart_rate,57.0,51.23375,69.76625,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+33,heart_rate,70.0,51.23375,69.76625,high,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+34,heart_rate,56.0,51.23375,69.76625,,yellow,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+35,heart_rate,77.0,51.23375,69.76625,high,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+36,heart_rate,74.0,51.23375,69.76625,high,green,0,False,3,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+37,heart_rate,75.0,51.23375,69.76625,high,green,0,False,4,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+38,heart_rate,78.0,51.23375,69.76625,high,green,0,False,5,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+39,heart_rate,61.0,51.23375,69.76625,,green,0,False,4,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+40,heart_rate,61.0,51.23375,69.76625,,green,0,False,4,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+41,heart_rate,74.0,51.23375,69.76625,high,green,0,False,4,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+42,heart_rate,62.0,51.23375,69.76625,,green,0,False,3,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+43,heart_rate,58.0,51.23375,69.76625,,yellow,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+44,heart_rate,60.0,51.23375,69.76625,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+45,heart_rate,66.0,51.23375,69.76625,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+46,heart_rate,59.0,51.23375,69.76625,,yellow,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+47,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+48,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+49,heart_rate,60.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+50,heart_rate,68.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+51,heart_rate,68.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+52,heart_rate,61.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+53,heart_rate,62.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+54,heart_rate,64.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+55,heart_rate,62.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+56,heart_rate,64.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+57,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+58,heart_rate,65.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+59,heart_rate,68.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+60,heart_rate,63.0,51.23375,69.76625,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+1,bp_systolic,117.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+2,bp_systolic,114.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+3,bp_systolic,116.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+4,bp_systolic,110.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+5,bp_systolic,110.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+6,bp_systolic,112.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+7,bp_systolic,119.0,101.52725,127.47275,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+8,bp_systolic,123.0,101.52725,127.47275,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+9,bp_systolic,113.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+10,bp_systolic,110.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+11,bp_systolic,116.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+12,bp_systolic,106.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+13,bp_systolic,109.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+14,bp_systolic,112.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+15,bp_systolic,120.0,101.52725,127.47275,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+16,bp_systolic,122.0,101.52725,127.47275,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+17,bp_systolic,117.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+18,bp_systolic,115.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+19,bp_systolic,114.0,101.52725,127.47275,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+20,bp_systolic,,101.52725,127.47275,missing,missing,1,False,0,0,1,,learning window,yes,S56; S57; S02; S48,demo
+21,bp_systolic,,101.52725,127.47275,missing,missing,2,False,0,0,2,,learning window,yes,S56; S57; S02; S48,demo
+22,bp_systolic,,101.52725,127.47275,missing,missing,3,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+23,bp_systolic,117.0,101.52725,127.47275,,green,0,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+24,bp_systolic,116.0,101.52725,127.47275,,green,0,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+25,bp_systolic,115.0,101.52725,127.47275,,green,0,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+26,bp_systolic,110.0,101.52725,127.47275,,green,0,False,0,0,2,,monitoring,yes,S56; S57; S02; S48,demo
+27,bp_systolic,113.0,101.52725,127.47275,,green,0,False,0,0,1,,monitoring,yes,S56; S57; S02; S48,demo
+28,bp_systolic,112.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+29,bp_systolic,120.0,101.52725,127.47275,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+30,bp_systolic,121.0,101.52725,127.47275,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+31,bp_systolic,119.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+32,bp_systolic,121.0,101.52725,127.47275,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+33,bp_systolic,117.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+34,bp_systolic,122.0,101.52725,127.47275,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+35,bp_systolic,119.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+36,bp_systolic,120.0,101.52725,127.47275,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+37,bp_systolic,112.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+38,bp_systolic,116.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+39,bp_systolic,107.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+40,bp_systolic,101.0,101.52725,127.47275,low,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+41,bp_systolic,128.0,101.52725,127.47275,high,yellow,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+42,bp_systolic,107.0,101.52725,127.47275,,green,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+43,bp_systolic,112.0,101.52725,127.47275,,green,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+44,bp_systolic,126.0,101.52725,127.47275,,yellow,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+45,bp_systolic,117.0,101.52725,127.47275,,green,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+46,bp_systolic,113.0,101.52725,127.47275,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+47,bp_systolic,116.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+48,bp_systolic,118.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+49,bp_systolic,116.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+50,bp_systolic,115.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+51,bp_systolic,119.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+52,bp_systolic,120.0,101.52725,127.47275,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+53,bp_systolic,113.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+54,bp_systolic,114.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+55,bp_systolic,115.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+56,bp_systolic,110.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+57,bp_systolic,114.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+58,bp_systolic,111.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+59,bp_systolic,118.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+60,bp_systolic,118.0,101.52725,127.47275,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+1,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+2,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+3,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+4,bp_diastolic,66.0,68.44025,79.55975,low,green,0,False,0,1,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+5,bp_diastolic,66.0,68.44025,79.55975,low,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+6,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+7,bp_diastolic,65.0,68.44025,79.55975,low,green,0,False,0,3,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+8,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,3,0,,learning window,yes,S56; S57; S02; S48,demo
+9,bp_diastolic,67.0,68.44025,79.55975,low,green,0,False,0,4,0,,learning window,yes,S56; S57; S02; S48,demo
+10,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,3,0,,learning window,yes,S56; S57; S02; S48,demo
+11,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,0,2,0,,learning window,yes,S56; S57; S02; S48,demo
+12,bp_diastolic,75.0,68.44025,79.55975,,green,0,False,0,2,0,,learning window,yes,S56; S57; S02; S48,demo
+13,bp_diastolic,75.0,68.44025,79.55975,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+14,bp_diastolic,69.0,68.44025,79.55975,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+15,bp_diastolic,76.0,68.44025,79.55975,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+16,bp_diastolic,80.0,68.44025,79.55975,high,yellow,0,False,1,0,0,,learning window,yes,S56; S57; S02; S48,demo
+17,bp_diastolic,77.0,68.44025,79.55975,,green,0,False,1,0,0,,learning window,yes,S56; S57; S02; S48,demo
+18,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,1,0,0,,learning window,yes,S56; S57; S02; S48,demo
+19,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,1,0,0,,learning window,yes,S56; S57; S02; S48,demo
+20,bp_diastolic,,68.44025,79.55975,missing,missing,1,False,1,0,1,,learning window,yes,S56; S57; S02; S48,demo
+21,bp_diastolic,,68.44025,79.55975,missing,missing,2,False,1,0,2,,learning window,yes,S56; S57; S02; S48,demo
+22,bp_diastolic,,68.44025,79.55975,missing,missing,3,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+23,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+24,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+25,bp_diastolic,70.0,68.44025,79.55975,,green,0,False,0,0,3,,monitoring,yes,S56; S57; S02; S48,demo
+26,bp_diastolic,68.0,68.44025,79.55975,low,green,0,False,0,1,2,,monitoring,yes,S56; S57; S02; S48,demo
+27,bp_diastolic,75.0,68.44025,79.55975,,green,0,False,0,1,1,,monitoring,yes,S56; S57; S02; S48,demo
+28,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+29,bp_diastolic,77.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+30,bp_diastolic,76.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+31,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+32,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+33,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+34,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+35,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+36,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+37,bp_diastolic,68.0,68.44025,79.55975,low,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+38,bp_diastolic,68.0,68.44025,79.55975,low,green,0,False,0,2,0,,monitoring,yes,S56; S57; S02; S48,demo
+39,bp_diastolic,77.0,68.44025,79.55975,,green,0,False,0,2,0,,monitoring,yes,S56; S57; S02; S48,demo
+40,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,2,0,,monitoring,yes,S56; S57; S02; S48,demo
+41,bp_diastolic,82.0,68.44025,79.55975,high,yellow,0,False,1,2,0,,monitoring,yes,S56; S57; S02; S48,demo
+42,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,1,2,0,,monitoring,yes,S56; S57; S02; S48,demo
+43,bp_diastolic,78.0,68.44025,79.55975,,green,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+44,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+45,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+46,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+47,bp_diastolic,66.0,68.44025,79.55975,low,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+48,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+49,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+50,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+51,bp_diastolic,71.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+52,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+53,bp_diastolic,72.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+54,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+55,bp_diastolic,69.0,68.44025,79.55975,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+56,bp_diastolic,68.0,68.44025,79.55975,low,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+57,bp_diastolic,75.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+58,bp_diastolic,73.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+59,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+60,bp_diastolic,74.0,68.44025,79.55975,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+1,spo2,100.0,96.14675,99.85325,high,green,0,False,1,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+2,spo2,99.0,96.14675,99.85325,,green,0,False,1,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+3,spo2,99.0,96.14675,99.85325,,green,0,False,1,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+4,spo2,98.0,96.14675,99.85325,,green,0,False,1,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+5,spo2,97.0,96.14675,99.85325,,green,0,False,1,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+6,spo2,99.0,96.14675,99.85325,,green,0,False,1,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+7,spo2,99.0,96.14675,99.85325,,green,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+8,spo2,99.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+9,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+10,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+11,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+12,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+13,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+14,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+15,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+16,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+17,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+18,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+19,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+20,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+21,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+22,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+23,spo2,99.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+24,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+25,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+26,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+27,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+28,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+29,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+30,spo2,100.0,96.14675,99.85325,high,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+31,spo2,99.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+32,spo2,98.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+33,spo2,97.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+34,spo2,98.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+35,spo2,97.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+36,spo2,96.0,96.14675,99.85325,low,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+37,spo2,98.0,96.14675,99.85325,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+38,spo2,97.0,96.14675,99.85325,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+39,spo2,99.0,96.14675,99.85325,,green,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+40,spo2,100.0,96.14675,99.85325,high,green,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+41,spo2,99.0,96.14675,99.85325,,green,0,False,1,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+42,spo2,99.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+43,spo2,100.0,96.14675,99.85325,high,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+44,spo2,99.0,96.14675,99.85325,,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+45,spo2,98.0,96.14675,99.85325,,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+46,spo2,97.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+47,spo2,97.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+48,spo2,99.0,96.14675,99.85325,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+49,spo2,99.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+50,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+51,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+52,spo2,97.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+53,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+54,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+55,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+56,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+57,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+58,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+59,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+60,spo2,98.0,96.14675,99.85325,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+1,temperature,36.5,36.529349999999994,37.27065,low,green,0,False,0,1,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+2,temperature,36.5,36.529349999999994,37.27065,low,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+3,temperature,36.7,36.529349999999994,37.27065,,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+4,temperature,36.6,36.529349999999994,37.27065,,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+5,temperature,36.6,36.529349999999994,37.27065,,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+6,temperature,36.7,36.529349999999994,37.27065,,green,0,False,0,2,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+7,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,1,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+8,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+9,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+10,temperature,36.7,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+11,temperature,36.5,36.529349999999994,37.27065,low,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+12,temperature,36.8,36.529349999999994,37.27065,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+13,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+14,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+15,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+16,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+17,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+18,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+19,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+20,temperature,37.2,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+21,temperature,36.8,36.529349999999994,37.27065,,green,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+22,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+23,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+24,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+25,temperature,37.4,36.529349999999994,37.27065,high,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+26,temperature,37.4,36.529349999999994,37.27065,high,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+27,temperature,37.0,36.529349999999994,37.27065,,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+28,temperature,36.7,36.529349999999994,37.27065,,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+29,temperature,37.0,36.529349999999994,37.27065,,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+30,temperature,36.8,36.529349999999994,37.27065,,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+31,temperature,36.9,36.529349999999994,37.27065,,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+32,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+33,temperature,36.8,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+34,temperature,36.6,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+35,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+36,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+37,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+38,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+39,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+40,temperature,36.8,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+41,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+42,temperature,36.9,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+43,temperature,36.8,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+44,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+45,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+46,temperature,37.2,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+47,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+48,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+49,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+50,temperature,37.0,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+51,temperature,37.2,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+52,temperature,37.1,36.529349999999994,37.27065,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+53,temperature,37.3,36.529349999999994,37.27065,high,green,0,False,1,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+54,temperature,37.4,36.529349999999994,37.27065,high,green,0,False,2,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+55,temperature,37.7,36.529349999999994,37.27065,high,green,0,False,3,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+56,temperature,37.3,36.529349999999994,37.27065,high,green,0,False,4,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+57,temperature,37.5,36.529349999999994,37.27065,high,green,0,False,5,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+58,temperature,37.4,36.529349999999994,37.27065,high,green,0,False,6,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+59,temperature,37.4,36.529349999999994,37.27065,high,green,0,False,6,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+60,temperature,37.2,36.529349999999994,37.27065,,green,0,False,5,0,0,high,monitoring,yes,S56; S57; S02; S48,demo
+1,sleep,5.7,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+2,sleep,6.3,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+3,sleep,6.1,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+4,sleep,6.1,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+5,sleep,5.9,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+6,sleep,6.6,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+7,sleep,6.3,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,adaptation (skipped),yes,S56; S57; S02; S48,demo
+8,sleep,4.8,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+9,sleep,5.0,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+10,sleep,4.3,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+11,sleep,3.2,3.5614250000000007,7.638574999999999,low,red,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+12,sleep,4.3,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+13,sleep,5.9,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+14,sleep,6.0,3.5614250000000007,7.638574999999999,,yellow,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+15,sleep,5.3,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+16,sleep,5.1,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,learning window,yes,S56; S57; S02; S48,demo
+17,sleep,6.2,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+18,sleep,6.2,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+19,sleep,6.1,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+20,sleep,6.0,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+21,sleep,6.0,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,learning window,yes,S56; S57; S02; S48,demo
+22,sleep,6.5,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+23,sleep,6.6,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+24,sleep,6.4,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+25,sleep,5.6,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+26,sleep,6.1,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+27,sleep,5.6,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+28,sleep,6.5,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+29,sleep,5.5,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+30,sleep,5.7,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+31,sleep,5.8,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+32,sleep,5.1,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+33,sleep,4.6,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+34,sleep,5.2,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+35,sleep,4.3,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+36,sleep,6.6,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+37,sleep,6.5,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+38,sleep,4.7,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+39,sleep,5.5,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+40,sleep,2.0,3.5614250000000007,7.638574999999999,low,red,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+41,sleep,5.9,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+42,sleep,5.3,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+43,sleep,5.5,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+44,sleep,5.6,3.5614250000000007,7.638574999999999,,red,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+45,sleep,6.5,3.5614250000000007,7.638574999999999,,yellow,0,False,0,1,0,,monitoring,yes,S56; S57; S02; S48,demo
+46,sleep,6.5,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+47,sleep,6.2,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+48,sleep,7.0,3.5614250000000007,7.638574999999999,,green,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+49,sleep,6.2,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+50,sleep,5.9,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+51,sleep,4.8,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+52,sleep,6.4,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+53,sleep,6.8,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+54,sleep,6.9,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+55,sleep,6.9,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+56,sleep,6.5,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+57,sleep,6.4,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+58,sleep,6.0,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+59,sleep,5.9,3.5614250000000007,7.638574999999999,,red,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo
+60,sleep,6.0,3.5614250000000007,7.638574999999999,,yellow,0,False,0,0,0,,monitoring,yes,S56; S57; S02; S48,demo

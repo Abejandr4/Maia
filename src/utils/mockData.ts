@@ -76,7 +76,7 @@ const SERIES: Record<Metric | 'sleep', string> = {
 export const valueOn = (m: Metric | 'sleep', day: number) =>
   daily.series[SERIES[m]]?.find((p) => p.day === day)?.value ?? NaN;
 
-const CAREER_LIMIT_MSV = 600; // NASA-STD-3001 [V1 4030]
+export const CAREER_LIMIT_MSV = 600; // NASA-STD-3001 [V1 4030]
 const radPct = new Map(daily.radiation_pct_of_career_limit.map((r) => [r.day, r.value]));
 const doseOn = (day: number) => (((radPct.get(day) ?? NaN) - (radPct.get(day - 1) ?? NaN)) / 100) * CAREER_LIMIT_MSV;
 const firstPct = daily.radiation_pct_of_career_limit[0]?.value ?? 0;

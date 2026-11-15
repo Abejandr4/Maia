@@ -6,6 +6,7 @@ import TopBar from "./components/layout/TopBar";
 import AlertBanner from "./components/layout/AlertBanner";
 import Modal from "./components/ui/Modal";
 import { SymptomLog } from "./components/external";
+import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";
 import EvaVisor from "./components/body/EvaVisor";
 import BodySensorsPage from "./pages/BodySensorsPage";
@@ -26,6 +27,9 @@ import EmergencyScreen, {
 import { saveDemoSetup } from "./utils/demoProfile";
 import { ASTRONAUT } from "./utils/mockData";
 
+/* ------------------------------------------------------------------ */
+/* Main app (after setup)                                              */
+/* ------------------------------------------------------------------ */
 
 function Shell() {
   const [page, setPage] = useState<PageId>("home");
@@ -100,7 +104,12 @@ function Shell() {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Landing → 8 setup steps → app                                       */
+/* ------------------------------------------------------------------ */
+
 type SetupStep =
+  | "landing"
   | "consent"
   | "aboutYou"
   | "medicalHistory"
@@ -114,11 +123,16 @@ type SetupStep =
 export default function App() {
   const [setupStep, setSetupStep] = useState<SetupStep>(() => {
     try {
-      return localStorage.getItem("hasCompletedSetup") === "true" ? "done" : "consent";
+      return localStorage.getItem("hasCompletedSetup") === "true" ? "done" : "landing";
     } catch {
-      return "consent";
+      return "landing";
     }
   });
+
+  const goTo = useCallback((step: SetupStep) => {
+    setSetupStep(step);
+    window.scrollTo({ top: 0 });
+  }, []);
 
   const handleFinishOnboarding = () => {
     try {
@@ -126,73 +140,64 @@ export default function App() {
     } catch {
       // Ignore if localStorage is unavailable
     }
-    setSetupStep("done");
+    goTo("done");
   };
 
   const skipWithDemo = () => {
     saveDemoSetup();
-    setSetupStep("done");
+    goTo("done");
   };
 
   return (
     <VitalsProvider>
-      {setupStep === "consent" && (
-        <ConsentPage onComplete={() => setSetupStep("aboutYou")} />
+      {setupStep === "landing" && (
+        <LandingPage onStart={() => goTo("consent")} onDemo={skipWithDemo} />
       )}
 
+      {setupStep === "consent" && <ConsentPage onComplete={() => goTo("aboutYou")} />}
+
       {setupStep === "aboutYou" && (
-        <AboutYouPage
-          onBack={() => setSetupStep("consent")}
-          onComplete={() => setSetupStep("medicalHistory")}
-        />
+        <AboutYouPage onBack={() => goTo("consent")} onComplete={() => goTo("medicalHistory")} />
       )}
 
       {setupStep === "medicalHistory" && (
         <MedicalHistoryPage
-          onBack={() => setSetupStep("aboutYou")}
-          onSkip={() => setSetupStep("flightHistory")}
-          onComplete={() => setSetupStep("flightHistory")}
+          onBack={() => goTo("aboutYou")}
+          onSkip={() => goTo("flightHistory")}
+          onComplete={() => goTo("flightHistory")}
         />
       )}
 
       {setupStep === "flightHistory" && (
         <FlightHistoryPage
-          onBack={() => setSetupStep("medicalHistory")}
-          onSkip={() => setSetupStep("normalValues")}
-          onComplete={() => setSetupStep("normalValues")}
+          onBack={() => goTo("medicalHistory")}
+          onSkip={() => goTo("normalValues")}
+          onComplete={() => goTo("normalValues")}
         />
       )}
 
       {setupStep === "normalValues" && (
-        <YourNormalValuesPage
-          onBack={() => setSetupStep("flightHistory")}
-          onComplete={() => setSetupStep("missionSchedule")}
-        />
+        <YourNormalValuesPage onBack={() => goTo("flightHistory")} onComplete={() => goTo("missionSchedule")} />
       )}
 
       {setupStep === "missionSchedule" && (
-        <MissionSchedulePage
-          onBack={() => setSetupStep("normalValues")}
-          onComplete={() => setSetupStep("meetMaia")}
-        />
+        <MissionSchedulePage onBack={() => goTo("normalValues")} onComplete={() => goTo("meetMaia")} />
       )}
 
       {setupStep === "meetMaia" && (
-        <MeetMaiaPage
-          onBack={() => setSetupStep("missionSchedule")}
-          onComplete={() => setSetupStep("contacts")}
-        />
+        <MeetMaiaPage onBack={() => goTo("missionSchedule")} onComplete={() => goTo("contacts")} />
       )}
 
       {setupStep === "contacts" && (
         <ContactsPage
-          onBack={() => setSetupStep("meetMaia")}
+          onBack={() => goTo("meetMaia")}
           onSkip={handleFinishOnboarding}
           onComplete={handleFinishOnboarding}
         />
       )}
 
-      {setupStep !== "done" && (
+      {/* Floating demo skip during setup (the landing page has its own link) */}
+      {setupStep !== "done" && setupStep !== "landing" && (
         <button type="button" className="demo-skip" onClick={skipWithDemo}>
           Skip setup · demo profile
         </button>

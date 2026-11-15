@@ -1,0 +1,194 @@
+/* Maia analysis components (Report + Environment). Uses the app's CSS variables. */
+
+/* ---------- source chips ---------- */
+.maia-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em;
+  padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border-strong);
+  color: var(--text-2); white-space: nowrap;
+}
+.maia-tag__ids { color: var(--text-3); }
+.maia-tag--real { border-color: var(--normal); color: var(--normal-ink); background: var(--normal-soft); }
+.maia-tag--live { border-color: var(--normal); color: var(--normal-ink); }
+.maia-tag--live::before { content: '●'; color: var(--normal); }
+.maia-tag--sample { border-color: var(--advisory); color: var(--advisory-ink); background: var(--advisory-soft); }
+.maia-tag--cited { border-color: var(--border-strong); }
+.maia-tag--unverified { border-color: var(--caution); color: var(--caution-ink); background: var(--caution-soft); }
+.maia-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---------- chart ---------- */
+.maia-line { fill: none; stroke: var(--series-a); stroke-width: 1.8; stroke-linejoin: round; }
+.maia-line--2 { stroke: var(--series-b); stroke-dasharray: 5 4; }
+.maia-dot { fill: var(--series-a); }
+.maia-mark { fill: var(--caution); stroke: var(--surface); stroke-width: 1.5; }
+.maia-missing { fill: var(--text-3); opacity: 0.12; }
+.maia-ref { stroke-width: 1; stroke-dasharray: 3 3; }
+.maia-ref--red { stroke: var(--critical); }
+.maia-ref--green { stroke: var(--normal); }
+.maia-ref--watch { stroke: var(--caution); }
+.maia-ref__label { font-family: var(--font-mono); font-size: 10px; }
+.maia-ref__label--red { fill: var(--critical-ink); }
+.maia-ref__label--green { fill: var(--normal-ink); }
+.maia-ref__label--watch { fill: var(--caution-ink); }
+.maia-zone--adapt { fill: var(--text-3); opacity: 0.08; }
+.maia-zone--learn { fill: var(--advisory); opacity: 0.08; }
+.maia-zone--highlight { fill: var(--caution); opacity: 0.12; }
+.maia-zone__label { font-family: var(--font-mono); font-size: 9.5px; fill: var(--text-3); }
+.maia-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-3); }
+.maia-legend i { display: inline-block; width: 14px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+
+/* ---------- report ---------- */
+.maia-section { margin-top: 36px; }
+.maia-section__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.maia-section__head h2 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.maia-change { display: grid; grid-template-columns: 1fr 1.25fr; gap: 20px; }
+.maia-change + .maia-change { margin-top: 14px; }
+@media (max-width: 900px) { .maia-change { grid-template-columns: 1fr; } }
+.maia-change__rank {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--text); color: var(--surface); font-family: var(--font-mono); font-size: 13px; margin-right: 10px;
+}
+.maia-change__title { display: flex; align-items: center; font-size: 17px; font-weight: 600; }
+.maia-facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 14px 0; font-size: 13px; }
+.maia-facts dt { color: var(--text-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; padding-top: 2px; }
+.maia-facts dd { margin: 0; color: var(--text); }
+.maia-conf { font-family: var(--font-mono); font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border-strong); text-transform: uppercase; }
+.maia-conf--high { border-color: var(--normal); color: var(--normal-ink); }
+.maia-conf--medium { border-color: var(--caution); color: var(--caution-ink); }
+.maia-conf--low { border-color: var(--critical); color: var(--critical-ink); }
+
+.maia-domains { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+@media (max-width: 900px) { .maia-domains { grid-template-columns: 1fr 1fr; } }
+.maia-domain { border: 1px solid var(--border); border-radius: 10px; padding: 12px; background: var(--surface-2); }
+.maia-domain__name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); }
+.maia-domain__state { font-weight: 600; margin: 4px 0; }
+.maia-domain__ev { font-size: 12px; color: var(--text-2); }
+.maia-domain--positive { border-color: var(--caution); background: var(--caution-soft); }
+.maia-domain--positive .maia-domain__state { color: var(--caution-ink); }
+
+.maia-window { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; margin-top: 10px; }
+.maia-window__day { text-align: center; font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
+.maia-window__bar { height: 34px; border-radius: 4px; background: var(--surface-3); display: flex; align-items: flex-end; overflow: hidden; }
+.maia-window__fill { width: 100%; background: var(--caution); }
+.maia-window__fill--review { background: var(--warning); }
+
+.maia-dq { display: grid; grid-template-columns: repeat(42, 1fr); gap: 2px; margin: 10px 0 4px; }
+.maia-dq__cell { height: 22px; border-radius: 3px; background: var(--normal-soft); border: 1px solid var(--normal); }
+.maia-dq__cell--adapt { background: var(--surface-3); border-color: var(--border); }
+.maia-dq__cell--learn { background: var(--advisory-soft); border-color: var(--advisory); }
+.maia-dq__cell--missing { background: transparent; border: 1px dashed var(--text-3); }
+.maia-dq__cell--change { background: var(--caution-soft); border-color: var(--caution); }
+.maia-list { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; color: var(--text-2); }
+.maia-list b { color: var(--text); }
+
+.maia-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 900px) { .maia-grid-2 { grid-template-columns: 1fr; } }
+.maia-note { font-size: 12px; color: var(--text-3); margin-top: 8px; }
+.maia-big { font-family: var(--font-mono); font-size: 26px; font-weight: 600; }
+.maia-finding { padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); }
+.maia-finding + .maia-finding { margin-top: 10px; }
+.maia-finding__head { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 4px; }
+.maia-finding__title { font-weight: 600; }
+.maia-finding p { font-size: 13px; color: var(--text-2); }
+.maia-selector { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.maia-chip-btn { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-2); cursor: pointer; }
+.maia-chip-btn[aria-pressed='true'] { background: var(--text); color: var(--surface); border-color: var(--text); }
+.maia-textarea { width: 100%; min-height: 80px; font: inherit; font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); resize: vertical; }
+.maia-send { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+.level--caution { color: var(--caution-ink); }
+.maia-cell-missing { color: var(--text-3); }
+.maia-events { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.maia-events li { display: grid; grid-template-columns: 54px 1fr; gap: 12px; align-items: start; }
+.maia-events__day { font-family: var(--font-mono); font-size: 13px; color: var(--caution-ink); font-weight: 600; }
+.maia-events__title { font-weight: 600; font-size: 14px; }
+.maia-events__sub { font-size: 12.5px; color: var(--text-2); }
+.maia-stack { display: grid; gap: 14px; }
+.maia-eval th, .maia-eval td { white-space: normal; }
+.maia-change .table-wrap, .maia-stack .table-wrap { overflow-x: auto; }
+.daily__sx .sev { font-size: 11px; }
+
+/* ---------- report: astronaut view ---------- */
+.maia-hero { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+@media (max-width: 800px) { .maia-hero { grid-template-columns: 1fr; } }
+.maia-hero__title { font-size: 28px; font-weight: 650; letter-spacing: -0.01em; margin: 4px 0 6px; }
+.maia-hero__sub { color: var(--text-2); font-size: 15px; max-width: 60ch; }
+.maia-hero__send { display: grid; gap: 8px; justify-items: start; padding-left: 24px; border-left: 1px solid var(--border); }
+@media (max-width: 800px) { .maia-hero__send { padding-left: 0; border-left: 0; } }
+.maia-notice + .maia-notice { margin-top: 14px; }
+.maia-notice__head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.maia-notice__head h3 { font-size: 19px; font-weight: 600; }
+.maia-notice p { font-size: 15px; line-height: 1.55; }
+.maia-notice__body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: center; }
+@media (max-width: 800px) { .maia-notice__body { grid-template-columns: 1fr; } }
+.maia-notice__todo { margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: var(--advisory-soft); border-left: 3px solid var(--advisory); }
+.maia-notice__todo b { font-size: 13px; }
+.maia-notice__todo p { font-size: 14px; margin-top: 2px; }
+.maia-notice .maia-list { margin: 8px 0; font-size: 15px; }
+.maia-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+@media (max-width: 1000px) { .maia-tiles { grid-template-columns: repeat(2, 1fr); } }
+.maia-tile { display: grid; gap: 8px; align-content: start; }
+.maia-tile__name { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); }
+.maia-tile__value { font-family: var(--font-mono); font-size: 28px; font-weight: 600; }
+.maia-tile__value span { font-size: 13px; color: var(--text-3); font-weight: 400; }
+.maia-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.maia-photos img { width: 96px; height: 96px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+.maia-doctor-intro { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; padding: 12px 16px; border: 1px dashed var(--border-strong); border-radius: 12px; }
+.maia-tile .pill { justify-self: start; }
+
+/* ---------- reports (mockup layout) ---------- */
+.maia-reports { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+@media (max-width: 1000px) { .maia-reports { grid-template-columns: 1fr; } }
+.maia-reports__side { display: grid; gap: 14px; position: sticky; top: 90px; }
+.maia-letter { background: var(--surface); padding: 28px 32px; }
+.maia-letter__head { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+.maia-letter__title { font-size: 32px; font-weight: 650; letter-spacing: -0.01em; }
+.maia-letter__to { text-align: right; font-size: 14px; display: grid; gap: 2px; }
+.maia-letter__label { margin: 18px 0 10px; }
+.maia-ranked { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.maia-ranked__item { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; }
+.maia-ranked__title { font-weight: 600; font-size: 16px; }
+.maia-ranked__sub { color: var(--text-2); font-size: 14px; margin-top: 3px; line-height: 1.5; }
+.maia-ranked__todo { font-size: 13.5px; margin-top: 8px; padding: 6px 10px; border-radius: 8px; background: var(--advisory-soft); }
+.maia-counters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 16px 0; margin-top: 18px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+@media (max-width: 700px) { .maia-counters { grid-template-columns: 1fr 1fr; } }
+.maia-counters__n { font-family: var(--font-mono); font-size: 24px; font-weight: 600; }
+.maia-counters__l { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); }
+.maia-letter__log { margin-top: 18px; }
+.maia-letter__loghead { display: flex; justify-content: space-between; align-items: center; }
+.maia-loglist { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; font-size: 14px; }
+.maia-loglist li { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.maia-letter__foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 16px; font-size: 12px; color: var(--text-3); }
+.maia-past__label { margin: 26px 0 10px; }
+.maia-past ul { list-style: none; margin: 0; padding: 0; }
+.maia-past li { display: grid; grid-template-columns: 52px 1fr auto auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.maia-past li:last-child { border-bottom: 0; }
+.maia-past__title { font-weight: 500; }
+.maia-downlink { display: grid; gap: 8px; }
+.maia-downlink__big { font-family: var(--font-mono); font-size: 34px; font-weight: 600; }
+.maia-downlink__btn { width: 100%; justify-content: center; padding: 12px; }
+.maia-preview { display: flex; justify-content: space-between; align-items: center; text-align: left; font: inherit; color: inherit; cursor: pointer; width: 100%; }
+.maia-sent { margin: 0; padding-left: 16px; display: grid; gap: 6px; font-size: 14px; color: var(--text-2); }
+
+/* ---------- doctor console ---------- */
+.maia-console { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 18px; margin-bottom: 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
+.maia-console__title { font-weight: 600; font-size: 17px; }
+.maia-console__meta { margin-left: auto; }
+.maia-doc-grid { display: grid; grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.7fr); gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .maia-doc-grid { grid-template-columns: 1fr; } }
+.maia-doc-grid__left, .maia-doc-grid__right { display: grid; gap: 16px; min-width: 0; }
+.maia-rc { padding: 14px; border: 1px solid var(--border); border-radius: 12px; display: grid; gap: 8px; }
+.maia-rc + .maia-rc { margin-top: 10px; }
+.maia-rc__head { display: flex; align-items: center; gap: 8px; }
+.maia-rc__head b { flex: 1; }
+.maia-rc__bar { height: 6px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.maia-rc__bar div { height: 100%; background: var(--text); }
+.maia-rc__meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+.maia-quote { border-left: 3px solid var(--border-strong); padding-left: 12px; font-size: 15px; }
+.maia-aligned__label { font-size: 13px; font-weight: 600; fill: var(--text); }
+.maia-aligned__unit { font-family: var(--font-mono); font-size: 10px; fill: var(--text-3); }
+.maia-aligned__sep { stroke: var(--border); }
+.maia-line--thin { stroke: var(--text); stroke-width: 1.3; }
+.maia-sym { fill: var(--critical); }
+.maia-details > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.maia-details > summary h2 { font-size: 21px; font-weight: 600; }
+.maia-details > summary::-webkit-details-marker { display: none; }

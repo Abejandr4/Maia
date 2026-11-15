@@ -48,7 +48,7 @@ export default function IssCard({ iss, source }: { iss: IssPosition | null; sour
         <span>{iss?.velocityKmh ? `${Math.round(iss.velocityKmh).toLocaleString()} km/h` : '—'}</span>
       </div>
       <p className="env-metric__detail">
-        Crossing the South Atlantic Anomaly raises dose rate — the dose chart steps up on those passes.
+        Crossing the South Atlantic Anomaly raises the dose rate on board.
         {source && source !== 'live' && ` · ${source} data`}
       </p>
     </section>

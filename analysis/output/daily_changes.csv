@@ -1,0 +1,3 @@
+measurement_id,side,first_out_day,detection_day,last_day,max_n_of_6,max_size_robust_sd,confidence,overlapping_events,missing_in_window,is_synthetic,source,evidence_level
+heart_rate,high,33,37,41,5,4.72,medium,rash (day 41); schedule_shift (day 33),False,yes,S56; S57; S02; S48,demo
+temperature,high,53,56,60,6,5.4,medium,co2_peak (day 52); headache (day 52),False,yes,S56; S57; S02; S48,demo

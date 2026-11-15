@@ -1,0 +1,3 @@
+test_id,timepoint,side,crew_outside,crew_total,crew_ids,back_in_range_next_timepoint,next_timepoint,message,source,evidence_level
+glucose,R+45,low,3,4,C002;C003;C004,yes,R+82,check sample handling – not an alarm,S79; S02,real (values); demo (rule)
+urea_nitrogen_bun,R+194,high,3,4,C001;C003;C004,n/a,,cohort-wide pattern – no later sample to confirm; review,S79; S02,real (values); demo (rule)

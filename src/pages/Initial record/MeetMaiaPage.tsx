@@ -77,21 +77,12 @@ export default function MeetMaiaPage({
           <p>Your companion for healthy habits.</p>
         </section>
 
-        <section className="card maia__card">
+        <section>
           <div className="maia__content">
-            {/* ------------------------------------------------------------ */}
-            {/* ESPACIO RESERVADO PARA LA ANIMACION DE MAIA                  */}
-            {/*                                                              */}
-            {/* PARA LA COMPANERA DEL EQUIPO:                                */}
-            {/*  - Pasa tu componente con la prop `animationSlot`, o         */}
-            {/*    reemplaza el placeholder de abajo directamente.           */}
-            {/*  - El contenedor mide 200px x 200px y se centra solo.        */}
-            {/* ------------------------------------------------------------ */}
-            <div className="maia__animation-slot">
+                        <div className="maia__animation-slot">
               {animationSlot ?? (
                 <>
                   {animationSlot ?? <Mascot size={200} state="celebrating" />}
-                  <span className="maia__animation-placeholder">Maia Animation</span>
                 </>
               )}
             </div>

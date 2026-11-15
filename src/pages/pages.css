@@ -1040,7 +1040,7 @@
   align-items: center;
   justify-content: center;
   min-height: 0;
-  background: var(--surface, #faf9f6);
+  
 }
 
 .maia__content {
@@ -1060,16 +1060,12 @@
   justify-content: center;
   width: 200px;
   height: 200px;
-  border: 1.5px dashed var(--line, #d9d6d1);
-  border-radius: 24px;
-  background: rgba(222, 188, 247, 0.12);
   overflow: hidden;
 }
 
 .maia__animation-placeholder {
   font-size: 14px;
   font-weight: 500;
-  color: var(--muted, #5f5c58);
 }
 
 /* ----- Texto ----- */

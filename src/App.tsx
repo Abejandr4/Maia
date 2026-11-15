@@ -17,7 +17,7 @@ import EmergencyScreen, {
   type EmergencyReport,
 } from "./components/emergency/EmergencyScreen";
 import { ASTRONAUT } from "./utils/mockData";
-import GalaxyBackground from './components/layout/GalaxyBackground';
+
 
 function Shell() {
   const [page, setPage] = useState<PageId>("home");
@@ -51,7 +51,6 @@ function Shell() {
     <div
       className={`app app--${page} ${page === "environment" ? "theme-dark" : ""}`}
     >
-      {page === 'home' && <GalaxyBackground />}
       <TopBar
         page={page}
         onNavigate={navigate}

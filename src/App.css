@@ -208,7 +208,7 @@
   padding: 24px 24px 72px;
 }
 .app--report {
-  --bg: #f3f6f9;
+  --bg: #81afdc;
   background-color: var(--bg);
   background-image:
     linear-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px),
@@ -217,29 +217,14 @@
 }
 .app { position: relative; isolation: isolate; } /* necesario para el z-index: -1 */
 
-/* Fondo negro general + degradado continuo de Home hasta "Your routine" */
+/* Fondo claro: blanco con un toque grisáceo hacia abajo */
 html:has(.app--home),
-body:has(.app--home) { background: #000; }
+body:has(.app--home) { background: #8686e4; }
 
 .app--home {
-  background: linear-gradient(
-    180deg,
-    #000000 0%,
-    #05061a 28%,
-    #120a33 60%,
-    #1b0f3f 82%,
-    #0a0a1c 100%
-  );
+  overflow-x: clip;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f8 45%, #ececf0 100%);
 }
-
-/* Texto que queda directo sobre el fondo oscuro (las tarjetas siguen claras) */
-.app--home .home-greeting,
-.app--home .routine-section .page-title { color: #fff; }
-.app--home .eyebrow,
-.app--home .routine-section .page-sub,
-.app--home .scroll-cue { color: rgba(255, 255, 255, 0.72); }
-.app--home .scroll-cue:hover { color: #fff; }
-.app--home .orbit__rings ellipse { stroke: rgba(255, 255, 255, 0.28); }
 @media (max-width: 640px) {
   .app-main { padding: 16px 14px 56px; }
 }

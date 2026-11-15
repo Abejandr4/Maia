@@ -42,11 +42,16 @@ export default function OrbitRing({ children, className }: OrbitRingProps) {
     let raf = 0;
     let last = 0;
 
+    let nodeScale = 1;
+    let cyPct = 0.5;
+
     const readCss = () => {
       const cs = getComputedStyle(root);
       const num = (name: string, fallback: number) => {
         const v = parseFloat(cs.getPropertyValue(name));
         return Number.isFinite(v) ? v : fallback;
+        nodeScale = num('--orbit-node-scale', 1);
+        cyPct = num('--orbit-cy', 50) / 100;
       };
       period = Math.max(5, num('--orbit-period', 70));
       tilt = num('--orbit-tilt', -6);
@@ -60,10 +65,10 @@ export default function OrbitRing({ children, className }: OrbitRingProps) {
 
     const draw = () => {
       // On narrow screens, the nodes shrink along with the orbit.
-      const sizeK = clamp(w / 1000, 0.6, 1);
+      const sizeK = clamp(w / 1000, 0.6, 1) * nodeScale;
       const pad = 110 * sizeK * maxScale;
       const rx = Math.max(0, w / 2 - pad) * radiusScale;
-      const ry = Math.max(0, h / 2 - pad) * radiusScale;
+      const ry = Math.max(0, Math.min(cyPct * h, (1 - cyPct) * h) - pad) * radiusScale;
       const t = (tilt * Math.PI) / 180;
       const ct = Math.cos(t);
       const st = Math.sin(t);

@@ -1,4 +1,6 @@
-/* Landing page — uses the tokens from index.css */
+/* =====================================================================
+   Landing page — uses the tokens from index.css
+   ===================================================================== */
 
 .landing {
   background: var(--bg);
@@ -89,7 +91,6 @@
     radial-gradient(1px 1px at 52% 46%, var(--text-3) 50%, transparent 51%);
   animation: twinkle 6s ease-in-out infinite alternate;
 }
-@keyframes twinkle { to { opacity: 0.25; } }
 .hero__orbit {
   position: absolute;
   z-index: -1;
@@ -103,13 +104,8 @@
   background: radial-gradient(circle, color-mix(in srgb, var(--lilac) 70%, transparent) 0%, transparent 62%);
   animation: orbit-spin 80s linear infinite;
 }
-@keyframes orbit-spin { to { transform: translateY(-50%) rotate(360deg); } }
-
 .hero__mascot { display: grid; place-items: center; animation: float 6s ease-in-out infinite; }
-@keyframes float { 50% { transform: translateY(-14px) rotate(-2deg); } }
-
 .hero__copy { display: grid; gap: 22px; animation: rise 0.8s ease-out both; }
-@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
 .hero__title {
   font-size: clamp(40px, 6.2vw, 80px);
   line-height: 1.02;
@@ -151,16 +147,40 @@
   background: var(--text-3);
   animation: scroll-cue 1.8s ease-in-out infinite;
 }
-@keyframes scroll-cue { 60% { transform: translateY(14px); opacity: 0; } 100% { opacity: 0; } }
 
 /* ---------- generic section ---------- */
-.lsection { padding: clamp(72px, 10vw, 128px) clamp(16px, 6vw, 96px); max-width: 1280px; margin: 0 auto; display: grid; gap: 28px; }
-.lsection--tint { max-width: none; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--lilac) 45%, var(--bg)) 18%, color-mix(in srgb, var(--lilac) 45%, var(--bg)) 82%, transparent); }
+.lsection {
+  padding: clamp(72px, 10vw, 128px) clamp(16px, 6vw, 96px);
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  gap: 28px;
+}
+.lsection--tint {
+  max-width: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--lilac) 45%, var(--bg)) 18%,
+    color-mix(in srgb, var(--lilac) 45%, var(--bg)) 82%,
+    transparent
+  );
+}
 .lsection--tint > * { max-width: 1088px; width: 100%; margin: 0 auto; }
 .lsection__title { font-size: clamp(30px, 4vw, 48px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-top: 8px; }
 .lsection__lede { font-size: 18px; line-height: 1.6; color: var(--text-2); max-width: 720px; margin-top: 12px; }
 .lsection__lede b { color: var(--text); }
 .lsection__fine { font-size: 12px; color: var(--text-3); margin-top: 8px; }
+
+.nasa-link {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--advisory-ink);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.nasa-link:hover { color: var(--text); }
 
 /* reveal on scroll */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -189,7 +209,6 @@
   box-shadow: 0 0 0 0 color-mix(in srgb, var(--critical) 50%, transparent);
   animation: thread-pulse 2.4s ease-out infinite;
 }
-@keyframes thread-pulse { 70% { box-shadow: 0 0 0 8px transparent; } }
 
 /* ---------- hazards ---------- */
 .env-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -211,7 +230,8 @@
 .env-tab__name { font-weight: 600; }
 .env-tab__trip { font-family: var(--font-mono); font-size: 11.5px; opacity: 0.7; }
 
-.hazards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+/* wraps to fewer columns when the NASA descriptions are long */
+.hazards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 18px; }
 .hazard { display: grid; gap: 10px; align-content: start; padding: 16px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
 .hazard__head { display: grid; gap: 2px; }
 .hazard__name { font-weight: 600; font-size: 15px; }
@@ -223,7 +243,7 @@
 .hazard__fill--3 { background: var(--caution); }
 .hazard__fill--4 { background: var(--warning); }
 .hazard__fill--5 { background: var(--critical); }
-.hazard__what { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+.hazard__what { font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
 .env-note-landing { margin-top: 16px; font-size: 16px; padding-left: 14px; border-left: 3px solid var(--text); max-width: 760px; }
 
 /* ---------- risk wheel ---------- */
@@ -236,21 +256,25 @@
   border-radius: 24px;
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 20px 50px rgba(40, 20, 50, 0.08);
   border-top: 6px solid var(--hue);
+  box-shadow: 0 20px 50px rgba(40, 20, 50, 0.08);
   animation: card-in 0.45s ease-out;
 }
-@keyframes card-in { from { opacity: 0; transform: translateX(-16px); } }
 .risk-card__num { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
-.risk-card__title { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; letter-spacing: -0.02em; color: var(--hue); filter: brightness(0.85); }
+.risk-card__title { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; color: var(--hue); }
 .risk-card__body { font-size: 16px; line-height: 1.65; color: var(--text-2); }
 .risk-card__watch { padding: 14px 16px; border-radius: 12px; background: var(--surface-2); display: grid; gap: 4px; }
 .risk-card__label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
 .risk-card__nav { display: flex; gap: 8px; }
 .risk-card__nav button {
-  width: 42px; height: 42px; border-radius: 50%;
-  border: 1.5px solid var(--border-strong); background: var(--surface);
-  font-size: 16px; cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
 }
 .risk-card__nav button:hover { border-color: var(--text); transform: scale(1.06); }
 
@@ -258,15 +282,15 @@
 .wheel__svg { width: 100%; display: block; overflow: visible; }
 .wheel__spin { transform-box: view-box; transform-origin: 50% 50%; transition: transform 0.8s cubic-bezier(0.3, 1.25, 0.5, 1); }
 .wheel__sector { cursor: pointer; outline: none; }
-.wheel__sector path {
-  fill: color-mix(in srgb, var(--hue) 22%, var(--surface));
-  stroke: var(--bg);
-  stroke-width: 2;
-  transition: fill 0.25s, d 0.3s;
-}
-.wheel__sector:hover path, .wheel__sector:focus-visible path { fill: color-mix(in srgb, var(--hue) 45%, var(--surface)); }
+.wheel__sector path { stroke: var(--bg); stroke-width: 2; transition: fill 0.25s, d 0.3s; }
+/* alternating light tints so neighbouring sectors stay distinguishable */
+.wheel__sector:nth-child(odd) path { fill: color-mix(in srgb, var(--hue) 16%, var(--surface)); }
+.wheel__sector:nth-child(even) path { fill: color-mix(in srgb, var(--hue) 28%, var(--surface)); }
+/* these come after the tints so hover and selection win */
+.wheel__sector:hover path,
+.wheel__sector:focus-visible path { fill: color-mix(in srgb, var(--hue) 45%, var(--surface)); }
 .wheel__sector.is-selected path { fill: var(--hue); }
-.wheel__sector text { font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; fill: var(--text); pointer-events: none; }
+.wheel__sector text { font-family: var(--font-sans); font-size: 11.5px; font-weight: 600; fill: var(--text); pointer-events: none; }
 .wheel__sector.is-selected text { fill: #fff; }
 .wheel__hub { fill: var(--surface); stroke: var(--border); }
 .wheel__hub-label { font-family: var(--font-mono); font-size: 20px; font-weight: 600; fill: var(--text); }
@@ -330,6 +354,7 @@
 .cta__title { font-size: 22px; font-weight: 700; }
 .cta__sub { color: var(--text-2); margin-top: 4px; }
 
+/* ---------- footer ---------- */
 .landing__footer {
   padding: 28px clamp(16px, 6vw, 96px) 40px;
   text-align: center;
@@ -338,9 +363,17 @@
   border-top: 1px solid var(--border);
 }
 
+/* ---------- animations ---------- */
+@keyframes twinkle { to { opacity: 0.25; } }
+@keyframes orbit-spin { to { transform: translateY(-50%) rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-14px) rotate(-2deg); } }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes scroll-cue { 60% { transform: translateY(14px); opacity: 0; } 100% { opacity: 0; } }
+@keyframes thread-pulse { 70% { box-shadow: 0 0 0 8px transparent; } }
+@keyframes card-in { from { opacity: 0; transform: translateX(-16px); } }
+
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
-  .hazards { grid-template-columns: repeat(2, 1fr); }
   .problems { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 860px) {
@@ -358,9 +391,26 @@
   .landing__tag { display: none; }
 }
 @media (max-width: 520px) {
-  .hazards, .problems { grid-template-columns: 1fr; }
+  .problems { grid-template-columns: 1fr; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
 }
+
+/* =====================================================================
+   Force the wheel and risk card to blues only
+   (overrides the per-risk `hue` set inline in LandingPage.tsx)
+   ===================================================================== */
+
+/* one blue shade per sector, in the same order as RISKS */
+.wheel__sector:nth-child(1) { --hue: #0f4c81 !important; } /* Immune */
+.wheel__sector:nth-child(2) { --hue: #1a5fa3 !important; } /* Balance */
+.wheel__sector:nth-child(3) { --hue: #2f6fdb !important; } /* Heart */
+.wheel__sector:nth-child(4) { --hue: #2b7bc0 !important; } /* DCS */
+.wheel__sector:nth-child(5) { --hue: #3a97dd !important; } /* Hypoxia */
+.wheel__sector:nth-child(6) { --hue: #1d6e9c !important; } /* Microbes */
+.wheel__sector:nth-child(7) { --hue: #4a7fd6 !important; } /* Fitness */
+.wheel__sector:nth-child(8) { --hue: #24456e !important; } /* EVA */
+
+/* the card on the left uses one consistent blue */
+.risk-card { --hue: #2f6fdb !important; }

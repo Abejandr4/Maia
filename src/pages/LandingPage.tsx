@@ -9,11 +9,31 @@ import './landing.css';
 type HazardKey = 'radiation' | 'isolation' | 'distance' | 'gravity' | 'closed';
 
 const HAZARDS: { key: HazardKey; name: string; what: string }[] = [
-  { key: 'radiation', name: 'Space radiation', what: 'Galactic cosmic rays and solar particle events pass through the hull and the body.' },
-  { key: 'isolation', name: 'Isolation & confinement', what: 'Small crews, little privacy and broken sleep for months at a time.' },
-  { key: 'distance', name: 'Distance from Earth', what: 'Help is hours, days or months away, and messages arrive late.' },
-  { key: 'gravity', name: 'Altered gravity', what: 'Fluids shift to the head; bones and muscles stop carrying load.' },
-  { key: 'closed', name: 'Hostile, closed environment', what: 'Recycled air with more CO₂, noise, and microbes that change in flight.' },
+  {
+    key: 'radiation',
+    name: 'Space Radiation',
+    what: 'Invisible to the human eye, space radiation is not only stealthy but considered one of the most hazardous aspects of spaceflight.',
+  },
+  {
+    key: 'isolation',
+    name: 'Isolation and Confinement',
+    what: 'Behavioral responses occur among groups of people far from Earth who are isolated and confined in a small space over a long period of time.',
+  },
+  {
+    key: 'distance',
+    name: 'Distance from Earth',
+    what: 'Instructions, new supplies, medical care, and more become increasingly challenging to receive from Earth as astronauts venture deeper into space.',
+  },
+  {
+    key: 'gravity',
+    name: 'Gravity Fields',
+    what: "Astronauts' entire bodies – muscles, bones, inner ear, and organs – must adjust to the new gravities encountered on the space station or their spacecraft, as well as on the Moon, Mars, and Earth once they return home.",
+  },
+  {
+    key: 'closed',
+    name: 'Hostile/Closed Environments',
+    what: 'Maintaining a safe ecosystem inside a spacecraft presents unique challenges, from ensuring optimal temperatures, pressures, and lighting, to reducing noise, monitoring microbial communities, and tracking immune responses.',
+  },
 ];
 
 interface Environment {
@@ -69,74 +89,74 @@ interface Risk {
 const RISKS: Risk[] = [
   {
     id: 'immune',
-    name: 'Immune dysregulation',
+    name: 'Risk of Altered Immune System Responses',
     short: 'Immune',
-    body: 'In flight the immune system can turn down and up at the same time: weaker defences against infection, stronger inflammation and allergy-like reactions.',
-    watch: 'Frequent colds, slow-healing cuts, new allergies, unusual tiredness.',
+    body: 'In flight the immune system can turn down and up at the same time: weaker defences against infection, and stronger inflammation and allergy-like reactions. Dormant viruses such as the one behind shingles can wake up.',
+    watch: 'Skin rashes, new allergies, shingles or cold sores, slow-healing cuts, unusual tiredness. Photograph skin changes for your flight surgeon.',
     immune: 'This is the thread that ties every other risk together.',
     hue: '#d93636',
   },
   {
-    id: 'viral',
-    name: 'Viral reactivation',
-    short: 'Shingles',
-    body: 'Dormant viruses such as varicella-zoster (the cause of shingles) and other herpesviruses can wake up under spaceflight stress.',
-    watch: 'A painful, blistering band of rash on one side of the body; cold sores.',
-    immune: 'Reactivation is a sign that immune control has slipped.',
-    hue: '#e8762b',
-  },
-  {
-    id: 'skin',
-    name: 'Skin rashes & allergies',
-    short: 'Skin',
-    body: 'Rashes and skin irritation are among the most common in-flight complaints, and new allergic reactions can appear far from a dermatologist.',
-    watch: 'A rash that spreads, swells, blisters or does not fade. Photograph it for a professional to see.',
-    immune: 'Hypersensitivity is the "turned up" side of immune change.',
-    hue: '#f0c419',
-  },
-  {
-    id: 'radiation',
-    name: 'Radiation damage',
-    short: 'Radiation',
-    body: 'Radiation damages DNA and tissues. Over a career it raises cancer risk; a large solar event can cause acute sickness.',
-    watch: 'Nausea or vomiting after a solar alert; cumulative dose against the career limit.',
-    immune: 'Blood-forming cells, including immune cells, are among the most sensitive.',
+    id: 'sensorimotor',
+    name: 'Risk of Altered Sensorimotor and Vestibular Function',
+    short: 'Balance',
+    body: 'Without gravity, the inner ear and the brain lose their sense of "down". Crews can feel space motion sickness at first, and balance, coordination and hand–eye control change, especially when gravity returns.',
+    watch: 'Nausea, dizziness, clumsiness, trouble judging distances; extra care during landing and the first days back.',
+    immune: 'Space motion sickness and poor sleep add stress that further weakens immunity.',
     hue: '#a46bd6',
   },
   {
-    id: 'bone',
-    name: 'Bone & muscle loss',
-    short: 'Bone',
-    body: 'Without load, weight-bearing bones can lose around 1–1.5 % of their density per month, and muscles shrink unless exercise is kept up.',
-    watch: 'Back pain, missed exercise blocks, kidney-stone risk from calcium.',
-    immune: 'Bone marrow is also where immune cells are made.',
-    hue: '#7ab317',
-  },
-  {
-    id: 'heart',
-    name: 'Heart & fluid shifts',
+    id: 'cardio',
+    name: 'Risk of Cardiovascular Adaptations',
     short: 'Heart',
-    body: 'Fluids move toward the head, the heart works differently and blood pressure control changes, especially when gravity returns.',
-    watch: 'Blood pressure drift, racing heart, dizziness on standing.',
-    immune: 'Inflammation also strains blood vessels.',
+    body: 'Fluids shift toward the head, the heart works differently and blood pressure control adapts to weightlessness. Radiation may also add to long-term damage of blood vessels.',
+    watch: 'Blood pressure drifting from your normal, a racing or irregular heartbeat, dizziness when standing.',
+    immune: 'Inflammation from immune changes also strains the blood vessels.',
     hue: '#2f6fdb',
   },
   {
-    id: 'eyes',
-    name: 'Vision changes (SANS)',
-    short: 'Eyes',
-    body: 'Spaceflight-associated neuro-ocular syndrome changes the back of the eye in many long-duration astronauts.',
-    watch: 'Blurry near vision, headaches, changes on the vision chart.',
-    immune: 'Fluid shift and high CO₂ make it worse, along with headaches.',
+    id: 'dcs',
+    name: 'Risk of Decompression Sickness',
+    short: 'DCS',
+    body: 'Spacesuits run at lower pressure than the cabin. If dissolved nitrogen leaves the blood too fast, bubbles can form in joints and tissues. Pre-breathing pure oxygen before a spacewalk lowers the risk.',
+    watch: 'Deep joint pain, tingling or numbness, skin itching or mottling, vision changes or confusion after a spacewalk.',
+    immune: 'Gas bubbles can trigger an inflammatory response in the tissues they touch.',
     hue: '#3a97dd',
   },
   {
-    id: 'sleep',
-    name: 'Sleep & stress',
-    short: 'Sleep',
-    body: 'Sunrise every 90 minutes, noise and workload cut sleep short. Isolation and confinement weigh on mood.',
-    watch: 'Less than 6 h of sleep, irritability, low mood, trouble focusing.',
-    immune: 'Poor sleep and stress hormones directly weaken immunity.',
+    id: 'hypoxia',
+    name: 'Risk of Hypoxia',
+    short: 'Hypoxia',
+    body: 'Too little oxygen reaching the body, from a suit or cabin problem, a leak, or the lower-pressure atmospheres planned for future habitats. The early signs are easy to miss.',
+    watch: 'SpO₂ below your normal, headache, fast breathing, confusion, unusual tiredness.',
+    immune: 'Low oxygen is itself a stress signal that changes how immune cells behave.',
+    hue: '#e8762b',
+  },
+  {
+    id: 'microbes',
+    name: 'Risk of Host-Microorganism Interactions',
+    short: 'Microbes',
+    body: 'In a closed spacecraft, crews share air, water and surfaces. Some microbes grow and behave differently in spaceflight, and the body\'s own microbiome changes too.',
+    watch: 'Skin, eye or urinary infections, stomach upset, a wound that becomes red or swollen.',
+    immune: 'A weaker immune system meets microbes that may be more aggressive. This is where the two meet.',
+    hue: '#f0c419',
+  },
+  {
+    id: 'fitness',
+    name: 'Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness',
+    short: 'Fitness',
+    body: 'Without load, muscles shrink, weight-bearing bones can lose around 1–1.5 % of their density per month, and aerobic capacity drops, unless daily exercise is kept up.',
+    watch: 'Missed exercise blocks, back pain, getting tired sooner, lower scores on fitness checks.',
+    immune: 'Bone marrow is where immune cells are made, and regular exercise helps keep immunity balanced.',
+    hue: '#7ab317',
+  },
+  {
+    id: 'eva',
+    name: 'Risk of Injury and Compromised Performance from Spacewalks',
+    short: 'EVA',
+    body: 'Hours of hard work in a pressurised suit can injure hands, shoulders and skin, cause overheating or exhaustion, and lower performance when it matters most.',
+    watch: 'Fingernail and hand injuries, shoulder pain, pressure spots on the skin, heart rate and temperature during the spacewalk.',
+    immune: 'Small suit injuries heal more slowly and are easier to infect when immunity is down.',
     hue: '#3d5a73',
   },
 ];
@@ -386,7 +406,17 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
             ))}
           </div>
           <p className="env-note-landing">{env.note}</p>
-          <p className="lsection__fine">Bars show relative exposure between environments, for illustration.</p>
+          <p className="lsection__fine">
+            Hazard descriptions:{' '}
+            <a className="nasa-link"
+            href="https://www.nasa.gov/hrp/risks/"
+             target="_blank"
+             rel="noopener noreferrer"
+             >
+              Data from NASA ↗
+              </a>{' '}
+               · Bars show relative exposure between environments, for illustration.
+               </p>
         </Reveal>
 
         <Reveal delay={150}>

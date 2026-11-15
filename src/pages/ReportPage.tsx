@@ -37,7 +37,7 @@ export default function ReportPage({ onLogSymptom }: { onLogSymptom: () => void 
         subtitle="One letter per downlink, ranked by what changed most."
         aside={
           <button type="button" className="btn" onClick={() => go(true)}>
-            👁 Preview what your doctor sees
+            Preview what your doctor sees
           </button>
         }
       />

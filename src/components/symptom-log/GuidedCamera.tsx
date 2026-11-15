@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import type { CapturedPhoto } from './types';
 import { useGuidedCamera } from './useGuidedCamera';
+import { createPortal } from 'react-dom';
+import './symptomLog.css';
 
 interface Props {
   onCapture: (photo: CapturedPhoto) => void;
@@ -28,7 +30,7 @@ export function GuidedCamera({ onCapture, onClose, debug = false }: Props) {
 
   if (preview) {
     const overridden = preview.guidanceAtCapture !== 'ok';
-    return (
+    return createPortal(
       <div className="gc-root">
         <img className="gc-media" src={preview.dataUrl} alt="Captured photo preview" />
         {overridden && (
@@ -40,11 +42,12 @@ export function GuidedCamera({ onCapture, onClose, debug = false }: Props) {
           <button type="button" className="sl-btn sl-btn--ghost" onClick={() => setPreview(null)}>Retake</button>
           <button type="button" className="sl-btn" onClick={() => onCapture(preview)}>Use photo</button>
         </div>
-      </div>
+      </div>,
+      document.body,
     );
   }
 
-  return (
+  return createPortal(
     <div className="gc-root">
       {cam.error ? (
         <div className="gc-error">
@@ -102,6 +105,7 @@ export function GuidedCamera({ onCapture, onClose, debug = false }: Props) {
           </div>
         </>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -11,6 +11,8 @@ import Icon from '../ui/Icon';
 import StatusPill from '../ui/StatusPill';
 import { GUIDES, suggestedGuide, type EmergencyGuide, type GuideIcon, type GuidePriority } from './emergencyGuides';
 import './emergency.css';
+import { createPortal } from 'react-dom';
+import '../symptom-log/symptomLog.css'; // camera styles: load them here too, don't rely on SymptomLogger
 
 /** The symptom-log report plus the emergency details. Still readable by downloadPdf / downloadJson. */
 export type EmergencyReport = SymptomReport & {
@@ -187,16 +189,24 @@ export default function EmergencyScreen({ open, onClose, crew, onSend = simulate
   };
 
   /* ---------------- Camera (full screen, from symptom-log) ---------------- */
+  /* ---------------- Camera (full screen, from symptom-log) ----------------
+     Rendered straight into <body> with a portal, so nothing in the app
+     (.app wrapper, EVA mode, isolation, transforms) can hide or clip it. */
   if (cameraOpen) {
-    return (
+    return createPortal(
       <GuidedCamera
-        onClose={() => setCameraOpen(false)}
+        onClose={() => {
+          setCameraOpen(false);
+          log('Camera closed without a photo');
+        }}
         onCapture={(p) => {
           setPhotos((prev) => [...prev, { ...p, caption: guide ? `Emergency · ${guide.title}` : undefined }]);
           setCameraOpen(false);
+          setPhotoChoice('yes');
           log('Photo added');
         }}
-      />
+      />,
+      document.body,
     );
   }
 
@@ -214,7 +224,7 @@ export default function EmergencyScreen({ open, onClose, crew, onSend = simulate
     </div>
   );
 
-  return (
+  return createPortal(
     <div className="em theme-dark" role="dialog" aria-modal="true" aria-labelledby="em-title">
       <div className="em__inner">
         <header className="em__head">
@@ -477,6 +487,7 @@ export default function EmergencyScreen({ open, onClose, crew, onSend = simulate
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

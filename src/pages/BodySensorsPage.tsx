@@ -206,6 +206,9 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
             );
           })}
         </div>
+        <div style={{ padding: '2px 8px 8px', fontSize: 10, color: orbit ? '#e8edf4' : '#343945' }}>
+          <span aria-hidden="true">✦ </span>AI-generated content
+        </div>
       </div>
       <div className="bodymap-actions">
         {tab === 'live' && <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.showModal()}>Daily measurements</button>}

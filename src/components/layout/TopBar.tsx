@@ -11,7 +11,6 @@ const NAV: { id: PageId; label: string }[] = [
   { id: 'home', label: 'Home' },
   { id: 'body', label: 'Body & Sensors' },
   { id: 'environment', label: 'Environment' },
-  { id: 'routine', label: 'Routine' },
   { id: 'report', label: 'Reports' },
 ];
 

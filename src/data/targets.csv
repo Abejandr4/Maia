@@ -1,0 +1,7 @@
+goal,comparator,value,unit,location,standard_id,notes,source,evidence_level
+water_per_day,≥,2.5,L per crew member per day,iss|lunar_surface|mars_transit,[V2 6109],includes about 600 mL per meal as hot water,S94; S01,consensus
+water_during_eva,≥,240.0,mL per EVA hour,spacewalk,[V2 11030],,S97; S03,consensus
+water_after_landing,,1.0,kg per 8 h,back_on_earth,[V2 6037],,S01,consensus
+exercise_per_day,about,2.0,h per day,iss|lunar_surface|mars_transit,[V2 7038] sets no hours,"aerobic + resistance (ARED, treadmill, CEVIS); operational average",S95; S90,estimate
+exercise_minimum_jacc,≥,1.5,"h per day, 6 days a week",iss,,30–45 min aerobic + 60–75 min resistance (Shibata 2023),S90,estimate
+sleep_period,,8.5,h sleep period recommended,iss|lunar_surface|mars_transit,[V1 6001],"actual ISS average 6–6.5 h (reference, not a goal)",S96; S04,consensus

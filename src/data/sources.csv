@@ -46,7 +46,7 @@ S44,"QTc thresholds (AHA/ACCF/HRS, via PMC7080915)",https://www.ncbi.nlm.nih.gov
 S45,ADA Standards of Care – glucose and hypoglycemia levels (team research PDF),,measurement_ranges,guideline,not opened (team-cited),consensus,active
 S46,UNSCEAR – average natural background dose ~2.4 mSv/year (team research PDF),,contexts,report,not opened (team-cited),consensus,active
 S47,"Team background research: 'Salud de astronautas: base científica para un software de automonitoreo' (Nov 4, 2026)",,several,secondary (team),2026-11-13 00:00:00,as labelled per row,active
-S48,"Spica Phase 2 – Research Foundation (team, Nov 14, 2026)",https://claude.ai/artifact/5kTmStK766c2Ci15UVD1BS,several,secondary (team),2026-11-14 00:00:00,as labelled per row,active
+S48,"Spica Phase 2 – Research Foundation (team, Nov 14, 2026)", ,2026-11-14 00:00:00,as labelled per row,active
 S49,"Lee et al. 2020, Frontiers in Physiology – orthostatic intolerance after spaceflight (team research PDF)",,measurement_ranges,peer-reviewed,not opened (team-cited),estimate,active
 S50,NHLBI – Low blood pressure (hypotension): lower than 90/60 mm Hg,https://www.nhlbi.nih.gov/node/4880,measurement_ranges,agency web page,2026-11-14 00:00:00,consensus,active
 S51,NHLBI – How to use a metered-dose inhaler (21-HL-8165),https://portal.ct.gov/-/media/DPH/Asthma/How-to-Use-a-Metered-Dose-Inhaler_21-HL-8165.pdf,medications,agency patient guide,2026-11-14 00:00:00,consensus,kept (used only by removed content)

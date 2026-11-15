@@ -1,0 +1,9 @@
+domain,condition,window_days,counts_alone,notes,source,evidence_level
+cellular,"WBC or neutrophils up by more than their RCV, or lymphocytes down by more than theirs",14,yes,counts as one domain; review needs ≥2 domains in 14 days,S84; S88; S89,demo
+inflammatory,"CRP more than doubled (>97% RCV), or IL-6 / CCL2 above the person's pre-flight range",14,yes,counts as one domain; review needs ≥2 domains in 14 days,S80; S81; S88,demo
+viral,"A saliva sample positive for EBV or VZV, or rising copies",14,yes,counts as one domain; review needs ≥2 domains in 14 days,S86,demo
+clinical,"A logged rash, cold sore, or fever (temperature marked change, high side)",14,yes,counts as one domain; review needs ≥2 domains in 14 days,S87,demo
+context,"Low sleep (sleep marked change, low side, or schedule shift)",14,no,adds weight and is shown; never triggers the review alone,S40,demo
+context,Solar event (DONKI SEP),14,no,adds weight and is shown; never triggers the review alone,S34; S53,demo
+context,EVA in the last 72 h,3,no,adds weight and is shown; never triggers the review alone,S48,demo
+context,Cabin CO₂ peak (1-h average > 3 mmHg),14,no,adds weight and is shown; never triggers the review alone,S05,demo

@@ -1,0 +1,17 @@
+person,day,virus,result,copies_per_ml,is_synthetic,notes,source,evidence_level
+lucia (sample),7,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),7,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),14,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),14,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),21,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),21,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),28,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),28,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),35,EBV,positive,,yes,storyline 4.4; copy number not cited -> left empty [UNVERIFIED],S86; S48,demo
+lucia (sample),35,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),42,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),42,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),49,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),49,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo
+lucia (sample),56,EBV,negative,,yes,,S86; S48,demo
+lucia (sample),56,VZV,negative,,yes,"VZV kept negative: 65% is per mission, not per sample",S86; S48,demo

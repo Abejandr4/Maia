@@ -29,12 +29,21 @@ export interface VitalEvaluation {
   deviation: number;
 }
 
+export interface SymptomPhoto {
+  dataUrl: string; // JPEG data URL from the guided camera
+  takenAt: string; // ISO
+  bodyLocation?: string;
+  caption?: string;
+}
+
 export interface SymptomEntry {
   id: string;
   name: string;
   severity: Severity;
   note?: string;
   time: string; // ISO
+  /** Photos taken with the guided camera for this report (optional). */
+  photos?: SymptomPhoto[];
 }
 
 export interface AlertEntry {

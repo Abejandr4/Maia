@@ -35,12 +35,20 @@ export default function SymptomLogAdapter({ onClose, onSubmit }: SymptomLogProps
 
   // Called by "Send to flight surgeon": copy each symptom into the app's log, then close
   const handleSubmit = async (report: SymptomReport) => {
-    report.symptoms.forEach((s) =>
+    // Photos belong to the whole report: attach them to the first symptom so the Report page can show them
+    const photos = report.photos.map((p) => ({
+      dataUrl: p.dataUrl,
+      takenAt: p.takenAt,
+      bodyLocation: p.bodyLocation,
+      caption: p.caption,
+    }));
+    report.symptoms.forEach((s, i) =>
       onSubmit?.({
         name: s.name === 'Other' && s.customName ? s.customName : s.name,
         severity: toAppSeverity(s.severity),
         note: [s.bodyLocation, s.notes].filter(Boolean).join(' · ') || undefined,
         time: s.onset,
+        photos: i === 0 && photos.length ? photos : undefined,
       }),
     );
     // TODO: also send `report` to your backend / ground link here

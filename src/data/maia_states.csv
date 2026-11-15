@@ -1,0 +1,9 @@
+state,triggered_when,priority,animation,message_1,message_2,message_3,source,evidence_level
+quiet,any Warning or Emergency is active,1,"asteroid parks still, no sound",—,—,—,S48,demo (mascot never reacts to medical values; steps back during alerts); renamed from Spica (v2): asteroid mascot
+thirsty,water logged < half of today's target after 15:00,2,asteroid with a dry crater,Time for a glass of water?,A sip now helps later.,Water break?,S48,demo; renamed from Spica (v2): asteroid mascot
+sleepy,sleep last night < 7 h,3,asteroid dims slowly,Short night. Go easy today if you can.,A rest break could help.,Try to keep tonight's sleep time free.,S42; S48,consensus (7 h); demo; renamed from Spica (v2): asteroid mascot
+waiting,a planned measurement is due,4,asteroid orbits the clock,Your {measurement} check is due.,Ready when you are.,One quick check today?,S48,demo; renamed from Spica (v2): asteroid mascot
+proud,a planned measurement was just done,5,small spin,Done. Thanks for checking.,"Nice, that's logged.",Got it.,S48,demo; renamed from Spica (v2): asteroid mascot
+happy,all of today's habits are done,6,full rotation with sparkles,All set for today.,Nice day of habits.,See you tomorrow.,S48,demo; renamed from Spica (v2): asteroid mascot
+welcome_back,app opened after 2 or more days,7,rolls in,Good to see you.,Welcome back. No catching up needed.,Hi again.,S48,"demo (no streaks, no guilt); renamed from Spica (v2): asteroid mascot"
+resting,night (sleep period),8,asteroid rests in shadow,—,—,—,S04 [V1 6001] (team-cited),demo; renamed from Spica (v2): asteroid mascot

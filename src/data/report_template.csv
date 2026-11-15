@@ -1,0 +1,10 @@
+order,section,content,priority_rule,approx_kb,source,evidence_level
+1,Header,"Crew member, location, mission day, report period, data completeness %",always first,0.5,S48,demo
+2,Ordered changes,"Each marked change: measurement, direction, size vs band, days outside (n of 6), confidence",red > caution; then confidence high > low; then size,1.5,S56; S57,demo
+3,Evidence,"Small 7-day series per change (daily median), band and reference limit",only for listed changes,2.0,S48,demo
+4,Data quality,"Missing days, stale readings, sensor gaps, artefacts removed",always,0.5,S02,consensus (mark quality); demo
+5,Overlapping events,"DONKI SEP, schedule shifts, EVA, CO₂ peaks aligned with changes",only if within ±1 day,0.5,S34; S05,demo
+6,Symptoms,"Logged symptoms by zone and severity, aligned in time",severity ≥2 first,0.5,S63; S64,demo
+7,Incident timeline,"Automatic timeline of any emergency card (actions, times, vitals)",if an incident happened,1.0,S70; S72,demo
+8,Astronaut note,Free text from the astronaut,optional,0.5,S48,demo
+9,Send,Queued for the next downlink; size shown in KB; flight surgeon reply returns to Reports,always,0.0,S12,demo

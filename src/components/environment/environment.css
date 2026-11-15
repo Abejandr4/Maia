@@ -23,3 +23,34 @@
 .dose-chart__eva { font-family: var(--font-mono); font-size: 10.5px; fill: var(--text-3); }
 .dose-legend { display: flex; gap: 14px; font-size: 12px; color: var(--text-2); align-items: center; }
 .dose-legend__dash { display: inline-block; width: 14px; border-top: 2px dashed var(--caution); margin-right: 6px; vertical-align: middle; }
+
+/* ---------- Live data: source chip ---------- */
+.source-chip { font-family: var(--font-mono); font-size: 11px; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-2); }
+.source-chip--live { border-color: var(--normal); color: var(--normal-ink); }
+.source-chip--live::before { content: '● '; color: var(--normal); }
+.source-chip--cache, .source-chip--seed { border-color: var(--caution); color: var(--caution-ink); }
+.source-chip--offline { border-color: var(--border-strong); color: var(--text-3); }
+
+/* ---------- Orbit row ---------- */
+.env-grid__orbit { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; }
+@media (max-width: 900px) { .env-grid__orbit { grid-template-columns: 1fr; } }
+
+.iss-map { width: 100%; display: block; border-radius: 10px; overflow: hidden; }
+.iss-map__bg { fill: var(--surface-2); }
+.iss-map__grid { stroke: var(--border); stroke-width: 0.6; }
+.iss-map__eq { stroke: var(--border-strong); stroke-width: 0.8; }
+.iss-map__band { fill: var(--advisory); opacity: 0.06; }
+.iss-map__saa { fill: var(--caution); opacity: 0.14; stroke: var(--caution); stroke-dasharray: 3 3; stroke-opacity: 0.6; }
+.iss-map__saa-label { font-family: var(--font-mono); font-size: 10px; fill: var(--caution-ink); }
+.iss-map__dot { fill: var(--normal); stroke: var(--surface); stroke-width: 1.5; }
+.iss-map__pulse { fill: none; stroke: var(--normal); stroke-width: 1.5; animation: zone-pulse 2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.iss-stats { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; flex-wrap: wrap; }
+
+.space-events__kp { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: end; }
+.space-events__spark { color: var(--advisory); }
+.space-events__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-height: 260px; overflow: auto; }
+.space-events__list li { display: grid; grid-template-columns: 78px 1fr auto; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--border); font-size: 14px; }
+.space-events__type { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: var(--surface-3); text-align: center; }
+.space-events__type--SEP { background: var(--warning-soft); color: var(--warning); }
+.space-events__type--FLR { background: var(--caution-soft); color: var(--caution-ink); }
+.space-events__type--GST { background: var(--advisory-soft); color: var(--advisory-ink); }

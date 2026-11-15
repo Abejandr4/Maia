@@ -197,7 +197,7 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
             );
           })}
         </div>
-        <div style={{ padding: '2px 8px 8px', fontSize: 10, color: orbit ? '#e8edf4' : '#343945' }}>
+        <div style={{ padding: '2px 8px 8px', fontSize: 10, color: '#000' }}>
           <span aria-hidden="true">✦ </span>AI-generated content
         </div>
       </div>

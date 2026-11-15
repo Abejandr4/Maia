@@ -61,6 +61,8 @@ export default function MeasurementScene({ avatar, title, caption, marker, cue, 
           <span style={{ letterSpacing: '.12em', color, fontSize: 10, fontWeight: 700 }}>{unavailable ? 'UNAVAILABLE ONBOARD' : label}</span>
           <strong style={{ fontSize: 'clamp(14px, 3vw, 24px)', lineHeight: 1.2 }}>{title}</strong>
         </div>
+        <span style={{ position: 'absolute', left: 8, bottom: 7, padding: '2px 5px', borderRadius: 3,
+          color: '#e8edf4', fontSize: 10, lineHeight: 1.2, textShadow: '0 1px 2px #081422' }}><span aria-hidden="true">✦ </span>AI-generated content</span>
       </div>
       <figcaption style={{ padding: '12px 16px', borderTop: `2px solid ${color}`, fontSize: 14, lineHeight: 1.5 }}>
         {caption}

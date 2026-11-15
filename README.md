@@ -258,6 +258,17 @@ CORS already allows `localhost:5173` and any `*.vercel.app` address.
 
 ---
 
+## AI USE
+
+| AI technology | Given use |
+|---|---|
+| **Code generation** | This app was mainly developed through vibe coding, with the team laying down the main functions and components but correcting, completing and putting them together via generation with LLM's such as Opus 5.5, Gemini. |
+| **Mock data** | Mock data for health measurements was generated with Opus 5.5. |
+| **Mockup** | Base44 was used to ideate the screens based on the functions previously designed by the team. |
+| **Image generation** | All images found on the interface were AI-generated. |
+
+---
+
 ## Team
 
 <!-- Add names, roles and links -->

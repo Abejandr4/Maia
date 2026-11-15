@@ -16,7 +16,6 @@ import TaskList from '../components/home/TaskList';
 import GoalBars from '../components/home/GoalBars';
 import './pages.css';
 import OrbitRing from '../components/home/OrbitRing';
-import DomeBackground from '../components/home/DomeBackground';
 
 const SHORT_LABEL: Record<VitalEvaluation['key'], string> = {
   bp: 'Systolic',
@@ -175,26 +174,8 @@ const STATUS_WORD: Record<Status, string> = {
   warning: 'Warning',
   critical: 'Critical',
 };
-function getCrewFirstName(): string {
-  try {
-    const raw =
-      localStorage.getItem('aboutYou') ||
-      localStorage.getItem('userProfile') ||
-      localStorage.getItem('astronautProfile');
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      const fullName = parsed.fullName || parsed.name || parsed.firstName;
-      if (typeof fullName === 'string' && fullName.trim()) {
-        return fullName.trim().split(/\s+/)[0];
-      }
-    }
-  } catch {
-    // Si falla el parseo, usa el valor por defecto
-  }
-  return ASTRONAUT.name;
-}
+
 export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => void }) {
-  const crewName = useMemo(() => getCrewFirstName(), []);
   const { evaluations, place } = useVitals();
   const onEarth = place === 'earth';
   const now = useNow(15_000);
@@ -207,7 +188,12 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const issBody = useMemo(() => bodyFocus(evaluations), [evaluations]);
   // Each circle shows what matters most where the crew member is now.
   const body = onEarth ? EARTH_BODY : issBody;
-  const env = onEarth ? EARTH_ENV : envFocus();
+  const previewCtx = place === 'lunar' || place === 'mars' ? contexts.find((c) => c.id === PLACE_CTX[place]) : undefined;
+  const env = onEarth
+    ? EARTH_ENV
+    : previewCtx
+      ? { value: String(previewCtx.daily_dose_msv_max ?? '—'), unit: 'mSv/day', status: 'caution' as Status, label: 'Radiation · preview' }
+      : envFocus();
   const rep = reportFocus(false);
   const loc = placeFocus(place);
   // routine follows the real clock: tasks before now are done, the first one after now is next
@@ -222,6 +208,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const liveIssue = evaluations.some((e) => STATUS_RANK[e.status] >= STATUS_RANK.caution) ? 1 : 0;
   const needs = onEarth ? EARTH_OFF.length : CHANGES.length + liveIssue;
   const needsText = onEarth ? EARTH_NEEDS_TEXT : NEEDS_TEXT;
+  const previewText = previewCtx ? `${previewCtx.name} preview · no health data for this place yet` : '';
 
   const scrollToRoutine = () => routineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   const openTask = (t: RoutineTask) => {
@@ -238,14 +225,17 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   return (
     <div className="page page--home">
       <section className="home-hero">
-        <h1 className="home-greeting">Hi, {crewName}</h1>
+        <h1 className="home-greeting">Hi, {ASTRONAUT.name}</h1>
         <span className="needs-chip" title={needsText}>
           <i className={`needs-chip__dot needs-chip__dot--${needs ? (body.status === 'normal' ? 'caution' : body.status) : 'normal'}`} />
-          {needs ? `${needs} ${needs === 1 ? 'thing needs' : 'things need'} you · ${needsText}` : 'All good right now'}
+          {previewText || (needs ? `${needs} ${needs === 1 ? 'thing needs' : 'things need'} you · ${needsText}` : 'All good right now')}
         </span>
 
         <div className="orbit">
-          <DomeBackground />
+          <svg className="orbit__rings" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+            <ellipse cx="500" cy="300" rx="470" ry="290" />
+            <ellipse cx="500" cy="300" rx="270" ry="190" />
+          </svg>
 
           <OrbitRing>
             <OrbitNode
@@ -299,7 +289,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
 
 
           <div className="orbit__center">
-            <Mascot size={420} state="idle" />
+            <Mascot size={280} state="idle" />
           </div>
 
           {bubbleOpen && (

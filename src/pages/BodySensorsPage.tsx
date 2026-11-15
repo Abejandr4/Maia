@@ -18,6 +18,7 @@ import { bodyZones, daily as maiaDaily, immune as maiaImmune, measurementTexts, 
 const SLEEP_BAND = { min: maiaDaily.bands.sleep?.low ?? NaN, max: maiaDaily.bands.sleep?.high ?? NaN };
 import EarthRecovery from '../components/body/EarthRecovery';
 import SpacewalkCard from '../components/body/SpacewalkCard';
+import PlacePreview from '../components/body/PlacePreview';
 import MeasureGuide, { RecordedMeasurements } from '../components/body/MeasureGuide';
 import './pages.css';
 
@@ -196,9 +197,6 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
               </button>
             );
           })}
-        </div>
-        <div style={{ padding: '2px 8px 8px', fontSize: 10, color: orbit ? '#e8edf4' : '#343945' }}>
-          <span aria-hidden="true">✦ </span>AI-generated content
         </div>
       </div>
       <div className="bodymap-actions">
@@ -510,6 +508,7 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
   const { history, evaluations, place } = useVitals();
   const [tab, setTab] = useState<BodyTab>('live');
   const onEarth = place === 'earth';
+  const preview = place === 'lunar' ? 'lunar_surface' : place === 'mars' ? 'mars_transit' : null;
 
   const current = history[history.length - 1];
   const series = useMemo<Record<VitalKey, number[]>>(
@@ -526,9 +525,9 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
   return (
     <div className="page page--body">
       <PageHeader
-        eyebrow={onEarth ? 'Back on Earth · re-adaptation after landing' : 'Personal normal · learned on days 8–21'}
+        eyebrow={onEarth ? 'Back on Earth · re-adaptation after landing' : preview ? 'Preview · what changes in this place' : 'Personal normal · learned on days 8–21'}
         title="Body & Sensors"
-        subtitle={onEarth ? 'Gravity is back: standing blood pressure, heart rate and sleep for the first 14 days.' : 'Ten zones, four live signals. Every reading shows its age.'}
+        subtitle={onEarth ? 'Gravity is back: standing blood pressure, heart rate and sleep for the first 14 days.' : preview ? 'Gravity, signal delay, radiation and who Maia tells when something is off.' : 'Ten zones, four live signals. Every reading shows its age.'}
         aside={
           <SegmentedTabs<BodyTab>
             ariaLabel="Body view"
@@ -549,6 +548,22 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
         .page--body h2 { font-size: 2.25em; }
         .page--body h3 { font-size: 1.755em; }
         .page--body .card__title { font-size: 16.5px; }
+        .place-preview { grid-column: 2 / -1; display: grid; gap: 12px; min-width: 0; }
+        @media (max-width: 1050px) { .place-preview { grid-column: 1 / -1; } }
+        .place-preview__tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        @media (max-width: 760px) { .place-preview__tiles { grid-template-columns: 1fr; } }
+        .place-tile { border-top: 3px solid #b8ccd5; }
+        .place-tile--watch { border-top-color: #e3b51f; }
+        .place-tile__value { font-family: var(--font-mono, monospace); font-size: 22px; font-weight: 600; margin-block: 6px 2px; }
+        .place-tile__value small { font-size: 12px; color: #566878; }
+        .place-tile p { margin: 0; }
+        .place-preview__levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+        @media (max-width: 760px) { .place-preview__levels { grid-template-columns: 1fr; } }
+        .place-preview__levels ol { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; }
+        .place-preview__rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14px; }
+        .place-preview__rules li { display: flex; gap: 10px; align-items: baseline; }
+        .place-rule__pill { border-radius: 999px; padding: 2px 9px; font-size: 11px; font-weight: 700; text-transform: uppercase; flex: none; }
+        .place-rule__pill--yellow { background: #f8e9ad; color: #5f4600; } .place-rule__pill--red { background: #f8d8d6; color: #8a211b; } .place-rule__pill--green { background: #e8f3d6; color: #315314; }
         .earth-recovery { grid-column: 2 / -1; display: grid; gap: 12px; min-width: 0; }
         @media (max-width: 1050px) { .earth-recovery { grid-column: 1 / -1; } }
         .earth-recovery__tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -647,7 +662,8 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
       <div className="body-grid">
         <ProfileBodyMap tab={tab} onSelectTab={setTab} onLogSymptom={onLogSymptom}>
           {tab === 'live' && onEarth && <EarthRecovery />}
-          {tab === 'live' && !onEarth && (
+          {tab === 'live' && preview && <PlacePreview placeId={preview} />}
+          {tab === 'live' && !onEarth && !preview && (
             <>
               {VITALS.map((k) => (
                 <VitalCard

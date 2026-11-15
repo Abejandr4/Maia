@@ -11,6 +11,29 @@ import Icon from '../ui/Icon';
 import StatusPill from '../ui/StatusPill';
 import { GUIDES, suggestedGuide, type EmergencyGuide, type GuideIcon, type GuidePriority } from './emergencyGuides';
 import './emergency.css';
+
+/* ---------- photo of each guide (src/components/Animations/assets/<name>-w.png / -m.png) ---------- */
+const PHOTOS = import.meta.glob('../Animations/assets/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+const PHOTO_NAME: Record<string, string> = {
+  breathing: 'cant-breathe-well', chest_pain: 'chest-pain', allergic_reaction: 'allergic-reaction',
+  bleeding_burn: 'bleeding-burn', head_fainting: 'head-injury-fainting', other: 'other',
+  low_bp: 'low-blood-pressure', dehydration: 'dehydration', nausea: 'nausea', fever: 'fever',
+  eye: 'eye-irritation', dental: 'dental-pain', sprain: 'sprain', rash: 'skin-rash', shock: 'electrical-shock',
+};
+/** Woman or man version of the photos, from the profile of the initial record (same rule as the body map). */
+function photoVariant(): 'w' | 'm' {
+  try {
+    const p = JSON.parse(localStorage.getItem('userProfile') ?? '{}');
+    return p?.sex === 'Male' || (p?.sex === 'Other' && String(p.avatarId).startsWith('male-')) ? 'm' : 'w';
+  } catch {
+    return 'w';
+  }
+}
+function guidePhoto(id: string, variant: 'w' | 'm'): string | undefined {
+  const name = PHOTO_NAME[id];
+  if (!name) return undefined;
+  return PHOTOS[`../Animations/assets/${name}-${variant}.png`] ?? PHOTOS[`../Animations/assets/${name}-${variant === 'w' ? 'm' : 'w'}.png`];
+}
 import { createPortal } from 'react-dom';
 import '../symptom-log/symptomLog.css'; // camera styles: load them here too, don't rely on SymptomLogger
 
@@ -65,7 +88,7 @@ export default function EmergencyScreen({ open, onClose, crew, onSend = simulate
   const { current, evaluations } = useVitals();
   const [step, setStep] = useState<Step>('triage');
   const [guide, setGuide] = useState<EmergencyGuide | null>(null);
-  const [showAll, setShowAll] = useState(false);
+  const [variant] = useState(photoVariant);
   const [startedAt] = useState<string>(() => new Date().toISOString());
   const [done, setDone] = useState<Record<string, string>>({}); // step → time ticked
   const [timeline, setTimeline] = useState<{ at: string; text: string }[]>(() => [
@@ -80,8 +103,10 @@ export default function EmergencyScreen({ open, onClose, crew, onSend = simulate
   const closeRef = useRef<HTMLButtonElement>(null);
 
   const suggestion = useMemo(() => suggestedGuide(evaluations), [evaluations]);
-  const primary = GUIDES.filter((g) => g.primary);
-  const more = GUIDES.filter((g) => !g.primary);
+  // the main guides first, then the rest: all shown as the same cards
+  // "Other" always goes last
+  const ordered = [...GUIDES.filter((g) => g.primary), ...GUIDES.filter((g) => !g.primary)]
+    .sort((a, b) => Number(a.id === 'other') - Number(b.id === 'other'));
 
   const log = (text: string) => setTimeline((t) => [...t, { at: new Date().toISOString(), text }]);
 
@@ -253,39 +278,31 @@ export default function EmergencyScreen({ open, onClose, crew, onSend = simulate
         {step === 'triage' && (
           <>
             <div className="em-grid">
-              {primary.map((g) => (
-                <button
-                  key={g.id}
-                  type="button"
-                  className={`em-card ${suggestion === g.id ? 'is-suggested' : ''}`}
-                  onClick={() => pickGuide(g)}
-                >
-                  <span className="em-card__icon">
-                    <GuideGlyph icon={g.icon} />
-                  </span>
-                  <Icon name="chevron" className="em-card__chev" />
-                  <span className="em-card__text">
-                    <strong>{g.title}</strong>
-                    <span>{g.subtitle}</span>
-                    {suggestion === g.id && <span className="em-card__why">Suggested from your live sensors</span>}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <button type="button" className="em-more-toggle" onClick={() => setShowAll(!showAll)} aria-expanded={showAll}>
-              {showAll ? 'Hide' : 'Show'} all {GUIDES.length} guides
-              <Icon name="chevronDown" size={14} style={{ transform: showAll ? 'rotate(180deg)' : undefined }} />
-            </button>
-            {showAll && (
-              <div className="em-list">
-                {more.map((g) => (
-                  <button key={g.id} type="button" className={`em-list__item ${suggestion === g.id ? 'is-suggested' : ''}`} onClick={() => pickGuide(g)}>
-                    {g.title}
+              {ordered.map((g) => {
+                const photo = guidePhoto(g.id, variant);
+                return (
+                  <button
+                    key={g.id}
+                    type="button"
+                    className={`em-card ${photo ? 'em-card--photo' : ''} ${suggestion === g.id ? 'is-suggested' : ''}`}
+                    style={photo ? { backgroundImage: `url(${photo})` } : undefined}
+                    onClick={() => pickGuide(g)}
+                  >
+                    {!photo && (
+                      <span className="em-card__icon">
+                        <GuideGlyph icon={g.icon} />
+                      </span>
+                    )}
+                    <Icon name="chevron" className="em-card__chev" />
+                    <span className="em-card__text">
+                      <strong>{g.title}</strong>
+                      <span>{g.subtitle}</span>
+                      {suggestion === g.id && <span className="em-card__why">Suggested from your live sensors</span>}
+                    </span>
                   </button>
-                ))}
-              </div>
-            )}
+                );
+              })}
+            </div>
           </>
         )}
 

@@ -20,6 +20,7 @@ import MissionSchedulePage from './pages/Initial record/MissionSchedulePage';
 import MeetMaiaPage from './pages/Initial record/MeetMaiaPage';
 import ContactsPage from './pages/Initial record/ContactsPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
+import { saveDemoSetup } from './utils/demoProfile';
 import EmergencyScreen, {
   type EmergencyReport,
 } from "./components/emergency/EmergencyScreen";
@@ -109,7 +110,17 @@ type SetupStep =
   | 'done';
 
 export default function App() {
+<<<<<<< HEAD
   const [setupStep, setSetupStep] = useState<SetupStep>(() => {
+=======
+  const skipWithDemo = () => {
+  saveDemoSetup();
+  setSetupStep('done');
+};
+
+
+  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
+>>>>>>> skipQuestionnaire
     try {
       return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
     } catch {
@@ -181,7 +192,20 @@ export default function App() {
           onComplete={handleFinishOnboarding}
         />
       )}
+<<<<<<< HEAD
 
+=======
+      {setupStep !== 'done' && (
+        <button type="button" className="demo-skip" onClick={skipWithDemo}>
+          Skip setup · demo profile
+          </button>
+        )}
+        {setupStep !== 'done' && (
+          <button type="button" className="demo-skip" onClick={skipWithDemo}>
+            Skip setup · demo profile
+            </button>
+          )}
+>>>>>>> skipQuestionnaire
       {setupStep === 'done' && <Shell />}
     </VitalsProvider>
   );

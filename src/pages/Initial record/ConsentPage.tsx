@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DEMO_CONSENT } from "../../utils/demoProfile";
 import "../pages.css";
 
 const TOTAL_STEPS = 8;
@@ -44,7 +45,6 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
   const handleContinue = () => {
     if (!canContinue) return;
     try {
-      localStorage.setItem("hasCompletedSetup", "true");
       localStorage.setItem("userConsent", JSON.stringify({ storeLocal, shareTeam }));
     } catch {
       /* storage unavailable */
@@ -59,9 +59,21 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
           <span className="consent__logo">Maia</span>
           <span className="consent__context">Setup &middot; Space Mission</span>
         </div>
-        <span className="consent__step">
-          Step {CURRENT_STEP} of {TOTAL_STEPS}
-        </span>
+        <div className="setup-actions">
+          <button
+          type="button"
+          className="btn btn--secondary btn--small"
+          onClick={() => {
+            setStoreLocal(DEMO_CONSENT.storeLocal);
+            setShareTeam(DEMO_CONSENT.shareTeam);
+          }}
+  >
+    Autofill demo
+  </button>
+  <span className="consent__step">
+    Step {CURRENT_STEP} of {TOTAL_STEPS}
+  </span>
+</div>
       </header>
 
       <div

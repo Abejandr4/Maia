@@ -97,7 +97,6 @@ export default function PlacePreview({ placeId }: { placeId: 'lunar_surface' | '
           </ul>
         </Card>
       )}
-      <p className="small muted" style={{ margin: 0 }}>Source: contexts.csv ({c.source}) · alert_recipients.csv · combined_rules.csv · evidence: {c.evidence_level}</p>
     </div>
   );
 }

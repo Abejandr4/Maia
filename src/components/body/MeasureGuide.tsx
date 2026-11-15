@@ -326,6 +326,8 @@ function VisionTest({ onRecorded, onComplete }: { onRecorded: () => void; onComp
   );
 }
 
+const SHORT_LEVEL: Record<Level, string> = { green: 'In range', yellow: 'Recheck', red: 'Follow up', review: 'Review' };
+
 export function RecordedMeasurements({ earlier = [] }: { earlier?: { label: string; value: string }[] }) {
   const saved = restore<Record<string, Reading>>(STORAGE_KEY, {});
   const attention = restore<number[]>(ATTENTION_KEY, []).at(-1);
@@ -334,24 +336,27 @@ export function RecordedMeasurements({ earlier = [] }: { earlier?: { label: stri
     const { id, name, unit } = measurement;
     const reading = saved[id];
     if (id === 'bp_diastolic') return [];
-    if (id === 'cognition_pvt' && attention !== undefined) return [{ label: name, value: `${attention} ms` }];
+    if (id === 'cognition_pvt' && attention !== undefined) return [{ label: name, value: `${attention} ms`, level: undefined as Level | undefined, at: undefined as string | undefined }];
     if (id === 'vision_acuity' && vision.length === visionStages.length) return [{
       label: name,
       value: visionStages.map(({ eye, test }, index) =>
         `${eye} ${test.toLowerCase()}: ${typeof vision[index] === 'number' ? `level ${vision[index]}` : vision[index]}`).join(' · '),
+      level: undefined, at: undefined,
     }];
     if (!reading) return [];
     const value = id === 'bp_systolic'
       ? `${reading.values.bp_systolic}/${reading.values.bp_diastolic}`
       : String(reading.values[id]);
-    return [{ label: id === 'bp_systolic' ? 'Blood pressure' : name,
-      value: `${value} ${unit} · ${levelLabel[reading.level]} · ${new Date(reading.at).toLocaleString()}` }];
+    return [{ label: id === 'bp_systolic' ? 'Blood pressure' : name, value: `${value} ${unit}`, level: reading.level, at: reading.at }];
   });
-  const entries = [...rows, ...earlier];
+  const entries = [...rows, ...earlier.map((e) => ({ ...e, level: undefined, at: undefined }))];
   if (!entries.length) return <p className="small muted">No recorded measurements yet. Readings saved in Measure will appear here.</p>;
-  return <ul style={{ paddingInlineStart: 20 }}>
-    {entries.map(({ label, value }, index) => <li key={index} style={{ marginBlock: 8 }}>
-      <strong>{label}</strong><div className="small muted">{value}</div>
+  return <ul className="recorded-list">
+    {entries.map(({ label, value, level, at }, index) => <li key={index}>
+      <span className="recorded-list__name">{label}</span>
+      <span className="recorded-list__value">{value}</span>
+      {level ? <span className={`recorded-list__pill recorded-list__pill--${level}`} title={levelLabel[level]}>{SHORT_LEVEL[level]}</span> : <span />}
+      {at && <span className="recorded-list__time">{new Date(at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>}
     </li>)}
   </ul>;
 }
@@ -390,6 +395,18 @@ export default function MeasureGuide() {
   const sceneNames = warning ? [warning, 'AYR'] : [String(Math.min(step + 1, steps.length))];
   const Scene = sceneNames.map((suffix) => illustrations[`../Animations/${prefix}${suffix}${avatar}.tsx`]?.default).find(Boolean);
   const guidance = result?.level === 'red' ? measurement.what_to_do_red : measurement.what_to_do_yellow;
+
+  const [open, setOpen] = useState(true);
+  /** Tap a measurement: open it (and start its guide), or close it if it is already open. */
+  function toggle(index: number) {
+    if (index === selected) { setOpen(!open); return; }
+    choose(index);
+    setOpen(true);
+  }
+  useEffect(() => {
+    if (!open) return;
+    document.getElementById(`measure-row-${measurements[selected]?.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [selected, open]);
 
   function choose(index: number) {
     if (blockedIndex >= 0 && index !== blockedIndex) return;
@@ -443,93 +460,8 @@ export default function MeasureGuide() {
   const reviewCount = checklist.filter((row) => saved[row.id]?.level === 'review').length;
   const greenCount = checklist.filter((row) => saved[row.id]?.level === 'green').length;
 
-  return (
-    <section aria-label="Guided measurements" className="guided-measure">
-      <style>{`
-        .guided-measure { display: grid; gap: 14px; }
-        .guided-measure__group + .guided-measure__group { margin-top: 12px; }
-        .guided-measure__group h3 { font-size: 13px !important; margin: 4px 0 6px; text-transform: uppercase; letter-spacing: .08em; }
-        .guided-measure__picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
-        .measure-card { display: grid; gap: 3px; align-content: start; min-height: 62px; padding: 10px 12px; text-align: left; border: 1px solid #deded9; border-radius: 12px; background: #fff; color: inherit; font: inherit; cursor: pointer; }
-        .measure-card:hover { border-color: #688594; }
-        .measure-card[aria-pressed="true"] { background: #191c20; color: #fff; border-color: #191c20; }
-        .measure-card:disabled { opacity: .45; cursor: not-allowed; }
-        .measure-card__name { font-weight: 650; font-size: 13px; line-height: 1.25; }
-        .measure-card__meta { font-size: 11px; opacity: .75; }
-        .measure-card[data-level="green"] .measure-card__meta { color: #315314; opacity: 1; }
-        .measure-card[data-level="yellow"] .measure-card__meta { color: #8a6400; opacity: 1; }
-        .measure-card[data-level="red"] .measure-card__meta { color: #a3261d; opacity: 1; }
-        .measure-card[aria-pressed="true"] .measure-card__meta { color: #fff !important; }
-        .guided-measure__grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, 1fr); align-items: start; gap: 14px; }
-        .guided-measure__visual { border-radius: 18px; overflow: hidden; background: #142538; height: 340px; display: grid; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
-        .guided-measure__visual > img { width: 100% !important; height: 100% !important; object-fit: contain; background: #eef2f4; }
-        .guided-measure__visual > figure { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
-        .guided-measure__visual > figure > div { min-height: 0 !important; height: 100%; box-sizing: border-box; padding: 4% 6% !important; }
-        .guided-measure__visual > figure > div > img { height: 220px !important; max-height: 100%; }
-        .guided-measure__visual > figure > figcaption { font-size: 13px !important; padding: 9px 14px !important; }
-        .guided-measure__visual > .guided-measure__empty, .guided-measure__visual > div { align-self: center; background: #edf2f3; height: 100%; display: grid; place-content: center; }
-        .guided-measure__empty { text-align: center; padding: 24px; color: #304859; }
-        .guided-measure__panel { border-top: 3px solid #adc5ce; display: grid; gap: 10px; }
-        .guided-measure__panel h2, .guided-measure__panel p { margin: 0; }
-        .guided-measure__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-        .guided-measure__fields { display: grid; gap: 10px; }
-        .guided-measure__fields label { display: grid; gap: 4px; }
-        .guided-measure__fields input { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #b6c3c9; }
-        .guided-measure__status { color: #315314; background: #e8f3d6; border-radius: 10px; padding: 9px 12px; }
-        .guided-measure__status[data-level="yellow"] { color: #5f4600; background: #f8e9ad; }
-        .guided-measure__status[data-level="red"] { color: #81251e; background: #f8d8d6; }
-        .guided-measure__status[data-level="review"] { color: #304859; background: #edf2f3; }
-        @media (max-width: 720px) { .guided-measure__grid { grid-template-columns: 1fr; } }
-      `}</style>
-      <Card title="Measurement checklist" aside={<span>ISS protocol · {checklist.filter((row) => isRecorded(row.id)).length} of {checklist.length} done</span>}>
-        <div role="group" aria-label="Choose a measurement">
-          {GROUPS.map((group) => {
-            const rows = measurements.map((row, index) => ({ row, index }))
-              .filter(({ row }) => row.id !== 'bp_diastolic' && groupOf(row) === group.id);
-            if (rows.length === 0) return null;
-            return (
-              <section key={group.id} className="guided-measure__group">
-                <h3>{group.label} <span className="small muted">· {group.hint}</span></h3>
-                <div className="guided-measure__picker">
-                  {rows.map(({ row, index }) => {
-                    const level = saved[row.id]?.level;
-                    return (
-                      <button key={row.id} type="button" aria-pressed={selected === index} disabled={blockedIndex >= 0 && index !== blockedIndex}
-                        className="measure-card" data-level={level} onClick={() => choose(index)}>
-                        <span className="measure-card__name">{row.id === 'bp_systolic' ? 'Blood pressure' : row.name}</span>
-                        <span className="measure-card__meta">{isRecorded(row.id) ? `✓ ${level ? levelLabel[level] : 'Done'}` : shortFrequency(row)}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-            );
-          })}
-        </div>
-      </Card>
-      {checklistComplete && (
-        <Card title="✓ Measurement checklist complete">
-          <p role="status" className="guided-measure__status" data-level={blockedIndex >= 0 ? 'red' : followUps ? 'yellow' : 'green'}>
-            {blockedIndex >= 0 ? 'All measurements are recorded. A red reading still needs follow-up.'
-              : followUps ? 'You’ve recorded every measurement. Check the flagged readings below.'
-              : 'You’re on track. Every measurement on your checklist is recorded.'}
-          </p>
-          <p className="small muted">{checklist.length} completed · {greenCount} within reference · {followUps} flagged · {reviewCount} for review · Attention and vision checks recorded</p>
-          <details>
-            <summary>View recorded results</summary>
-            <ul>
-              {checklist.map((row) => {
-                const reading = saved[row.id];
-                const name = row.id === 'bp_systolic' ? 'Blood pressure' : row.name;
-                const value = row.id === 'bp_systolic' && reading
-                  ? `${reading.values.bp_systolic}/${reading.values.bp_diastolic} ${row.unit}`
-                  : reading ? `${reading.values[row.id]} ${row.unit}` : 'Check completed';
-                return <li key={row.id}><strong>{name}</strong> · {value}{reading && ` · ${levelLabel[reading.level]}`}</li>;
-              })}
-            </ul>
-          </details>
-        </Card>
-      )}
+  // The guide (picture + steps + entry) opens inside the list, under the chosen measurement.
+  const guide = (
       <div className="guided-measure__grid">
         <div className="guided-measure__visual">
           {id === 'hydration_urine' && !result ? (
@@ -602,6 +534,116 @@ export default function MeasureGuide() {
           )}
         </Card>
       </div>
+  );
+
+  return (
+    <section aria-label="Guided measurements" className="guided-measure">
+      <style>{`
+        .guided-measure { display: grid; gap: 14px; }
+        .measure-acc { list-style: none; margin: 0; padding: 0; border: 1px solid #e6e7e2; border-radius: 14px; overflow: hidden; background: #fff; }
+        .measure-acc li + li { border-top: 1px solid #e6e7e2; }
+        .measure-acc__row { width: 100%; display: grid; grid-template-columns: 1fr auto 28px; align-items: center; gap: 12px; padding: 13px 16px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+        .measure-acc__row:hover:not(:disabled) { background: #f6f7f4; }
+        .measure-acc__row:disabled { opacity: .45; cursor: not-allowed; }
+        .measure-acc li.is-open > .measure-acc__row { background: #f2f5f6; }
+        .measure-acc__name { font-weight: 600; font-size: 15px; }
+        .measure-acc__freq { font-size: 12px; color: #6b7a86; }
+        .measure-acc__pill { border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; background: #eef0ec; color: #3b4650; }
+        .measure-acc__pill--green { background: #e8f3d6; color: #315314; }
+        .measure-acc__pill--yellow { background: #f8e9ad; color: #5f4600; }
+        .measure-acc__pill--red { background: #f8d8d6; color: #8a211b; }
+        .measure-acc__chev { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #deded9; font-size: 16px; line-height: 1; }
+        .measure-acc__body { padding: 4px 14px 16px; background: #f9faf8; }
+        .guided-measure__group + .guided-measure__group { margin-top: 12px; }
+        .guided-measure__group h3 { font-size: 13px !important; margin: 4px 0 6px; text-transform: uppercase; letter-spacing: .08em; }
+        .guided-measure__picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+        .measure-card { display: grid; gap: 3px; align-content: start; min-height: 62px; padding: 10px 12px; text-align: left; border: 1px solid #deded9; border-radius: 12px; background: #fff; color: inherit; font: inherit; cursor: pointer; }
+        .measure-card:hover { border-color: #688594; }
+        .measure-card[aria-pressed="true"] { background: #191c20; color: #fff; border-color: #191c20; }
+        .measure-card:disabled { opacity: .45; cursor: not-allowed; }
+        .measure-card__name { font-weight: 650; font-size: 13px; line-height: 1.25; }
+        .measure-card__meta { font-size: 11px; opacity: .75; }
+        .measure-card[data-level="green"] .measure-card__meta { color: #315314; opacity: 1; }
+        .measure-card[data-level="yellow"] .measure-card__meta { color: #8a6400; opacity: 1; }
+        .measure-card[data-level="red"] .measure-card__meta { color: #a3261d; opacity: 1; }
+        .measure-card[aria-pressed="true"] .measure-card__meta { color: #fff !important; }
+        .guided-measure__grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, 1fr); align-items: start; gap: 14px; }
+        .guided-measure__visual { border-radius: 18px; overflow: hidden; background: #142538; height: 340px; display: grid; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
+        .guided-measure__visual > img { width: 100% !important; height: 100% !important; object-fit: contain; background: #eef2f4; }
+        .guided-measure__visual > figure { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+        .guided-measure__visual > figure > div { min-height: 0 !important; height: 100%; box-sizing: border-box; padding: 4% 6% !important; }
+        .guided-measure__visual > figure > div > img { height: 220px !important; max-height: 100%; }
+        .guided-measure__visual > figure > figcaption { font-size: 13px !important; padding: 9px 14px !important; }
+        .guided-measure__visual > .guided-measure__empty, .guided-measure__visual > div { align-self: center; background: #edf2f3; height: 100%; display: grid; place-content: center; }
+        .guided-measure__empty { text-align: center; padding: 24px; color: #304859; }
+        .guided-measure__panel { border-top: 3px solid #adc5ce; display: grid; gap: 10px; }
+        .guided-measure__panel h2, .guided-measure__panel p { margin: 0; }
+        .guided-measure__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .guided-measure__fields { display: grid; gap: 10px; }
+        .guided-measure__fields label { display: grid; gap: 4px; }
+        .guided-measure__fields input { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #b6c3c9; }
+        .guided-measure__status { color: #315314; background: #e8f3d6; border-radius: 10px; padding: 9px 12px; }
+        .guided-measure__status[data-level="yellow"] { color: #5f4600; background: #f8e9ad; }
+        .guided-measure__status[data-level="red"] { color: #81251e; background: #f8d8d6; }
+        .guided-measure__status[data-level="review"] { color: #304859; background: #edf2f3; }
+        @media (max-width: 720px) { .guided-measure__grid { grid-template-columns: 1fr; } }
+      `}</style>
+      <Card title="Measurement checklist" aside={<span>ISS protocol · {checklist.filter((row) => isRecorded(row.id)).length} of {checklist.length} done</span>}>
+        <div role="group" aria-label="Choose a measurement">
+          {GROUPS.map((group) => {
+            const rows = measurements.map((row, index) => ({ row, index }))
+              .filter(({ row }) => row.id !== 'bp_diastolic' && groupOf(row) === group.id);
+            if (rows.length === 0) return null;
+            return (
+              <section key={group.id} className="guided-measure__group">
+                <h3>{group.label} <span className="small muted">· {group.hint}</span></h3>
+                <ul className="measure-acc">
+                  {rows.map(({ row, index }) => {
+                    const level = saved[row.id]?.level;
+                    const isOpen = open && selected === index;
+                    return (
+                      <li key={row.id} id={`measure-row-${row.id}`} className={isOpen ? 'is-open' : undefined}>
+                        <button type="button" className="measure-acc__row" aria-expanded={isOpen}
+                          disabled={blockedIndex >= 0 && index !== blockedIndex} onClick={() => toggle(index)}>
+                          <span className="measure-acc__name">{row.id === 'bp_systolic' ? 'Blood pressure' : row.name}</span>
+                          {isRecorded(row.id)
+                            ? <span className={`measure-acc__pill measure-acc__pill--${level ?? 'done'}`}>{level ? SHORT_LEVEL[level] : 'Done'}</span>
+                            : <span className="measure-acc__freq">{shortFrequency(row)}</span>}
+                          <span className="measure-acc__chev" aria-hidden="true">{isOpen ? '−' : '+'}</span>
+                        </button>
+                        {isOpen && <div className="measure-acc__body">{guide}</div>}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            );
+          })}
+        </div>
+      </Card>
+      {checklistComplete && (
+        <Card title="✓ Measurement checklist complete">
+          <p role="status" className="guided-measure__status" data-level={blockedIndex >= 0 ? 'red' : followUps ? 'yellow' : 'green'}>
+            {blockedIndex >= 0 ? 'All measurements are recorded. A red reading still needs follow-up.'
+              : followUps ? 'You’ve recorded every measurement. Check the flagged readings below.'
+              : 'You’re on track. Every measurement on your checklist is recorded.'}
+          </p>
+          <p className="small muted">{checklist.length} completed · {greenCount} within reference · {followUps} flagged · {reviewCount} for review · Attention and vision checks recorded</p>
+          <details>
+            <summary>View recorded results</summary>
+            <ul>
+              {checklist.map((row) => {
+                const reading = saved[row.id];
+                const name = row.id === 'bp_systolic' ? 'Blood pressure' : row.name;
+                const value = row.id === 'bp_systolic' && reading
+                  ? `${reading.values.bp_systolic}/${reading.values.bp_diastolic} ${row.unit}`
+                  : reading ? `${reading.values[row.id]} ${row.unit}` : 'Check completed';
+                return <li key={row.id}><strong>{name}</strong> · {value}{reading && ` · ${levelLabel[reading.level]}`}</li>;
+              })}
+            </ul>
+          </details>
+        </Card>
+      )}
     </section>
   );
 }

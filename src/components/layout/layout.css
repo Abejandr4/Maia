@@ -308,3 +308,17 @@
 .topbar__loc-src { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
 .topbar__menu[aria-label='Location'] { min-width: 340px; max-width: min(92vw, 540px); }
 .topbar__brand { padding-left: 14px; }
+
+/* ---------- readable dropdowns (location, alerts): solid panel, above the nav ---------- */
+.topbar { z-index: 5; }
+.topbar__menu { z-index: 60; }
+.app .topbar-wrap .topbar__menu {
+  background-color: rgba(255, 255, 255, 0.97) !important;
+  background-image: none !important;
+  color: #181816;
+}
+.app.theme-dark .topbar-wrap .topbar__menu,
+.eva-shell .topbar-wrap .topbar__menu {
+  background-color: rgba(24, 27, 31, 0.97) !important;
+  color: #f2f4f5;
+}

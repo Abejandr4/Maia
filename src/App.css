@@ -23,12 +23,8 @@
   padding: 24px 24px 72px;
 }
 .app--report {
-  --bg: #81afdc;
-  background-color: var(--bg);
-  background-image:
-    linear-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.14) 1px, transparent 1px);
-  background-size: 40px 40px;
+  /* same light background as Home */
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f8 45%, #ececf0 100%);
 }
 
 /* Fondo claro: blanco con un toque grisáceo hacia abajo */
@@ -42,3 +38,17 @@ body:has(.app--home) { background: #8686e4; }
 @media (max-width: 640px) {
   .app-main { padding: 16px 14px 56px; }
 }
+
+/* ---------- disclaimer at the foot of every screen ---------- */
+.app-disclaimer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px 28px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-3);
+  text-align: center;
+}
+.app-disclaimer b { color: var(--text-2); font-weight: 600; }
+.theme-dark .app-disclaimer, .eva-shell .app-disclaimer { color: #9aa6a8; }
+.theme-dark .app-disclaimer b, .eva-shell .app-disclaimer b { color: #c9d3d4; }

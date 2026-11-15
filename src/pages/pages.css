@@ -996,3 +996,184 @@
     min-height: 0;
   }
 }
+/* ========================================================================== */
+/* Meet Maia (Step 7)                                                         */
+/* ========================================================================== */
+
+.maia__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
+  gap: 56px;
+  align-items: stretch;
+}
+
+.maia__intro {
+  align-self: start;
+}
+
+.maia__intro h1 {
+  margin: 0 0 16px;
+  font-size: 46px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text, #000);
+}
+
+.maia__intro p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--muted, #5f5c58);
+}
+
+.maia__card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  background: var(--surface, #faf9f6);
+}
+
+.maia__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  width: 100%;
+}
+
+/* ----- Espacio para la animacion ----- */
+
+.maia__animation-slot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  border: 1.5px dashed var(--line, #d9d6d1);
+  border-radius: 24px;
+  background: rgba(222, 188, 247, 0.12);
+  overflow: hidden;
+}
+
+.maia__animation-placeholder {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted, #5f5c58);
+}
+
+/* ----- Texto ----- */
+
+.maia__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  max-width: 420px;
+}
+
+.maia__bubble {
+  margin: 0;
+  padding: 18px 24px;
+  border-radius: 20px;
+  background: var(--accent, #debcf7);
+  color: var(--text, #232323);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.maia__paragraph {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--text, #232323);
+}
+
+/* ----- Responsive ----- */
+
+@media (max-width: 900px) {
+  .maia__body {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .maia__intro h1 {
+    font-size: 36px;
+  }
+
+  .maia__content {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .maia__text {
+    max-width: none;
+  }
+}
+/* ========================================================================== */
+/* Contacts (Step 8)                                                          */
+/* ========================================================================== */
+
+.contacts__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
+  gap: 56px;
+  align-items: stretch;
+}
+
+.contacts__intro {
+  align-self: start;
+}
+
+.contacts__intro h1 {
+  margin: 0 0 16px;
+  font-size: 46px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text, #000);
+}
+
+.contacts__intro p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--muted, #5f5c58);
+}
+
+.contacts__card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+  background: var(--surface, #faf9f6);
+}
+
+.contacts__section .card__label {
+  margin-bottom: 12px;
+}
+
+.contacts__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .contacts__body {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .contacts__intro h1 {
+    font-size: 36px;
+  }
+
+  .contacts__row {
+    grid-template-columns: 1fr;
+  }
+}

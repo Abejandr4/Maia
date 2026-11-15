@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import type { Range, VitalEvaluation, VitalKey } from '../utils/types';
 import { GENERAL_REF, PERSONAL_NORMAL } from '../utils/baselines';
 import { AvatarPortrait } from './Initial record/AboutyouPage';
@@ -7,6 +7,7 @@ import { useVitals } from '../utils/VitalsContext';
 import PageHeader from '../components/ui/PageHeader';
 import SegmentedTabs from '../components/ui/SegmentedTabs';
 import Card from '../components/ui/Card';
+import Sparkline from '../components/ui/Sparkline';
 import VitalCard from '../components/body/VitalCard';
 import SensorConsole from '../components/body/SensorConsole';
 import DeviationTable from '../components/body/DeviationTable';
@@ -76,7 +77,12 @@ function readDailyLog(date: string): DailyLog {
   return { date, readings: {} };
 }
 
-function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
+function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
+  tab: BodyTab;
+  onSelectTab: (tab: BodyTab) => void;
+  onLogSymptom: () => void;
+  children: ReactNode;
+}) {
   const [profile] = useState(readProfile);
   const [orbit, setOrbit] = useState(false);
   const [zoneId, setZoneId] = useState<string>('heart');
@@ -89,6 +95,11 @@ function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
   const readings = dailyLog.date === today ? dailyLog.readings : {};
   const selected = zones.find((zone) => zone.id === zoneId);
   const measurement = zones.find((zone) => zone.id === measureId) ?? zones[3];
+
+  function openAnalysis(id: string) {
+    setZoneId(id);
+    onSelectTab('analysis');
+  }
 
   function chooseMeasurement(id: string) {
     setMeasureId(id);
@@ -109,7 +120,7 @@ function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
     try {
       localStorage.setItem('maia-avatar-measurements', JSON.stringify(next));
       setDailyLog(next);
-      setZoneId(measureId);
+      openAnalysis(measureId);
       setFeedback('Reading saved on this device.');
     } catch {
       setFeedback('This browser could not save the reading.');
@@ -117,6 +128,7 @@ function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
   }
 
   return (
+    <>
     <Card className="body-grid__map" title="Body map · 10 zones" aside={<span>Tap a zone</span>}>
       <SegmentedTabs<'earth' | 'orbit'>
         ariaLabel="Body map environment"
@@ -143,7 +155,7 @@ function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
                 aria-label={`Zone ${index + 1}: ${zone.label}`}
                 aria-pressed={chosen}
                 title={zone.label}
-                onClick={() => setZoneId(zone.id)}
+                onClick={() => openAnalysis(zone.id)}
                 style={{ position: 'absolute', left: x + '%', top: y + '%', transform: 'translate(-50%, -50%)', width: 26, height: 26, padding: 0, border: '2px solid ' + color, borderRadius: '50%', background: chosen ? '#dcf4a4' : '#fff', color: '#1c252a', fontWeight: 700, zIndex: chosen ? 1 : undefined }}
               >
                 {index + 1}
@@ -154,27 +166,8 @@ function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
         <button type="button" className="btn btn--secondary" onClick={openMeasurements}>Daily measurements · {Object.keys(readings).length} of 10</button>
-        {orbit && <button type="button" className="btn btn--secondary" aria-pressed={zoneId === 'eva'} onClick={() => setZoneId('eva')}>Suit life support</button>}
+        {orbit && <button type="button" className="btn btn--secondary" aria-pressed={zoneId === 'eva'} onClick={() => openAnalysis('eva')}>Suit life support</button>}
       </div>
-      {selected && (
-        <section className="zone-detail" aria-live="polite">
-          <strong>{selected.label}</strong>
-          <p className="zone-detail__reading mono">{selected.value} {selected.unit}</p>
-          <p className="small muted">Demo reading · {selected.measure} · {selected.trend}</p>
-          {readings[selected.id] && <p className="small">My reading · {readings[selected.id].value} · {readings[selected.id].time}</p>}
-          <p className="small"><strong>Sensor or record:</strong> {selected.sensor}</p>
-          <p className="small">{orbit ? selected.space : selected.earth}</p>
-          <p className="small muted">{selected.action}</p>
-          <a className="small" href={selected.source} target="_blank" rel="noreferrer">View source</a>
-        </section>
-      )}
-      {orbit && zoneId === 'eva' && (
-        <section className="zone-detail" aria-live="polite">
-          <strong>Suit life support</strong>
-          <p className="zone-detail__reading mono">78% oxygen reserve</p>
-          <p className="small muted">Simulated suit telemetry · Oxygen, pressure, and carbon dioxide are tracked separately.</p>
-        </section>
-      )}
       <button type="button" className="btn btn--secondary" onClick={onLogSymptom}>Log a symptom</button>
       <dialog ref={dialog} aria-labelledby="avatar-measure-title" style={{ padding: 18, borderRadius: 12, border: '1px solid #ddd', maxWidth: 'min(92vw, 460px)' }}>
         <form onSubmit={saveReading} style={{ display: 'grid', gap: 10 }}>
@@ -192,6 +185,44 @@ function ProfileBodyMap({ onLogSymptom }: { onLogSymptom: () => void }) {
         </form>
       </dialog>
     </Card>
+    {tab === 'analysis' && (
+      <div className="profile-analysis" style={{ display: 'grid', gap: 14, minWidth: 0 }}>
+        <Card title={selected?.label ?? 'Suit life support'} aside={<span>{orbit ? 'Orbit' : 'Earth'}</span>}>
+          {selected ? (
+            <section className="zone-detail" aria-live="polite">
+              <p className="small muted">{selected.measure}</p>
+              <p className="zone-detail__reading mono">{selected.value} {selected.unit}</p>
+              <p className="small muted">{selected.value === 'Not measured' ? 'No reading available' : 'Demo reading · T+ 04:12'} · {selected.trend}</p>
+              {selected.id === 'heart' && (
+                <figure style={{ margin: '8px 0' }} aria-label="Seven simulated days of heart rate">
+                  <Sparkline values={[64, 65, 64, 66, 65, 67, 68]} height={44} band={{ min: 64, max: 64 }} />
+                  <figcaption className="small muted">Last 7 simulated days · Baseline 64 bpm</figcaption>
+                </figure>
+              )}
+              {readings[selected.id] && <p className="small">My reading · {readings[selected.id].value} · {readings[selected.id].time}</p>}
+              <p className="small"><strong>Sensor or record:</strong> {selected.sensor}</p>
+              <p className="small"><strong>What to observe:</strong> {selected.action}</p>
+              <p className="small"><strong>{orbit ? 'Why it matters in orbit' : 'Why it matters on Earth'}:</strong> {orbit ? selected.space : selected.earth}</p>
+              <a className="small" href={selected.source} target="_blank" rel="noreferrer">View source ↗</a>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
+                <button type="button" className="btn btn--secondary" onClick={openMeasurements}>Record this measurement</button>
+                <button type="button" className="btn btn--secondary" onClick={() => onSelectTab('symptoms')}>View symptoms</button>
+              </div>
+            </section>
+          ) : (
+            <section className="zone-detail" aria-live="polite">
+              <p className="zone-detail__reading mono">78% oxygen reserve</p>
+              <p className="small muted">Simulated suit telemetry · Oxygen, pressure, and carbon dioxide are tracked separately.</p>
+              <a className="small" href="https://www.nasa.gov/centers-and-facilities/johnson/spacewalk-spacesuit-basics/" target="_blank" rel="noreferrer">View source ↗</a>
+            </section>
+          )}
+        </Card>
+        {children}
+      </div>
+    )}
+    {tab === 'live' && children}
+    {(tab === 'symptoms' || tab === 'measure') && <div className="profile-analysis" style={{ minWidth: 0 }}>{children}</div>}
+    </>
   );
 }
 
@@ -232,31 +263,35 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
         }
       />
 
-      {tab === 'live' && (
-        <div className="body-grid">
-          <ProfileBodyMap onLogSymptom={onLogSymptom} />
-
-          {VITALS.map((k) => (
-            <VitalCard
-              key={k}
-              evaluation={byKey[k]}
-              values={series[k]}
-              personal={RANGES[k].personal}
-              general={RANGES[k].general}
-              digits={RANGES[k].digits}
-              sampleAt={current.t}
-            />
-          ))}
-
-          <div className="body-grid__console">
-            <SensorConsole />
-          </div>
-        </div>
-      )}
-
-      {tab === 'analysis' && <DeviationTable />}
-      {tab === 'symptoms' && <SymptomZones onLogSymptom={onLogSymptom} />}
-      {tab === 'measure' && <MeasureGuide />}
+      <style>{`
+        .page--body .profile-analysis { grid-column: 2 / -1; }
+        @media (max-width: 1050px) {
+          .page--body .profile-analysis { grid-column: 1 / -1; }
+        }
+      `}</style>
+      <div className="body-grid">
+        <ProfileBodyMap tab={tab} onSelectTab={setTab} onLogSymptom={onLogSymptom}>
+          {tab === 'live' && (
+            <>
+              {VITALS.map((k) => (
+                <VitalCard
+                  key={k}
+                  evaluation={byKey[k]}
+                  values={series[k]}
+                  personal={RANGES[k].personal}
+                  general={RANGES[k].general}
+                  digits={RANGES[k].digits}
+                  sampleAt={current.t}
+                />
+              ))}
+              <div className="body-grid__console"><SensorConsole /></div>
+            </>
+          )}
+          {tab === 'analysis' && <DeviationTable />}
+          {tab === 'symptoms' && <SymptomZones onLogSymptom={onLogSymptom} />}
+          {tab === 'measure' && <MeasureGuide />}
+        </ProfileBodyMap>
+      </div>
     </div>
   );
 }

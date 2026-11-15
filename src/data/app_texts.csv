@@ -1,0 +1,41 @@
+﻿id,screen,text,source,evidence_level
+tagline,all,"Supports decisions, does not diagnose.",S48,demo
+disclaimer,setup,"Maia helps you measure, understand and act. It does not replace your crew medical officer or flight surgeon.",S48,demo
+synthetic_notice,home,"Demo data: the readings shown are synthetic, not from real astronauts.",S48,demo
+label_normal,result,Normal,S02,demo (green is a Spica convention)
+label_caution,result,Caution,S02,consensus (yellow)
+label_warning,result,Warning,S02,consensus (red)
+label_advisory,result,Advisory,S02,consensus (blue)
+recheck_prompt,result,Re-check in {minutes} minutes. One reading alone is not a reason to worry.,S48,demo
+vs_normal,result,Compared with your normal: {delta},S48,demo
+stale,result,Old reading · {days} days,S02,consensus (mark stale data)
+no_signal_band,emergency,No signal. You can do every step. Maia saves a report to send later.,S48,demo
+comm_iss,status,Connected / short loss of signal,S02,demo
+comm_eva,status,Voice loop with crew inside + Mission Control,S02,demo
+comm_moon,status,Delay ~1–3 s round trip,S02,demo
+comm_mars,status,Messages arrive in {minutes} min – sent when possible,"S12; S02",estimate
+comm_blackout,status,No signal – Maia works offline,S12,estimate
+call_emergency,emergency,Tell your crew medical officer now.,S48,consensus (911 in Mexico)
+oximeter_note,measure,"If you feel short of breath, trust how you feel even if the number looks normal.",S48 (FDA accuracy note),consensus
+radiation_explain,radiation,Radiation adds up over your career. NASA's limit is 600 mSv. About 30% of ISS radiation is neutrons.,"S04 [V1 4030]; S18",consensus
+solar_alert,radiation,Solar storm alert. Stop what you are doing and follow the guide.,S33,"consensus (alert levels); demo (text)"
+maia_rule,spica,Maia comments on your habits. It never comments on your health values.,S48,demo
+auto_alert_sent,alerts,Your medical team has been told. You don't have to do anything.,S48,demo
+low_reading,result,Lower than usual. This can be normal for you. Tell us if you feel dizzy or faint.,S50,consensus
+triage_question,emergency,What do you see?,S69,demo
+card_do_now,emergency,Do now,S68,demo (card layout)
+card_watch,emergency,Watch,S68,demo
+card_if_worse,emergency,If it gets worse,S68,demo
+incident_timeline,emergency,Incident timeline – recorded automatically. It will be sent with the next downlink.,"S70; S72",demo
+learning_normal,analysis,Learning your normal – day {d} of 14.,S56,demo
+band_label,analysis,Your normal (personal band),S56,demo
+ref_label,analysis,Reference limit,"S27; S02",demo
+marked_change,analysis,Outside your normal on {n} of the last 6 days.,S57,demo
+missing_label,analysis,Missing data,S02,consensus (mark quality)
+report_intro,reports,"Dear flight surgeon, here are the changes Maia found since the last report, ordered by priority.",S48,demo
+report_size,reports,Report size: {kb} KB · sends with the next downlink.,S12,demo
+astronaut_note,reports,Add a note for your flight surgeon (optional).,S48,demo
+night_check,routine,Night check: any symptoms today?,S48,demo
+fatigue_hours,routine,Fatigue hours – avoid critical tasks if you can.,S04 [V1 6001] (team-cited),"consensus (circadian low); demo"
+console_title,body,Simulation console – values are simulated for the demo.,S48,demo
+decision_support,all,"Maia supports decisions; it does not diagnose.",S48,demo

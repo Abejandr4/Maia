@@ -1,0 +1,10 @@
+﻿id,condition_1,condition_2,condition_3,result_color,message,locations,source,evidence_level
+air_quality,cabin_co2 1-h ≥ 3 mmHg,headache reported,,yellow,Possible air-quality effect: move to a ventilated area and report it.,iss|lunar_surface|mars_transit,S05,"estimate (headache data); demo"
+breathing_pair,spo2 yellow or red,respiratory_rate yellow or red,,red,Breathing signs together: open the guide.,all,S48,demo
+heart_pair,bp yellow or red,heart_rate yellow or red,,red,"Heart signs together: rest, re-check and open the guide.",all,S48,demo
+mars_escalation,any yellow,a yellow in a related zone,,red,Help is far away: follow the red-level guide and tell your crew medical officer.,mars_transit,"S12; S48",demo
+eva_workload,heart_rate > 120 bpm,suit_co2 > 3 mmHg,,red,"Slow down, breathe steadily and tell the crew inside.",spacewalk,"S03 [V2 11011]; S08","estimate; demo"
+co2_congestion,cabin_co2 7-day mean ≥ 2.0 mmHg,congestion or headache logged,,yellow,Possible CO₂ effect: report cabin CO₂ and log symptoms.,iss|lunar_surface|mars_transit,"S63; S64",estimate
+schedule_shift,marked change in heart_rate or sleep,schedule shift within ±1 day,,advisory,"Change overlaps a schedule shift; may be related.",all space,S48,demo
+solar_overlap,DONKI SEP event within ±1 day,nausea or fatigue logged,,advisory,"Symptoms overlap a solar event; check dosimeter.",all space,"S34; S33",demo
+eva_day,EVA on this day,heart_rate or temperature above band,,advisory,"Expected on EVA days; shown, not counted as a marked change.",spacewalk|iss,S48,demo

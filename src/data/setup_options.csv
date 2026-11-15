@@ -1,0 +1,38 @@
+﻿field,option,edition,source,evidence_level
+location,On the ISS,space,"S06; S12","consensus (locations); demo"
+location,Spacewalk (EVA),space,"S06; S12","consensus (locations); demo"
+location,Back on Earth,space,"S06; S12","consensus (locations); demo"
+location,Lunar Surface (preview),space,"S06; S12","consensus (locations); demo"
+location,Mars Transit (preview),space,"S06; S12","consensus (locations); demo"
+crew_role,Commander,space,"S04 [V1 3006] (CMO, team-cited)",demo
+crew_role,Pilot,space,"S04 [V1 3006] (CMO, team-cited)",demo
+crew_role,Mission specialist,space,"S04 [V1 3006] (CMO, team-cited)",demo
+crew_role,Flight engineer,space,"S04 [V1 3006] (CMO, team-cited)",demo
+crew_role,Crew medical officer,space,"S04 [V1 3006] (CMO, team-cited)",demo
+sex_for_ranges,Female,space,S44,consensus (QTc limits differ)
+sex_for_ranges,Male,space,S44,consensus (QTc limits differ)
+allergies,None,space,S48,demo
+allergies,Food,space,S48,demo
+allergies,Medicine,space,S48,demo
+allergies,Insect stings,space,S48,demo
+allergies,Latex,space,S48,demo
+allergies,Other,space,S48,demo
+epinephrine_device,EpiPen,space,"S22; S23; S24; S25",consensus
+epinephrine_device,Teva/Viatris generic,space,"S22; S23; S24; S25",consensus
+epinephrine_device,Auvi-Q,space,"S22; S23; S24; S25",consensus
+epinephrine_device,Amneal,space,"S22; S23; S24; S25",consensus
+epinephrine_device,neffy nasal spray,space,"S22; S23; S24; S25",consensus
+epinephrine_device,Not sure,space,"S22; S23; S24; S25",consensus
+text_size,Normal,space,S02,"consensus (legibility); demo (options)"
+text_size,Large,space,S02,"consensus (legibility); demo (options)"
+text_size,Extra large,space,S02,"consensus (legibility); demo (options)"
+language,English,space,S48,demo
+language,Español (future),space,S48,demo
+spoken_alerts,On,space,"S02; S73",demo
+spoken_alerts,Off (red alerts always speak),space,"S02; S73",demo
+voice_commands,On,space,"S02; S73",demo
+voice_commands,Off,space,"S02; S73",demo
+voiceover_labels,On,space,"S02; S73",demo
+voiceover_labels,Off,space,"S02; S73",demo
+eva_camera,On,space,"S02; S73",demo
+eva_camera,Off,space,"S02; S73",demo

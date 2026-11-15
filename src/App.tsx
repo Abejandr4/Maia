@@ -13,6 +13,7 @@ import ReportPage from "./pages/ReportPage";
 import ConsentPage from './pages/Initial record/ConsentPage';
 import AboutYouPage from './pages/Initial record/AboutyouPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
+import { saveDemoSetup } from './utils/demoProfile';
 import EmergencyScreen, {
   type EmergencyReport,
 } from "./components/emergency/EmergencyScreen";
@@ -88,6 +89,12 @@ function Shell() {
 }
 
 export default function App() {
+  const skipWithDemo = () => {
+  saveDemoSetup();
+  setSetupStep('done');
+};
+
+
   const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
     try {
       return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
@@ -116,6 +123,16 @@ export default function App() {
           onComplete={handleFinishOnboarding}
         />
       )}
+      {setupStep !== 'done' && (
+        <button type="button" className="demo-skip" onClick={skipWithDemo}>
+          Skip setup · demo profile
+          </button>
+        )}
+        {setupStep !== 'done' && (
+          <button type="button" className="demo-skip" onClick={skipWithDemo}>
+            Skip setup · demo profile
+            </button>
+          )}
       {setupStep === 'done' && <Shell />}
     </VitalsProvider>
   );

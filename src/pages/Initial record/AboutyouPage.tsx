@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../pages.css";
 
 /* -------------------------------------------------------------------------- */
@@ -6,7 +6,7 @@ import "../pages.css";
 /* -------------------------------------------------------------------------- */
 
 type Sex = "Female" | "Male" | "Other";
-type SexCategory = "female" | "male" | "neutral";
+type SexCategory = "female" | "male";
 
 interface AvatarOption {
   /** Identificador estable. Es el valor que se guarda en localStorage. */
@@ -42,65 +42,71 @@ interface AboutYouPageProps {
   onComplete: () => void;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Placeholders SVG temporales                                                */
-/* Se generan en linea para que la pantalla funcione sin assets. Una vez que  */
-/* existan los archivos reales, basta con reemplazar el valor de `src` en     */
-/* AVATAR_OPTIONS y se puede borrar esta funcion.                             */
-/* -------------------------------------------------------------------------- */
-
-function placeholder(hair: string): string {
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">` +
-    `<path d="M16 100 Q16 68 50 68 Q84 68 84 100Z" fill="#3b3b3b"/>` +
-    `<circle cx="50" cy="42" r="17" fill="#4a4a4a"/>` +
-    `<g fill="#1f1f1f">${hair}</g>` +
-    `</svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
-
-const HAIR_SHORT = `<path d="M32 40 Q32 21 50 21 Q68 21 68 40 Q60 30 50 30 Q40 30 32 40Z"/>`;
-const HAIR_LONG = `<path d="M31 46 Q27 18 50 18 Q73 18 69 46 L69 66 L61 66 L61 40 Q50 31 39 40 L39 66 L31 66Z"/>`;
-const HAIR_BUN = `<path d="M32 40 Q32 21 50 21 Q68 21 68 40 Q60 30 50 30 Q40 30 32 40Z"/><circle cx="50" cy="15" r="7"/>`;
-const HAIR_CROP = `<path d="M34 36 Q36 24 50 24 Q64 24 66 36 Q50 30 34 36Z"/>`;
-const HAIR_CURLY = `<circle cx="36" cy="34" r="8"/><circle cx="50" cy="28" r="9"/><circle cx="64" cy="34" r="8"/>`;
-const HAIR_NONE = ``;
-
-/* -------------------------------------------------------------------------- */
-/* CONFIGURACION DE AVATARES                                                  */
-/*                                                                            */
-/* PARA LA COMPANERA DEL EQUIPO:                                              */
-/*  - Reemplaza cada `src` por la ruta de tu imagen o SVG real, por ejemplo   */
-/*    src: "/avatars/female-1.svg" (archivos dentro de /public/avatars/).     */
-/*  - Usa fondos transparentes: el color de fondo circular lo pone el estilo  */
-/*    elegido por el usuario (AVATAR_STYLES).                                 */
-/*  - Puedes agregar o quitar avatares libremente. Mantén `id` unico y        */
-/*    estable, porque se guarda en localStorage.                              */
-/*  - sexCategory controla cuando aparece cada avatar:                        */
-/*      "female"  -> Female                                                   */
-/*      "male"    -> Male                                                     */
-/*      "neutral" -> Female, Male y Other                                     */
-/*    Si el sexo es Other se muestran todos.                                  */
-/* -------------------------------------------------------------------------- */
 
 const AVATAR_OPTIONS: AvatarOption[] = [
-  { id: "female-1", label: "Female 1", sexCategory: "female", src: placeholder(HAIR_LONG) },
-  { id: "female-2", label: "Female 2", sexCategory: "female", src: placeholder(HAIR_BUN) },
-  { id: "female-3", label: "Female 3", sexCategory: "female", src: placeholder(HAIR_CURLY) },
-  { id: "male-1", label: "Male 1", sexCategory: "male", src: placeholder(HAIR_SHORT) },
-  { id: "male-2", label: "Male 2", sexCategory: "male", src: placeholder(HAIR_CROP) },
-  { id: "male-3", label: "Male 3", sexCategory: "male", src: placeholder(HAIR_NONE) },
-  { id: "neutral-1", label: "Neutral 1", sexCategory: "neutral", src: placeholder(HAIR_CROP) },
-  { id: "neutral-2", label: "Neutral 2", sexCategory: "neutral", src: placeholder(HAIR_CURLY) },
+  { id: "female-1", label: "Female avatar", sexCategory: "female", src: import.meta.env.BASE_URL + "avatars/avatar-mujer.png" },
+  { id: "male-1", label: "Male avatar", sexCategory: "male", src: import.meta.env.BASE_URL + "avatars/avatar-hombre.png" },
 ];
 
-/* Estilos de fondo circular. Agrega o cambia colores aqui. */
 const AVATAR_STYLES: AvatarStyle[] = [
-  { id: "lilac", label: "Lilac", color: "#debcf7" },
-  { id: "space-blue", label: "Space blue", color: "#8fa3e8" },
-  { id: "mint", label: "Mint", color: "#bfe8d4" },
-  { id: "amber", label: "Amber", color: "#f5d58a" },
+  { id: "light", label: "Light", color: "#f9cca9" },
+  { id: "medium", label: "Medium", color: "#e19760" },
+  { id: "dark", label: "Dark", color: "#935638" },
+  { id: "deep", label: "Deep", color: "#64392b" },
 ];
+
+export function AvatarPortrait({ avatarId, tone, headOnly = false }: {
+  avatarId: string;
+  tone?: string;
+  headOnly?: boolean;
+}) {
+  const avatar = AVATAR_OPTIONS.find((entry) => entry.id === avatarId) ?? AVATAR_OPTIONS[0];
+  const target = AVATAR_STYLES.find((entry) => entry.id === tone)?.color;
+  const [tinted, setTinted] = useState<{ source: string; tone: string; url: string }>();
+  useEffect(() => {
+    if (!target || target === "#e19760") return;
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 768;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      if (!context) return;
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const frame = context.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = frame.data;
+      const reference = [225, 151, 96];
+      const ratio = reference.map((value, channel) => Number.parseInt(target.slice(1 + channel * 2, 3 + channel * 2), 16) / value);
+      const clamp = (value: number) => Math.max(0, Math.min(1, value));
+      for (let i = 0; i < pixels.length; i += 4) {
+        const [r, g, b] = [pixels[i], pixels[i + 1], pixels[i + 2]];
+        if (!pixels[i + 3] || i / pixels.length > .96 || g <= b || r <= g) continue;
+        const hue = (g - b) / (r - b);
+        const weight = clamp((hue - .32) / .12) * clamp((.83 - hue) / .12) *
+          clamp((g - 62) / 31) * clamp((r - b - 12) / 21);
+        for (let channel = 0; channel < 3; channel++) {
+          pixels[i + channel] *= 1 + (ratio[channel] - 1) * weight;
+        }
+      }
+      context.putImageData(frame, 0, 0);
+      setTinted({ source: avatar.src, tone: target, url: canvas.toDataURL() });
+    };
+    image.src = avatar.src;
+    return () => { image.onload = null; };
+  }, [avatar.src, target]);
+  const matchesTone = tinted && tinted.source === avatar.src && tinted.tone === target;
+  return (
+    <img
+      src={matchesTone ? tinted.url : avatar.src}
+      alt={avatar.label}
+      width={512}
+      height={768}
+      style={headOnly
+        ? { display: "block", width: "190%", height: "auto", maxWidth: "none", marginLeft: "-39%" }
+        : { display: "block", width: "100%", height: "auto" }}
+    />
+  );
+}
 
 /* -------------------------------------------------------------------------- */
 /* Constantes y utilidades                                                    */
@@ -120,7 +126,7 @@ function getAvatarsForSex(sex: Sex): AvatarOption[] {
   if (sex === "Other") return AVATAR_OPTIONS;
   const category: SexCategory = sex === "Female" ? "female" : "male";
   return AVATAR_OPTIONS.filter(
-    (a) => a.sexCategory === category || a.sexCategory === "neutral"
+    (a) => a.sexCategory === category
   );
 }
 
@@ -183,7 +189,7 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
   const [avatarStyleId, setAvatarStyleId] = useState(
     AVATAR_STYLES.some((s) => s.id === saved.avatarStyle)
       ? (saved.avatarStyle as string)
-      : AVATAR_STYLES[0].id
+      : "medium"
   );
 
   const availableAvatars = useMemo(() => getAvatarsForSex(sex), [sex]);
@@ -277,14 +283,15 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
             <div className="avatar-picker">
               <div
                 className="avatar-picker__preview"
-                style={{ backgroundColor: currentStyle.color }}
+                style={{ backgroundColor: "var(--surface, #faf9f6)" }}
               >
-                <img src={currentAvatar.src} alt={currentAvatar.label} />
+                <AvatarPortrait avatarId={currentAvatar.id} tone={currentStyle.id} headOnly />
               </div>
 
               <div className="avatar-picker__controls">
                 <div
                   className="avatar-picker__gallery"
+                  hidden={sex !== "Other"}
                   role="group"
                   aria-label="Choose avatar"
                 >
@@ -304,7 +311,7 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
                       style={{ backgroundColor: currentStyle.color }}
                       onClick={() => setAvatarId(a.id)}
                     >
-                      <img src={a.src} alt="" />
+                      <AvatarPortrait avatarId={a.id} headOnly />
                     </button>
                   ))}
                 </div>
@@ -312,10 +319,10 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
                 <div
                   className="avatar-picker__styles"
                   role="group"
-                  aria-label="Avatar style"
+                  aria-label="Skin tone"
                 >
-                  <span className="avatar-picker__caption">Avatar style</span>
-                  <div className="avatar-picker__swatches">
+                  <span className="avatar-picker__caption">Skin tone</span>
+                  <div className="avatar-picker__swatches" style={{ display: "flex", gap: 6, marginBlock: 5 }}>
                     {AVATAR_STYLES.map((s) => (
                       <button
                         key={s.id}
@@ -329,7 +336,7 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
                             ? " avatar-picker__swatch--selected"
                             : "")
                         }
-                        style={{ backgroundColor: s.color }}
+                        style={{ backgroundColor: s.color, width: 26, height: 26, padding: 0, borderRadius: "50%", border: s.id === currentStyle.id ? "2px solid currentColor" : "1px solid #777" }}
                         onClick={() => setAvatarStyleId(s.id)}
                       />
                     ))}

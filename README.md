@@ -8,6 +8,8 @@ Maia helps astronauts check and act on their own health during long missions. It
 
 Maia **supports** decisions. It does not diagnose or replace the crew medical officer or flight surgeon.
 
+For more info, look at the report on main/ MaiaReporte.pdf
+
 ---
 
 ## Features

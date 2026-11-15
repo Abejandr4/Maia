@@ -12,6 +12,7 @@ import EnvironmentPage from "./pages/EnvironmentPage";
 import ReportPage from "./pages/ReportPage";
 import ConsentPage from './pages/Initial record/ConsentPage';
 import AboutYouPage from './pages/Initial record/AboutyouPage';
+import MedicalHistoryPage from './pages/Initial record/MedicalHistoryPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
 import EmergencyScreen, {
   type EmergencyReport,
@@ -88,7 +89,7 @@ function Shell() {
 }
 
 export default function App() {
-  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
+  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'medicalHistory' | 'done'>(() => {
     try {
       return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
     } catch {
@@ -113,6 +114,13 @@ export default function App() {
       {setupStep === 'aboutYou' && (
         <AboutYouPage
           onBack={() => setSetupStep('consent')}
+          onComplete={() => setSetupStep('medicalHistory')}
+        />
+      )}
+      {setupStep === 'medicalHistory' && (
+        <MedicalHistoryPage
+          onBack={() => setSetupStep('aboutYou')}
+          onSkip={handleFinishOnboarding}
           onComplete={handleFinishOnboarding}
         />
       )}

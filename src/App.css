@@ -52,3 +52,19 @@ body:has(.app--home) { background: #8686e4; }
 .app-disclaimer b { color: var(--text-2); font-weight: 600; }
 .theme-dark .app-disclaimer, .eva-shell .app-disclaimer { color: #9aa6a8; }
 .theme-dark .app-disclaimer b, .eva-shell .app-disclaimer b { color: #c9d3d4; }
+
+/* ---------- solid buttons: guided measurements + "Back to astronaut" ---------- */
+.app .guided-measure .btn,
+.app .maia-console .btn {
+  background: #181816 !important; background-image: none !important; color: #ffffff !important;
+  border: 1px solid #181816 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  opacity: 1 !important; font-weight: 600; border-radius: 999px !important;
+  padding: 10px 20px !important; min-width: 0 !important; box-shadow: none !important;
+}
+.app .guided-measure .btn:hover:not(:disabled),
+.app .maia-console .btn:hover { background: #2c2c29 !important; }
+.app .guided-measure .btn--secondary {
+  background: #ffffff !important; color: #181816 !important; border-color: #d9d9df !important;
+}
+.app .guided-measure .btn--secondary:hover:not(:disabled) { background: #f1f1f4 !important; }
+.app .guided-measure .btn:disabled { opacity: .4 !important; }

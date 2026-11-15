@@ -182,3 +182,26 @@
     border-right-color: var(--border);
   }
 }
+
+.app {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+.app-main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px 24px 72px;
+}
+.app--report {
+  --bg: #f3f6f9;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+@media (max-width: 640px) {
+  .app-main { padding: 16px 14px 56px; }
+}

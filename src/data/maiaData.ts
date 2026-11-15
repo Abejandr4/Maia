@@ -16,6 +16,8 @@ import routineJson from './generated/maia_routine.json'
 import contextsJson from './generated/maia_contexts.json'
 import bodyZonesJson from './generated/maia_body_zones.json'
 import symptomsJson from './generated/maia_symptoms.json'
+import spacewalkJson from './generated/maia_spacewalk.json'
+import earthJson from './generated/maia_earth.json'
 
 // ---------- types ----------
 export type Side = '' | 'high' | 'low' | 'missing' | 'eva_shown'
@@ -179,3 +181,47 @@ export function sourceLinks(ids: string): { id: string; reference: string; link:
 
 /** Label every number that is not REAL, as the guide requires. */
 export const SAMPLE_LABEL = 'sample'
+
+/* ---------- spacewalk and back on Earth (step4b, synthetic_data rows "tomas" and "iris") ---------- */
+export interface LimitRow {
+  measurement_id: string
+  ref_green_min: number | null; ref_green_max: number | null
+  ref_red_below: number | null; ref_red_above: number | null
+  notes: string | null; source: string
+}
+export interface PlaceText { description: string; comm_policy: string; source: string }
+export interface EvaSample {
+  minute: number; suit_pressure: number; suit_co2: number; heart_rate: number
+  eva_time_remaining: number; event: string; is_synthetic: string; source: string
+}
+export interface EarthDay {
+  day_after_landing: number; orthostatic_sys_drop: number; heart_rate: number; sleep: number
+  symptom: string; is_synthetic: string; source: string
+}
+/** EVA day of "tomas (sample)": one sample every 2 min for 6.5 h. All synthetic. */
+export const spacewalk = spacewalkJson as unknown as {
+  samples: EvaSample[]; limits: LimitRow[]; context: PlaceText; person: string; interval_min: number; duration_min: number
+}
+/** Days 1–14 after landing of "iris (sample)". All synthetic. */
+export const earth = earthJson as unknown as { days: EarthDay[]; limits: LimitRow[]; context: PlaceText; person: string }
+
+export type Level = 'green' | 'yellow' | 'red' | 'none'
+/** Colour of a value against a measurement_ranges row (green / yellow / red). */
+export function levelOf(limits: LimitRow[], id: string, value: number): Level {
+  const r = limits.find((l) => l.measurement_id === id)
+  if (!r || !Number.isFinite(value)) return 'none'
+  if ((r.ref_red_below != null && value < r.ref_red_below) || (r.ref_red_above != null && value > r.ref_red_above)) return 'red'
+  if ((r.ref_green_min != null && value < r.ref_green_min) || (r.ref_green_max != null && value > r.ref_green_max)) return 'yellow'
+  if (r.ref_green_min == null && r.ref_green_max == null) return 'none'
+  return 'green'
+}
+/** Green range in words, e.g. "4.2–4.4", "≤ 3", "≥ 60". */
+export function greenText(limits: LimitRow[], id: string): string {
+  const r = limits.find((l) => l.measurement_id === id)
+  if (!r) return ''
+  const { ref_green_min: a, ref_green_max: b } = r
+  if (a != null && b != null) return `${a}–${b}`
+  if (b != null) return `≤ ${b}`
+  if (a != null) return `≥ ${a}`
+  return ''
+}

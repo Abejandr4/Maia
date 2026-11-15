@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import type { PageId, RoutineTask, Status, VitalEvaluation } from '../utils/types';
 import { STATUS_RANK } from '../utils/baselines';
 import { ASTRONAUT, ENVIRONMENT, GOALS, ROUTINE_BLOCKS, ROUTINE_TASKS, TODAY_DAY } from '../utils/mockData';
-import { REPORT_DAY, daily, immune, reportSection, upTo } from '../data/maiaData';
+import { REPORT_DAY, contexts, daily, earth, immune, levelOf, reportSection, upTo } from '../data/maiaData';
 import { signed } from '../utils/format';
 import { useNow } from '../utils/hooks';
 import { useVitals } from '../utils/VitalsContext';
@@ -102,6 +102,37 @@ function reportFocus(sent: boolean) {
   };
 }
 
+/* ---------- back on Earth (synthetic "iris (sample)", step4b) ---------- */
+const EARTH_TODAY = earth.days[earth.days.length - 1];
+const LEVEL_STATUS: Record<string, Status> = { green: 'normal', yellow: 'caution', red: 'critical', none: 'normal' };
+const LEVEL_RANK: Record<string, number> = { none: 0, green: 0, yellow: 1, red: 2 };
+/** Today's three re-adaptation signals; the Body circle shows the worst (the standing drop on a tie). */
+const EARTH_SIGNALS = [
+  { id: 'orthostatic_sys_drop', name: 'Standing BP drop', value: EARTH_TODAY.orthostatic_sys_drop, unit: 'mmHg' },
+  { id: 'heart_rate', name: 'Resting heart rate', value: EARTH_TODAY.heart_rate, unit: 'bpm' },
+  { id: 'sleep', name: 'Sleep', value: EARTH_TODAY.sleep, unit: 'h' },
+].map((x) => {
+  const level = levelOf(earth.limits, x.id, x.value);
+  const low = earth.limits.find((l) => l.measurement_id === x.id)?.ref_green_min;
+  return { ...x, level, low: low != null && x.value < low };
+});
+const EARTH_WORST = EARTH_SIGNALS.reduce((w, x) => (LEVEL_RANK[x.level] > LEVEL_RANK[w.level] ? x : w), EARTH_SIGNALS[0]);
+const EARTH_OFF = EARTH_SIGNALS.filter((x) => LEVEL_RANK[x.level] > 0);
+const EARTH_BODY = {
+  value: String(EARTH_WORST.value),
+  unit: EARTH_WORST.unit,
+  status: LEVEL_STATUS[EARTH_WORST.level],
+  caption: `${EARTH_WORST.name} · R+${EARTH_TODAY.day_after_landing}`,
+};
+const EARTH_NEEDS_TEXT = EARTH_OFF.map((x) => `${x.name.toLowerCase()} ${x.low ? 'low' : 'high'}`).join(' · ');
+const EARTH_CTX = contexts.find((c) => c.id === 'back_on_earth');
+const EARTH_ENV = {
+  value: '1',
+  unit: 'g',
+  status: 'normal' as Status,
+  label: EARTH_CTX?.daily_dose_msv_max != null ? `${EARTH_CTX.daily_dose_msv_max} mSv/day` : 'Gravity',
+};
+
 /** Time until a task, e.g. "in 1 h 20 m". */
 function untilText(hhmmText: string, now: number) {
   const [h, m] = hhmmText.split(':').map(Number);
@@ -140,18 +171,19 @@ function getCrewFirstName(): string {
 }
 export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => void }) {
   const crewName = useMemo(() => getCrewFirstName(), []);
-  const { evaluations } = useVitals();
+  const { evaluations, place } = useVitals();
+  const onEarth = place === 'earth';
   const now = useNow(15_000);
   const routineRef = useRef<HTMLElement>(null);
   const [water, setWater] = useState<number>(GOALS.water.value);
   const [lastDrink, setLastDrink] = useState<number | null>(null);
   const [bubbleOpen, setBubbleOpen] = useState(true);
-  const unread = 0;
-  const [, setFamilyOpen] = useState(false);
 
 
-  const body = useMemo(() => bodyFocus(evaluations), [evaluations]);
-  const env = envFocus();
+  const issBody = useMemo(() => bodyFocus(evaluations), [evaluations]);
+  // Each circle shows what matters most where the crew member is now.
+  const body = onEarth ? EARTH_BODY : issBody;
+  const env = onEarth ? EARTH_ENV : envFocus();
   const rep = reportFocus(false);
   // routine follows the real clock: tasks before now are done, the first one after now is next
   const nowMin = new Date(now).getHours() * 60 + new Date(now).getMinutes();
@@ -163,7 +195,8 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   }));
   const done = tasks.filter((t) => t.state === 'done').length;
   const liveIssue = evaluations.some((e) => STATUS_RANK[e.status] >= STATUS_RANK.caution) ? 1 : 0;
-  const needs = CHANGES.length + liveIssue;
+  const needs = onEarth ? EARTH_OFF.length : CHANGES.length + liveIssue;
+  const needsText = onEarth ? EARTH_NEEDS_TEXT : NEEDS_TEXT;
 
   const scrollToRoutine = () => routineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   const openTask = (t: RoutineTask) => {
@@ -181,9 +214,9 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
     <div className="page page--home">
       <section className="home-hero">
         <h1 className="home-greeting">Hi, {crewName}</h1>
-        <span className="needs-chip" title={NEEDS_TEXT}>
+        <span className="needs-chip" title={needsText}>
           <i className={`needs-chip__dot needs-chip__dot--${needs ? (body.status === 'normal' ? 'caution' : body.status) : 'normal'}`} />
-          {needs ? `${needs} ${needs === 1 ? 'thing needs' : 'things need'} you · ${NEEDS_TEXT}` : 'All good right now'}
+          {needs ? `${needs} ${needs === 1 ? 'thing needs' : 'things need'} you · ${needsText}` : 'All good right now'}
         </span>
 
         <div className="orbit">
@@ -231,14 +264,6 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
               statusLabel={nextTask ? `${nextTask.label.split(/[:·(]/)[0].trim().slice(0, 16)} · ${untilText(nextTask.time, now)}` : 'All done'}
               onClick={scrollToRoutine}
             />
-            <OrbitNode
-              position="family"
-              label="Family"
-              value={String(unread)}
-              status={unread ? 'advisory' : 'normal'}
-              statusLabel={unread ? 'New message' : 'Read'}
-              onClick={() => setFamilyOpen(true)}
-            />
           </OrbitRing>
 
 
@@ -275,7 +300,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
       <section className="routine-section" ref={routineRef}>
         <div className="page-head">
           <div>
-            <p className="eyebrow">Routine · Day {TODAY_DAY}</p>
+            <p className="eyebrow">Routine · {onEarth ? `R+${EARTH_TODAY.day_after_landing}` : `Day ${TODAY_DAY}`}</p>
             <h2 className="page-title">Routine</h2>
             <p className="page-sub">Your day on one clock. Tapping a task takes you straight to it.</p>
           </div>

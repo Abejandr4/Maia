@@ -261,7 +261,7 @@ export default function AstronautView({ note, setNote, sent, onSend, sizeKb, onL
                 <li key={s.section}>{SECTION_PLAIN[s.section]}</li>
               ))}
           </ul>
-          <p className="muted small">Family messages and mood data are never included.</p>
+          <p className="muted small">Mood data are never included.</p>
         </Card>
       </aside>
     </div>

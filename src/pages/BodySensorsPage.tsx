@@ -16,6 +16,7 @@ import { bodyZones, daily as maiaDaily, immune as maiaImmune, measurementTexts, 
 
 /** Personal sleep band of the analysis (median ± 2.5 robust SD, days 8–21). */
 const SLEEP_BAND = { min: maiaDaily.bands.sleep?.low ?? NaN, max: maiaDaily.bands.sleep?.high ?? NaN };
+import EarthRecovery from '../components/body/EarthRecovery';
 import MeasureGuide, { RecordedMeasurements } from '../components/body/MeasureGuide';
 import './pages.css';
 
@@ -513,8 +514,9 @@ function AnalysisPanel() {
 }
 
 export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => void }) {
-  const { history, evaluations } = useVitals();
+  const { history, evaluations, place } = useVitals();
   const [tab, setTab] = useState<BodyTab>('live');
+  const onEarth = place === 'earth';
 
   const current = history[history.length - 1];
   const series = useMemo<Record<VitalKey, number[]>>(
@@ -531,9 +533,9 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
   return (
     <div className="page page--body">
       <PageHeader
-        eyebrow="Personal normal · learned on days 8–21"
+        eyebrow={onEarth ? 'Back on Earth · re-adaptation after landing' : 'Personal normal · learned on days 8–21'}
         title="Body & Sensors"
-        subtitle="Ten zones, four live signals. Every reading shows its age."
+        subtitle={onEarth ? 'Gravity is back: standing blood pressure, heart rate and sleep for the first 14 days.' : 'Ten zones, four live signals. Every reading shows its age.'}
         aside={
           <SegmentedTabs<BodyTab>
             ariaLabel="Body view"
@@ -554,6 +556,16 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
         .page--body h2 { font-size: 2.25em; }
         .page--body h3 { font-size: 1.755em; }
         .page--body .card__title { font-size: 16.5px; }
+        .earth-recovery { grid-column: 2 / -1; display: grid; gap: 12px; min-width: 0; }
+        @media (max-width: 1050px) { .earth-recovery { grid-column: 1 / -1; } }
+        .earth-recovery__tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        @media (max-width: 760px) { .earth-recovery__tiles { grid-template-columns: 1fr; } }
+        .earth-tile { border-top: 3px solid #b8ccd5; }
+        .earth-tile--green { border-top-color: #7fb43a; } .earth-tile--yellow { border-top-color: #e3b51f; } .earth-tile--red { border-top-color: #d2453a; }
+        .earth-tile__value { font-family: var(--font-mono, monospace); font-size: 32px; font-weight: 600; margin-block: 4px; }
+        .earth-tile__value small { font-size: 12px; color: #566878; }
+        .earth-tile__pill { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 700; background: #eee; }
+        .earth-tile__pill--green { background: #e8f3d6; color: #315314; } .earth-tile__pill--yellow { background: #f8e9ad; color: #5f4600; } .earth-tile__pill--red { background: #f8d8d6; color: #8a211b; }
         .demo-controls > summary { cursor: pointer; padding: 12px 16px; border: 1px dashed #b6c3c9; border-radius: 14px; font-weight: 650; color: #304859; }
         .demo-controls[open] > summary { margin-bottom: 10px; }
         .bodymap-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 4px; }
@@ -627,7 +639,8 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
       `}</style>
       <div className="body-grid">
         <ProfileBodyMap tab={tab} onSelectTab={setTab} onLogSymptom={onLogSymptom}>
-          {tab === 'live' && (
+          {tab === 'live' && onEarth && <EarthRecovery />}
+          {tab === 'live' && !onEarth && (
             <>
               {VITALS.map((k) => (
                 <VitalCard

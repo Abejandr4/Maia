@@ -1,14 +1,13 @@
 import { useMemo, useRef, useState } from 'react';
 import type { PageId, RoutineTask, Status, VitalEvaluation } from '../utils/types';
 import { PERSONAL_NORMAL, STATUS_RANK, mid } from '../utils/baselines';
-import { ASTRONAUT, ENVIRONMENT, FAMILY_MESSAGES, GOALS, MORNING_FLAG, ROUTINE_BLOCKS, ROUTINE_TASKS, TODAY_DAY } from '../utils/mockData';
-import { signed, stamp } from '../utils/format';
+import { ASTRONAUT, ENVIRONMENT, GOALS, MORNING_FLAG, ROUTINE_BLOCKS, ROUTINE_TASKS, TODAY_DAY } from '../utils/mockData';
+import { signed } from '../utils/format';
 import { useNow } from '../utils/hooks';
 import { useVitals } from '../utils/VitalsContext';
 import { Mascot } from '../components/external';
 import Card from '../components/ui/Card';
 import Icon from '../components/ui/Icon';
-import Modal from '../components/ui/Modal';
 import OrbitNode from '../components/home/OrbitNode';
 import HabitBubble from '../components/home/HabitBubble';
 import RoutineClock from '../components/home/RoutineClock';
@@ -57,14 +56,12 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const { evaluations } = useVitals();
   const now = useNow(15_000);
   const routineRef = useRef<HTMLElement>(null);
-  const [familyOpen, setFamilyOpen] = useState(false);
   const [water, setWater] = useState(GOALS.water.value);
   const [lastDrink, setLastDrink] = useState<number | null>(null);
 
   const body = useMemo(() => bodyFocus(evaluations), [evaluations]);
   const nextTask = ROUTINE_TASKS.find((t) => t.state === 'next');
   const done = ROUTINE_TASKS.filter((t) => t.state === 'done').length;
-  const unread = FAMILY_MESSAGES.filter((m) => m.unread).length;
   const needs = body.status !== 'normal' ? 1 : 0;
 
   const scrollToRoutine = () => routineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -130,14 +127,6 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
             status={nextTask ? 'advisory' : 'normal'}
             statusLabel={nextTask ? 'Re-check' : 'All done'}
             onClick={scrollToRoutine}
-          />
-          <OrbitNode
-            position="family"
-            label="Family"
-            value={String(unread)}
-            status={unread ? 'advisory' : 'normal'}
-            statusLabel={unread ? 'New message' : 'Read'}
-            onClick={() => setFamilyOpen(true)}
           />
 
           <div className="orbit__center">
@@ -222,23 +211,6 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
           </div>
         </div>
       </section>
-
-      <Modal open={familyOpen} onClose={() => setFamilyOpen(false)} title="Family messages">
-        <ul className="family-list">
-          {FAMILY_MESSAGES.map((m) => (
-            <li key={m.id} className={m.unread ? 'is-unread' : ''}>
-              <div className="family-list__head">
-                <strong>{m.from}</strong>
-                <span className="mono small muted">{stamp(m.time)}</span>
-              </div>
-              <p>{m.text}</p>
-            </li>
-          ))}
-        </ul>
-        <p className="small muted" style={{ marginTop: 12 }}>
-          Messages arrive with the next downlink window.
-        </p>
-      </Modal>
     </div>
   );
 }

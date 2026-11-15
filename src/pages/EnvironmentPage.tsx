@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import type { Status } from '../utils/types';
+import { useEnvironmentSummary, useIssPosition, worstSource, type DataSource } from '../utils/api';
 import { ENVIRONMENT, EVENTS, MISSION_DAYS } from '../utils/mockData';
 import { ageLabel } from '../utils/format';
 import { useNow } from '../utils/hooks';
@@ -9,15 +9,36 @@ import StatusPill from '../components/ui/StatusPill';
 import RadiationGauge from '../components/environment/RadiationGauge';
 import DoseChart from '../components/environment/DoseChart';
 import EnvMetricCard from '../components/environment/EnvMetricCard';
+import IssCard from '../components/environment/IssCard';
+import SpaceEventsList from '../components/environment/SpaceEventsList';
 import './pages.css';
 
 export default function EnvironmentPage() {
   const now = useNow(1000);
-  const [updatedAt] = useState(() => Date.now() - 12_000);
+  const env = useEnvironmentSummary();
+  const issFeed = useIssPosition();
+  const summary = env.data;
 
   const last = MISSION_DAYS[MISSION_DAYS.length - 1];
   const careerDose = ENVIRONMENT.priorDose + last.cumulativeDose;
-  const { co2, spaceWeather } = ENVIRONMENT;
+  const { co2, spaceWeather: mockWeather } = ENVIRONMENT;
+
+  // Real space weather when the backend answers, mock otherwise
+  const sw = summary?.spaceWeather;
+  const weather = sw
+    ? {
+        value: sw.radiation.scale === 0 ? 'Quiet' : sw.radiation.label,
+        status: sw.radiation.status,
+        label: sw.radiation.text ?? sw.radiation.label,
+        detail: `NOAA ${sw.radiation.label} · ${sw.geomagnetic.label} · ${sw.radioBlackout.label} · ${sw.s1ProbabilityNext3Days}% chance of S1+ in 3 days${
+          summary.lastSep ? ` · last particle event ${summary.lastSep.time.slice(0, 10)}` : ''
+        }`,
+      }
+    : { value: mockWeather.level, status: 'normal' as Status, label: mockWeather.level, detail: `${mockWeather.detail} · ${mockWeather.source}` };
+
+  const source: DataSource | 'offline' = summary ? worstSource(Object.values(summary.sources)) : 'offline';
+  const SOURCE_LABEL = { live: 'live', cache: 'cached', seed: 'snapshot', offline: 'demo data · backend offline' } as const;
+  const updatedAt = env.updatedAt;
   const co2Status: Status = co2.value > co2.target ? 'advisory' : 'normal';
   const todayStatus: Status = ENVIRONMENT.todayDose > ENVIRONMENT.dailyPlanning ? 'warning' : 'normal';
 
@@ -29,8 +50,9 @@ export default function EnvironmentPage() {
         subtitle="Radiation, air and space weather — the conditions behind your signals."
         aside={
           <>
-            <StatusPill status="normal" label="All within limits" />
-            <span className="mono small muted">updated {ageLabel(now - updatedAt)}</span>
+            <StatusPill status={summary?.overall.status ?? 'normal'} label={summary?.overall.label ?? 'All within limits'} />
+            <span className={`source-chip source-chip--${source}`}>{SOURCE_LABEL[source]}</span>
+            <span className="mono small muted">{updatedAt ? `updated ${ageLabel(now - updatedAt)}` : 'not connected'}</span>
           </>
         }
       />
@@ -53,10 +75,10 @@ export default function EnvironmentPage() {
           />
           <EnvMetricCard
             title="Space weather"
-            value={spaceWeather.level}
-            status="normal"
-            statusLabel={spaceWeather.level}
-            detail={`${spaceWeather.detail} · ${spaceWeather.source}`}
+            value={weather.value}
+            status={weather.status}
+            statusLabel={weather.label}
+            detail={weather.detail}
           />
           <EnvMetricCard
             title="Cabin CO₂"
@@ -86,6 +108,11 @@ export default function EnvironmentPage() {
         >
           <DoseChart days={MISSION_DAYS} solarDay={EVENTS.solar} evaDay={EVENTS.eva} />
         </Card>
+
+        <div className="env-grid__orbit">
+          <IssCard iss={issFeed.data?.iss ?? summary?.iss ?? null} source={issFeed.data?.source.source} />
+          <SpaceEventsList events={summary?.events ?? []} kpSeries={sw?.kpSeries ?? []} kp={sw?.kp ?? null} />
+        </div>
 
         <div className="env-grid__cabin">
           {ENVIRONMENT.cabin.map((c) => (

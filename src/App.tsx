@@ -20,6 +20,7 @@ import MissionSchedulePage from './pages/Initial record/MissionSchedulePage';
 import MeetMaiaPage from './pages/Initial record/MeetMaiaPage';
 import ContactsPage from './pages/Initial record/ContactsPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
+import { saveDemoSetup } from './utils/demoProfile';
 import EmergencyScreen, {
   type EmergencyReport,
 } from "./components/emergency/EmergencyScreen";

@@ -1,4 +1,5 @@
 import "../pages.css";
+import { Mascot } from "../../components/external";
 
 /* -------------------------------------------------------------------------- */
 /* Tipos                                                                      */
@@ -89,7 +90,7 @@ export default function MeetMaiaPage({
             <div className="maia__animation-slot">
               {animationSlot ?? (
                 <>
-                  {/* TODO: Insertar aqui el componente o animacion de Maia */}
+                  {animationSlot ?? <Mascot size={200} state="celebrating" />}
                   <span className="maia__animation-placeholder">Maia Animation</span>
                 </>
               )}

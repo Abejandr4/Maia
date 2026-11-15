@@ -111,6 +111,7 @@ type SetupStep =
 
 export default function App() {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [setupStep, setSetupStep] = useState<SetupStep>(() => {
 =======
   const skipWithDemo = () => {
@@ -121,6 +122,9 @@ export default function App() {
 
   const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
 >>>>>>> skipQuestionnaire
+=======
+  const [setupStep, setSetupStep] = useState<SetupStep>(() => {
+>>>>>>> c129a2b25728f99666501d6257b355c5257a6b0f
     try {
       return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
     } catch {
@@ -193,6 +197,7 @@ export default function App() {
         />
       )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
       {setupStep !== 'done' && (
@@ -206,6 +211,9 @@ export default function App() {
             </button>
           )}
 >>>>>>> skipQuestionnaire
+=======
+
+>>>>>>> c129a2b25728f99666501d6257b355c5257a6b0f
       {setupStep === 'done' && <Shell />}
     </VitalsProvider>
   );

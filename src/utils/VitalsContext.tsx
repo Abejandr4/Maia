@@ -48,6 +48,27 @@ export function VitalsProvider({ children }: { children: ReactNode }) {
   const [symptoms, setSymptoms] = useState<SymptomEntry[]>(INITIAL_SYMPTOMS);
   const [lastSpoken, setLastSpoken] = useState<SpokenAlert | null>(null);
 
+  const pendingVoice = useRef<Set<number>>(new Set());
+
+  useEffect(() => {
+    const timers = pendingVoice.current;
+    return () => {
+      for (const timer of timers) window.clearTimeout(timer);
+      timers.clear();
+      if (evaMode && voiceOn) stopSpeaking();
+    };
+  }, [evaMode, voiceOn]);
+
+  const playVoice = useCallback((text: string, level: Status, interrupt: boolean) => {
+    if (!evaMode || !voiceOn) return;
+    chime(level);
+    const timer = window.setTimeout(() => {
+      pendingVoice.current.delete(timer);
+      speak(text, { interrupt });
+    }, 550);
+    pendingVoice.current.add(timer);
+  }, [evaMode, voiceOn]);
+
   const scenarioRef = useRef<Scenario>('nominal');
   const announcedRef = useRef<Partial<Record<VitalKey, { status: Status; at: number }>>>({});
 
@@ -109,11 +130,8 @@ export function VitalsProvider({ children }: { children: ReactNode }) {
     const level = worstStatus(fired.map((f) => f.e.status));
     setLastSpoken({ id: String(now), text, level, at: now });
 
-    if (voiceOn) {
-      chime(level);
-      window.setTimeout(() => speak(text, { interrupt: level === 'critical' }), 550);
-    }
-  }, [evaluations, evaMode, voiceOn]);
+    playVoice(text, level, level === 'critical');
+  }, [evaluations, evaMode, playVoice]);
 
   const addSymptom = useCallback((entry: Omit<SymptomEntry, 'id'>) => {
     setSymptoms((prev) => [{ ...entry, id: `s-${Date.now()}` }, ...prev]);
@@ -122,9 +140,8 @@ export function VitalsProvider({ children }: { children: ReactNode }) {
   const dismissSpoken = useCallback(() => setLastSpoken(null), []);
 
   const testVoice = useCallback(() => {
-    chime('warning');
-    window.setTimeout(() => speak('Voice check. Crew health alerts are active.', { interrupt: true }), 550);
-  }, []);
+    playVoice('Voice check. Crew health alerts are active.', 'warning', true);
+  }, [playVoice]);
 
   const value = useMemo<VitalsContextValue>(
     () => ({

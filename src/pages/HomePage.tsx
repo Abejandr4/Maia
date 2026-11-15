@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PageId, RoutineTask, Status, VitalEvaluation } from '../utils/types';
 import { STATUS_RANK } from '../utils/baselines';
 import { ASTRONAUT, ENVIRONMENT, GOALS, ROUTINE_BLOCKS, ROUTINE_TASKS, TODAY_DAY } from '../utils/mockData';
@@ -10,7 +10,6 @@ import { Mascot } from '../components/external';
 import Card from '../components/ui/Card';
 import Icon from '../components/ui/Icon';
 import OrbitNode from '../components/home/OrbitNode';
-import HabitBubble from '../components/home/HabitBubble';
 import RoutineClock from '../components/home/RoutineClock';
 import TaskList from '../components/home/TaskList';
 import GoalBars from '../components/home/GoalBars';
@@ -156,6 +155,33 @@ function placeFocus(place: string) {
   };
 }
 
+/* ---------- background photo of the current place (NASA Image and Video Library) ----------
+ * One photo per place, faded towards the edges, with Maia in the centre.
+ * To change a photo, change its NASA id here (images.nasa.gov → the id in the page URL).
+ * The spacewalk photo (0302381) is in EvaVisor.tsx. */
+const BACKDROP: Record<string, string> = {
+  iss: 'KSC-20150810-PH-NAS01_0021',
+  earth: 'jsc2022e044298',
+  lunar: 'as11-40-5948',
+  mars: 'PIA24487',
+};
+const nasaImage = (id: string, size: 'large' | 'orig') => `https://images-assets.nasa.gov/image/${id}/${id}~${size}.jpg`;
+const PLACE_LABEL: Record<string, string> = { iss: 'On the ISS', earth: 'Back on Earth', lunar: 'Lunar surface · preview', mars: 'Mars transit · preview' };
+
+/* ---------- today's log on this device ---------- */
+interface DayLog { date: string; water: number; exercise: number; lastDrink: number | null; done: Record<string, string> }
+const DAY_LOG_KEY = 'maia-day-log';
+function readDayLog(): DayLog {
+  const today = new Date().toDateString();
+  const empty: DayLog = { date: today, water: GOALS.water.value, exercise: GOALS.exercise.value, lastDrink: null, done: {} };
+  try {
+    const saved = JSON.parse(localStorage.getItem(DAY_LOG_KEY) ?? 'null') as DayLog | null;
+    return saved && saved.date === today ? { ...empty, ...saved } : empty;
+  } catch {
+    return empty;
+  }
+}
+
 /** Time until a task, e.g. "in 1 h 20 m". */
 function untilText(hhmmText: string, now: number) {
   const [h, m] = hhmmText.split(':').map(Number);
@@ -180,9 +206,13 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const onEarth = place === 'earth';
   const now = useNow(15_000);
   const routineRef = useRef<HTMLElement>(null);
-  const [water, setWater] = useState<number>(GOALS.water.value);
-  const [lastDrink, setLastDrink] = useState<number | null>(null);
-  const [bubbleOpen, setBubbleOpen] = useState(true);
+  // Today's log (water, exercise, tasks done) is kept on this device, so it survives changing screens.
+  const [log, setLog] = useState<DayLog>(readDayLog);
+  useEffect(() => {
+    try { localStorage.setItem(DAY_LOG_KEY, JSON.stringify(log)); } catch { /* storage unavailable */ }
+  }, [log]);
+  const water = log.water;
+  const lastDrink = log.lastDrink;
 
 
   const issBody = useMemo(() => bodyFocus(evaluations), [evaluations]);
@@ -196,13 +226,15 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
       : envFocus();
   const rep = reportFocus(false);
   const loc = placeFocus(place);
-  // routine follows the real clock: tasks before now are done, the first one after now is next
+  // A task is done only when the astronaut marks it; the first one not done is "next".
   const nowMin = new Date(now).getHours() * 60 + new Date(now).getMinutes();
   const toMin = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
-  const nextTask = ROUTINE_TASKS.find((t) => toMin(t.time) > nowMin);
-  const tasks = ROUTINE_TASKS.map((t) => ({
+  const nextTask = ROUTINE_TASKS.find((t) => !log.done[t.id]);
+  const tasks: RoutineTask[] = ROUTINE_TASKS.map((t) => ({
     ...t,
-    state: (toMin(t.time) <= nowMin ? 'done' : t.id === nextTask?.id ? 'next' : 'scheduled') as RoutineTask['state'],
+    state: log.done[t.id] ? 'done' : t.id === nextTask?.id ? 'next' : 'scheduled',
+    doneAt: log.done[t.id],
+    overdue: !log.done[t.id] && toMin(t.time) <= nowMin,
   }));
   const done = tasks.filter((t) => t.state === 'done').length;
   const liveIssue = evaluations.some((e) => STATUS_RANK[e.status] >= STATUS_RANK.caution) ? 1 : 0;
@@ -211,27 +243,70 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const previewText = previewCtx ? `${previewCtx.name} preview · no health data for this place yet` : '';
 
   const scrollToRoutine = () => routineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const clockText = () => new Date().toTimeString().slice(0, 5);
+  const addWater = (l: DayLog, ml: number) => ({ ...l, water: Math.max(0, Math.min(GOALS.water.target + 1, Math.round((l.water + ml / 1000) * 100) / 100)) });
+  /** Tap a task: water and exercise are logged here (tap again to undo); checks open their screen. */
   const openTask = (t: RoutineTask) => {
-    if (t.target === 'home') scrollToRoutine();
-    else onNavigate(t.target);
+    const isDone = Boolean(log.done[t.id]);
+    const kind = /water/i.test(t.label) ? 'water' : /exercise/i.test(t.label) ? 'exercise' : 'other';
+    setLog((l) => {
+      const doneMap = { ...l.done };
+      if (isDone && kind !== 'other') delete doneMap[t.id];
+      else doneMap[t.id] = clockText();
+      let next: DayLog = { ...l, done: doneMap };
+      if (kind === 'water') next = { ...addWater(next, isDone ? -250 : 250), lastDrink: isDone ? l.lastDrink : Date.now() };
+      if (kind === 'exercise') next = { ...next, exercise: isDone ? 0 : GOALS.exercise.target };
+      return next;
+    });
+    if (kind === 'other' && t.target !== 'home') onNavigate(t.target);
   };
   const drink = () => {
-    setWater((w) => Math.min(GOALS.water.target + 1, Math.round((w + 0.25) * 100) / 100));
-    setLastDrink(Date.now());
+    setLog((l) => {
+      // the first pending water task of the day is marked done too
+      const task = ROUTINE_TASKS.find((t) => /water/i.test(t.label) && !l.done[t.id]);
+      const doneMap = task ? { ...l.done, [task.id]: clockText() } : l.done;
+      return { ...addWater(l, 250), lastDrink: Date.now(), done: doneMap };
+    });
   };
-  const drinkMeta = lastDrink ? 'last drink just now' : 'no drinks logged yet today';
   const waterDone = water >= GOALS.water.target;
 
   return (
     <div className="page page--home">
       <section className="home-hero">
+        <p className="home-where">{onEarth ? `R+${EARTH_TODAY.day_after_landing}` : `Day ${TODAY_DAY}`} · {PLACE_LABEL[place]}</p>
         <h1 className="home-greeting">Hi, {ASTRONAUT.name}</h1>
-        <span className="needs-chip" title={needsText}>
+        <div className="home-chips">
+          <span className="needs-chip" title={needsText}>
           <i className={`needs-chip__dot needs-chip__dot--${needs ? (body.status === 'normal' ? 'caution' : body.status) : 'normal'}`} />
           {previewText || (needs ? `${needs} ${needs === 1 ? 'thing needs' : 'things need'} you · ${needsText}` : 'All good right now')}
-        </span>
+          </span>
+          <span className={`water-chip ${waterDone ? 'is-done' : ''}`} title="Habit · water goal (targets.csv)">
+            <Icon name="droplet" />
+            <span className="water-chip__text">
+              Water <b>{water.toFixed(2).replace(/0$/, '')}</b> / {GOALS.water.target} L{lastDrink ? ` · last ${new Date(lastDrink).toTimeString().slice(0, 5)}` : ''}
+            </span>
+            <span className="water-chip__bar" aria-hidden="true"><i style={{ width: `${Math.min(100, (water / GOALS.water.target) * 100)}%` }} /></span>
+            {!waterDone && (
+              <button type="button" className="water-chip__btn" onClick={drink}>+250 ml</button>
+            )}
+          </span>
+        </div>
 
         <div className="orbit">
+          {BACKDROP[place] && (
+            <img
+              key={place}
+              className="orbit__backdrop"
+              src={nasaImage(BACKDROP[place], 'large')}
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (!img.src.endsWith('~orig.jpg')) img.src = nasaImage(BACKDROP[place], 'orig');
+                else img.style.display = 'none';
+              }}
+              alt=""
+              aria-hidden="true"
+            />
+          )}
           <svg className="orbit__rings" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
             <ellipse cx="500" cy="300" rx="470" ry="290" />
             <ellipse cx="500" cy="300" rx="270" ry="190" />
@@ -289,28 +364,17 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
 
 
           <div className="orbit__center">
-            <Mascot size={280} state="idle" />
+            <Mascot size={400} state="idle" />
           </div>
 
-          {bubbleOpen && (
-            <div className="orbit__bubble">
-              <HabitBubble
-                title="MAIA · Habits"
-                message={waterDone ? 'Water goal reached. Nice work.' : 'Time for a glass of water?'}
-                progress={{ value: water, target: GOALS.water.target, unit: 'L', meta: drinkMeta }}
-                onDismiss={() => setBubbleOpen(false)}
-                action={
-                  !waterDone && (
-                    <button type="button" className="btn btn--sm" onClick={drink}>
-                      <Icon name="droplet" />
-                      Log 250 ml
-                    </button>
-                  )
-                }
-              />
-            </div>
-          )}
         </div>
+
+        {BACKDROP[place] && (
+          <p className="orbit__credit">
+            Background photo: NASA ·{' '}
+            <a href={`https://images.nasa.gov/details/${BACKDROP[place]}`} target="_blank" rel="noreferrer">{BACKDROP[place]}</a>
+          </p>
+        )}
 
         <button type="button" className="scroll-cue" onClick={scrollToRoutine}>
           Your routine
@@ -323,7 +387,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
           <div>
             <p className="eyebrow">Routine · {onEarth ? `R+${EARTH_TODAY.day_after_landing}` : `Day ${TODAY_DAY}`}</p>
             <h2 className="page-title">Routine</h2>
-            <p className="page-sub">Your day on one clock. Tapping a task takes you straight to it.</p>
+            <p className="page-sub">Your day on one clock. Tap water or exercise when done (tap again to undo); checks open their screen.</p>
           </div>
           <span className="count-chip">
             {done} of {tasks.length} complete
@@ -362,11 +426,11 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
             <GoalBars
               goals={[
                 { key: 'water', label: 'Water', icon: 'droplet', value: water, target: GOALS.water.target, unit: 'L', color: 'var(--advisory)' },
-                { key: 'exercise', label: 'Exercise', icon: 'activity', value: GOALS.exercise.value, target: GOALS.exercise.target, unit: 'h', color: 'var(--normal)' },
+                { key: 'exercise', label: 'Exercise', icon: 'activity', value: log.exercise, target: GOALS.exercise.target, unit: 'h', color: 'var(--normal)' },
               ]}
             />
             <section className="card maia-card">
-              <Mascot size={64} />
+              <Mascot size={140} />
               <div>
                 <p className="habit-bubble__title">MAIA · Habits</p>
                 <p className="maia-card__text">

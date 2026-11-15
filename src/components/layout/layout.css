@@ -307,3 +307,4 @@
 .topbar__loc-about { margin-top: 6px; padding: 10px 12px 4px; border-top: 1px solid var(--border); display: grid; gap: 4px; font-size: 13px; color: var(--text-2); }
 .topbar__loc-src { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
 .topbar__menu[aria-label='Location'] { min-width: 340px; max-width: min(92vw, 540px); }
+.topbar__brand { padding-left: 14px; }

@@ -167,6 +167,14 @@ write("maia_earth.json", {"days": records(generate_earth()), "limits": limits("b
                           "context": ctx_text("back_on_earth"), "is_synthetic": True,
                           "person": "iris (sample)"})
 
+# ---- lunar / Mars previews: who gets each alert and the stricter rules (no vital-sign series exist) ----
+ar = pd.read_excel(XLSX, sheet_name="alert_recipients")
+cr = pd.read_excel(XLSX, sheet_name="combined_rules")
+write("maia_place_rules.json", {
+    "alert_recipients": records(ar),
+    "combined_rules": records(cr),
+})
+
 # ---- body zones and symptoms (body_zones.csv, symptoms.csv) for the body map ------------
 bz = pd.read_excel(XLSX, sheet_name="body_zones")
 write("maia_body_zones.json", records(bz))

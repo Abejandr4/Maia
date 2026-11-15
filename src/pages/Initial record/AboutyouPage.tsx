@@ -5,7 +5,7 @@ import "../pages.css";
 /* Tipos                                                                      */
 /* -------------------------------------------------------------------------- */
 
-type Sex = "Female" | "Male" | "Other";
+type Sex = "Female" | "Male";
 type SexCategory = "female" | "male";
 
 interface AvatarOption {
@@ -115,19 +115,16 @@ export function AvatarPortrait({ avatarId, tone, headOnly = false }: {
 const PROFILE_KEY = "userProfile";
 const TOTAL_STEPS = 8;
 const CURRENT_STEP = 2;
-const SEX_OPTIONS: Sex[] = ["Female", "Male", "Other"];
+const SEX_OPTIONS: Sex[] = ["Female", "Male"];
 
 function isSex(value: unknown): value is Sex {
-  return value === "Female" || value === "Male" || value === "Other";
+  return value === "Female" || value === "Male";
 }
 
 /** Devuelve los avatares validos para el sexo indicado. */
 function getAvatarsForSex(sex: Sex): AvatarOption[] {
-  if (sex === "Other") return AVATAR_OPTIONS;
   const category: SexCategory = sex === "Female" ? "female" : "male";
-  return AVATAR_OPTIONS.filter(
-    (a) => a.sexCategory === category
-  );
+  return AVATAR_OPTIONS.filter((a) => a.sexCategory === category);
 }
 
 function loadProfile(): Partial<StoredProfile> {
@@ -289,33 +286,6 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
               </div>
 
               <div className="avatar-picker__controls">
-                <div
-                  className="avatar-picker__gallery"
-                  hidden={sex !== "Other"}
-                  role="group"
-                  aria-label="Choose avatar"
-                >
-                  {availableAvatars.map((a) => (
-                    <button
-                      key={a.id}
-                      type="button"
-                      title={a.label}
-                      aria-label={a.label}
-                      aria-pressed={a.id === currentAvatar.id}
-                      className={
-                        "avatar-picker__thumb" +
-                        (a.id === currentAvatar.id
-                          ? " avatar-picker__thumb--selected"
-                          : "")
-                      }
-                      style={{ backgroundColor: currentStyle.color }}
-                      onClick={() => setAvatarId(a.id)}
-                    >
-                      <AvatarPortrait avatarId={a.id} headOnly />
-                    </button>
-                  ))}
-                </div>
-
                 <div
                   className="avatar-picker__styles"
                   role="group"

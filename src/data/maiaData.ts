@@ -18,6 +18,7 @@ import bodyZonesJson from './generated/maia_body_zones.json'
 import symptomsJson from './generated/maia_symptoms.json'
 import spacewalkJson from './generated/maia_spacewalk.json'
 import earthJson from './generated/maia_earth.json'
+import placeRulesJson from './generated/maia_place_rules.json'
 
 // ---------- types ----------
 export type Side = '' | 'high' | 'low' | 'missing' | 'eva_shown'
@@ -225,3 +226,8 @@ export function greenText(limits: LimitRow[], id: string): string {
   if (a != null) return `≥ ${a}`
   return ''
 }
+
+/* ---------- who gets each alert, and combined rules (alert_recipients.csv, combined_rules.csv) ---------- */
+export interface RecipientRow { edition_or_location: string; level: string; recipient_role: string; channel: string; order: number; includes: string | null; notes: string | null; source: string }
+export interface CombinedRule { id: string; condition_1: string; condition_2: string | null; condition_3: string | null; result_color: string; message: string; locations: string; source: string; evidence_level: string }
+export const placeRules = placeRulesJson as unknown as { alert_recipients: RecipientRow[]; combined_rules: CombinedRule[] }

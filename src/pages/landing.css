@@ -9,6 +9,8 @@
   --lilac: #e5d3e6;
   --lilac-strong: #c9a7d6;
   --space: #14161c;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .landing__eyebrow {
@@ -54,10 +56,10 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
   box-shadow: 0 8px 24px rgba(24, 24, 22, 0.18);
 }
-.landing__btn span { transition: transform 0.2s ease; }
+.landing__btn span { transition: transform 0.3s var(--ease-out); }
 .landing__btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(24, 24, 22, 0.24); }
 .landing__btn:hover span { transform: translateX(4px); }
 .landing__btn--small { padding: 9px 18px; font-size: 14px; box-shadow: none; }
@@ -67,12 +69,12 @@
 /* ---------- hero ---------- */
 .hero {
   position: relative;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100svh - 64px - 300px);
   display: grid;
   grid-template-columns: minmax(260px, 0.9fr) 1.2fr;
   align-items: center;
   gap: clamp(24px, 5vw, 72px);
-  padding: 40px clamp(16px, 6vw, 96px) 96px;
+  padding: 30px clamp(16px, 6vw, 96px) 56px;
   isolation: isolate;
 }
 .hero__stars {
@@ -105,12 +107,13 @@
   animation: orbit-spin 80s linear infinite;
 }
 .hero__mascot { display: grid; place-items: center; animation: float 6s ease-in-out infinite; }
-.hero__copy { display: grid; gap: 22px; animation: rise 0.8s ease-out both; }
+.hero__copy { display: grid; gap: 22px; animation: rise 1s var(--ease-out) both; }
 .hero__title {
   font-size: clamp(40px, 6.2vw, 80px);
   line-height: 1.02;
   font-weight: 700;
   letter-spacing: -0.035em;
+  margin: 20px;
 }
 .hero__accent {
   background: linear-gradient(90deg, var(--series-a), #a46bd6 55%, var(--critical));
@@ -181,12 +184,22 @@
   border-bottom: 1px solid currentColor;
 }
 .nasa-link:hover { color: var(--text); }
+.sources { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
 
-/* reveal on scroll */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.is-in { opacity: 1; transform: none; }
+/* ---------- reveal on scroll (soft, eased out) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px) scale(0.985);
+  filter: blur(4px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out),
+    filter 0.9s var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal.is-in { opacity: 1; transform: none; filter: none; }
 
-/* immune thread */
+/* ---------- immune thread ---------- */
 .immune-thread {
   display: flex;
   gap: 12px;
@@ -223,7 +236,7 @@
   cursor: pointer;
   font: inherit;
   color: var(--text);
-  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+  transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), background 0.3s var(--ease-out), color 0.3s var(--ease-out);
 }
 .env-tab:hover { transform: translateY(-2px); }
 .env-tab.is-active { border-color: var(--text); background: var(--text); color: var(--surface); }
@@ -237,7 +250,12 @@
 .hazard__name { font-weight: 600; font-size: 15px; }
 .hazard__level { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
 .hazard__bar { height: 8px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
-.hazard__fill { display: block; height: 100%; border-radius: inherit; transition: width 0.7s cubic-bezier(0.3, 1.2, 0.5, 1), background 0.4s; }
+.hazard__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.9s var(--ease-out), background 0.5s ease;
+}
 .hazard__fill--1 { background: var(--normal); }
 .hazard__fill--2 { background: var(--advisory); }
 .hazard__fill--3 { background: var(--caution); }
@@ -249,6 +267,7 @@
 /* ---------- risk wheel ---------- */
 .risks { display: grid; grid-template-columns: 1fr minmax(300px, 420px); gap: clamp(24px, 4vw, 56px); align-items: center; }
 .risk-card {
+  --hue: #2f6fdb !important; /* one consistent blue for the card */
   position: relative;
   display: grid;
   gap: 16px;
@@ -258,7 +277,7 @@
   border: 1px solid var(--border);
   border-top: 6px solid var(--hue);
   box-shadow: 0 20px 50px rgba(40, 20, 50, 0.08);
-  animation: card-in 0.45s ease-out;
+  animation: card-in 0.5s var(--ease-out);
 }
 .risk-card__num { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
 .risk-card__title { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; color: var(--hue); }
@@ -274,22 +293,43 @@
   background: var(--surface);
   font-size: 16px;
   cursor: pointer;
-  transition: border-color 0.2s, transform 0.15s;
+  transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
 .risk-card__nav button:hover { border-color: var(--text); transform: scale(1.06); }
 
 .wheel { position: relative; }
 .wheel__svg { width: 100%; display: block; overflow: visible; }
-.wheel__spin { transform-box: view-box; transform-origin: 50% 50%; transition: transform 0.8s cubic-bezier(0.3, 1.25, 0.5, 1); }
+.wheel__spin {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  transition: transform 1s var(--ease-in-out); /* smooth glide, no overshoot */
+}
 .wheel__sector { cursor: pointer; outline: none; }
-.wheel__sector path { stroke: var(--bg); stroke-width: 2; transition: fill 0.25s, d 0.3s; }
+.wheel__sector path {
+  stroke: var(--bg);
+  stroke-width: 2;
+  transition: fill 0.35s ease, d 0.45s var(--ease-out);
+}
+
+/* one blue shade per sector, in the same order as RISKS
+   (!important overrides the per-risk `hue` set inline in LandingPage.tsx) */
+.wheel__sector:nth-child(1) { --hue: #0f4c81 !important; } /* Immune */
+.wheel__sector:nth-child(2) { --hue: #1a5fa3 !important; } /* Balance */
+.wheel__sector:nth-child(3) { --hue: #2f6fdb !important; } /* Heart */
+.wheel__sector:nth-child(4) { --hue: #2b7bc0 !important; } /* DCS */
+.wheel__sector:nth-child(5) { --hue: #3a97dd !important; } /* Hypoxia */
+.wheel__sector:nth-child(6) { --hue: #1d6e9c !important; } /* Microbes */
+.wheel__sector:nth-child(7) { --hue: #4a7fd6 !important; } /* Fitness */
+.wheel__sector:nth-child(8) { --hue: #24456e !important; } /* EVA */
+
 /* alternating light tints so neighbouring sectors stay distinguishable */
 .wheel__sector:nth-child(odd) path { fill: color-mix(in srgb, var(--hue) 16%, var(--surface)); }
 .wheel__sector:nth-child(even) path { fill: color-mix(in srgb, var(--hue) 28%, var(--surface)); }
-/* these come after the tints so hover and selection win */
+/* after the tints so hover and selection win */
 .wheel__sector:hover path,
 .wheel__sector:focus-visible path { fill: color-mix(in srgb, var(--hue) 45%, var(--surface)); }
 .wheel__sector.is-selected path { fill: var(--hue); }
+
 .wheel__sector text { font-family: var(--font-sans); font-size: 11.5px; font-weight: 600; fill: var(--text); pointer-events: none; }
 .wheel__sector.is-selected text { fill: #fff; }
 .wheel__hub { fill: var(--surface); stroke: var(--border); }
@@ -308,6 +348,41 @@
 }
 
 /* ---------- problem ---------- */
+/* main text left, immune text right */
+.problem-intro {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+.problem-intro__aside {
+  display: grid;
+  gap: 14px;
+  padding: 22px 24px;
+  border-radius: 18px;
+  background: var(--critical-soft);
+  border-left: 4px solid var(--critical);
+  margin-top: 28px;
+}
+.immune-aside { color: var(--critical-ink); font-size: 15px; line-height: 1.6; }
+.immune-quote {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 2px solid color-mix(in srgb, var(--critical) 40%, transparent);
+  font-size: 15px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--text);
+}
+.immune-quote cite {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
 .problems { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .problem {
   display: grid;
@@ -333,7 +408,7 @@
   display: grid;
   gap: 10px;
   align-content: start;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
 }
 .pillar:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(40, 20, 50, 0.08); }
 .pillar__n { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); }
@@ -370,7 +445,7 @@
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
 @keyframes scroll-cue { 60% { transform: translateY(14px); opacity: 0; } 100% { opacity: 0; } }
 @keyframes thread-pulse { 70% { box-shadow: 0 0 0 8px transparent; } }
-@keyframes card-in { from { opacity: 0; transform: translateX(-16px); } }
+@keyframes card-in { from { opacity: 0; transform: translateY(10px); } }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
@@ -386,6 +461,8 @@
   .risks { grid-template-columns: 1fr; }
   .risks .wheel { order: -1; max-width: 360px; margin: 0 auto; }
   .wheel__pointer { display: none; }
+  .problem-intro { grid-template-columns: 1fr; }
+  .problem-intro__aside { margin-top: 0; }
   .pillars { grid-template-columns: 1fr; }
   .cta { grid-template-columns: 1fr; justify-items: center; text-align: center; }
   .landing__tag { display: none; }
@@ -394,23 +471,5 @@
   .problems { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1; transform: none; filter: none; }
 }
-
-/* =====================================================================
-   Force the wheel and risk card to blues only
-   (overrides the per-risk `hue` set inline in LandingPage.tsx)
-   ===================================================================== */
-
-/* one blue shade per sector, in the same order as RISKS */
-.wheel__sector:nth-child(1) { --hue: #0f4c81 !important; } /* Immune */
-.wheel__sector:nth-child(2) { --hue: #1a5fa3 !important; } /* Balance */
-.wheel__sector:nth-child(3) { --hue: #2f6fdb !important; } /* Heart */
-.wheel__sector:nth-child(4) { --hue: #2b7bc0 !important; } /* DCS */
-.wheel__sector:nth-child(5) { --hue: #3a97dd !important; } /* Hypoxia */
-.wheel__sector:nth-child(6) { --hue: #1d6e9c !important; } /* Microbes */
-.wheel__sector:nth-child(7) { --hue: #4a7fd6 !important; } /* Fitness */
-.wheel__sector:nth-child(8) { --hue: #24456e !important; } /* EVA */
-
-/* the card on the left uses one consistent blue */
-.risk-card { --hue: #2f6fdb !important; }

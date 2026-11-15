@@ -40,7 +40,7 @@ function Shell() {
         {page === 'report' && <ReportPage onLogSymptom={openLog} />}
       </main>
 
-      <Modal open={logOpen} onClose={closeLog} title="Log a symptom">
+      <Modal open={logOpen} onClose={closeLog} title="Log a symptom" width={760}>
         <SymptomLog onClose={closeLog} onSubmit={addSymptom} />
       </Modal>
     </div>

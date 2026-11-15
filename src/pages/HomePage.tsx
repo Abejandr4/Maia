@@ -14,6 +14,7 @@ import RoutineClock from '../components/home/RoutineClock';
 import TaskList from '../components/home/TaskList';
 import GoalBars from '../components/home/GoalBars';
 import './pages.css';
+import OrbitRing from '../components/home/OrbitRing';
 
 const SHORT_LABEL: Record<VitalEvaluation['key'], string> = {
   bp: 'Systolic',
@@ -58,6 +59,10 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const routineRef = useRef<HTMLElement>(null);
   const [water, setWater] = useState(GOALS.water.value);
   const [lastDrink, setLastDrink] = useState<number | null>(null);
+  const [bubbleOpen, setBubbleOpen] = useState(true);
+  const unread = 0;
+  const [, setFamilyOpen] = useState(false);
+
 
   const body = useMemo(() => bodyFocus(evaluations), [evaluations]);
   const nextTask = ROUTINE_TASKS.find((t) => t.state === 'next');
@@ -91,62 +96,77 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
             <ellipse cx="500" cy="300" rx="270" ry="190" />
           </svg>
 
-          <OrbitNode
-            position="env"
-            label="Environment"
-            value={ENVIRONMENT.todayDose.toFixed(1)}
-            unit="mSv"
-            status="normal"
-            statusLabel="Today"
-            onClick={() => onNavigate('environment')}
-          />
-          <OrbitNode
-            position="reports"
-            label="Reports"
-            value="18:00"
-            status="advisory"
-            statusLabel="Downlink"
-            onClick={() => onNavigate('report')}
-          />
-          <OrbitNode
-            position="body"
-            size="lg"
-            ring={body.status !== 'normal'}
-            label="Body & Sensors"
-            value={body.value}
-            unit={body.unit}
-            status={body.status}
-            statusLabel={STATUS_WORD[body.status]}
-            caption={body.caption}
-            onClick={() => onNavigate('body')}
-          />
-          <OrbitNode
-            position="routine"
-            label="Routine"
-            value={nextTask?.time ?? '—'}
-            status={nextTask ? 'advisory' : 'normal'}
-            statusLabel={nextTask ? 'Re-check' : 'All done'}
-            onClick={scrollToRoutine}
-          />
+          <OrbitRing>
+            <OrbitNode
+              position="env"
+              label="Environment"
+              value={ENVIRONMENT.todayDose.toFixed(1)}
+              unit="mSv"
+              status="normal"
+              statusLabel="Today"
+              onClick={() => onNavigate('environment')}
+            />
+            <OrbitNode
+              position="reports"
+              label="Reports"
+              value="18:00"
+              status="advisory"
+              statusLabel="Downlink"
+              onClick={() => onNavigate('report')}
+            />
+            <OrbitNode
+              position="body"
+              size="lg"
+              ring={body.status !== 'normal'}
+              label="Body & Sensors"
+              value={body.value}
+              unit={body.unit}
+              status={body.status}
+              statusLabel={STATUS_WORD[body.status]}
+              caption={body.caption}
+              onClick={() => onNavigate('body')}
+            />
+            <OrbitNode
+              position="routine"
+              label="Routine"
+              value={nextTask?.time ?? '—'}
+              status={nextTask ? 'advisory' : 'normal'}
+              statusLabel={nextTask ? 'Re-check' : 'All done'}
+              onClick={scrollToRoutine}
+            />
+            <OrbitNode
+              position="family"
+              label="Family"
+              value={String(unread)}
+              status={unread ? 'advisory' : 'normal'}
+              statusLabel={unread ? 'New message' : 'Read'}
+              onClick={() => setFamilyOpen(true)}
+            />
+          </OrbitRing>
+
 
           <div className="orbit__center">
-            <Mascot size={150} />
+            <Mascot size={280} state="idle" />
           </div>
-          <div className="orbit__bubble">
-            <HabitBubble
-              title="MAIA · Habits"
-              message={waterDone ? 'Water goal reached. Nice work.' : 'Time for a glass of water?'}
-              progress={{ value: water, target: GOALS.water.target, unit: 'L', meta: drinkMeta }}
-              action={
-                !waterDone && (
-                  <button type="button" className="btn btn--sm" onClick={drink}>
-                    <Icon name="droplet" />
-                    Log 250 ml
-                  </button>
-                )
-              }
-            />
-          </div>
+
+          {bubbleOpen && (
+            <div className="orbit__bubble">
+              <HabitBubble
+                title="MAIA · Habits"
+                message={waterDone ? 'Water goal reached. Nice work.' : 'Time for a glass of water?'}
+                progress={{ value: water, target: GOALS.water.target, unit: 'L', meta: drinkMeta }}
+                onDismiss={() => setBubbleOpen(false)}
+                action={
+                  !waterDone && (
+                    <button type="button" className="btn btn--sm" onClick={drink}>
+                      <Icon name="droplet" />
+                      Log 250 ml
+                    </button>
+                  )
+                }
+              />
+            </div>
+          )}
         </div>
 
         <button type="button" className="scroll-cue" onClick={scrollToRoutine}>

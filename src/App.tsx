@@ -10,7 +10,8 @@ import HomePage from "./pages/HomePage";
 import BodySensorsPage from "./pages/BodySensorsPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ReportPage from "./pages/ReportPage";
-import ConsentPage from './pages/ConsentPage';
+import ConsentPage from './pages/Initial record/ConsentPage';
+import AboutYouPage from './pages/Initial record/AboutyouPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
 import EmergencyScreen, {
   type EmergencyReport,
@@ -87,21 +88,35 @@ function Shell() {
 }
 
 export default function App() {
-  const [hasConsented, setHasConsented] = useState<boolean>(() => {
+  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
     try {
-      return localStorage.getItem('hasCompletedSetup') === 'true';
+      return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
     } catch {
-      return false;
+      return 'consent';
     }
   });
 
+  const handleFinishOnboarding = () => {
+    try {
+      localStorage.setItem('hasCompletedSetup', 'true');
+    } catch {
+      // Ignorar si localStorage no está disponible
+    }
+    setSetupStep('done');
+  };
+
   return (
     <VitalsProvider>
-      {hasConsented ? (
-        <Shell />
-      ) : (
-        <ConsentPage onComplete={() => setHasConsented(true)} />
+      {setupStep === 'consent' && (
+        <ConsentPage onComplete={() => setSetupStep('aboutYou')} />
       )}
+      {setupStep === 'aboutYou' && (
+        <AboutYouPage
+          onBack={() => setSetupStep('consent')}
+          onComplete={handleFinishOnboarding}
+        />
+      )}
+      {setupStep === 'done' && <Shell />}
     </VitalsProvider>
   );
 }

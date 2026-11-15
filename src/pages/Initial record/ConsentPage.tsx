@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './pages.css';
+import "../pages.css";
 
 const TOTAL_STEPS = 8;
 const CURRENT_STEP = 1;
@@ -56,7 +56,7 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
     <div className="page consent">
       <header className="consent__header">
         <div className="consent__brand">
-          <span className="consent__logo">Spica</span>
+          <span className="consent__logo">Maia</span>
           <span className="consent__context">Setup &middot; Space Mission</span>
         </div>
         <span className="consent__step">
@@ -85,17 +85,17 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
       <main className="consent__body">
         <section className="consent__intro">
           <h1>Privacy &amp; Consent</h1>
-          <p>Before we start: what Spica does with your data and who can see it.</p>
+          <p>Before we start: what Maia does with your data and who can see it.</p>
         </section>
 
         <section className="card consent__card">
-          <h2 className="card__label">Spica does</h2>
+          <h2 className="card__label">Maia does</h2>
           <p className="card__text">
             Guides you to measure, explains the result with a color and tells you
             what to do. It works without a connection.
           </p>
 
-          <h2 className="card__label">Spica does not</h2>
+          <h2 className="card__label">Maia does not</h2>
           <p className="card__text">
             Diagnose or replace your medical team. It supports your decisions.
           </p>
@@ -137,7 +137,7 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
               />
               <span className="check__box" aria-hidden="true" />
               <span className="check__text">
-                I agree that Spica stores my health data on this device.
+                I agree that Maia stores my health data on this device.
               </span>
             </label>
 

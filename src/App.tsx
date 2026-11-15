@@ -14,6 +14,8 @@ import ConsentPage from './pages/Initial record/ConsentPage';
 import AboutYouPage from './pages/Initial record/AboutyouPage';
 import MedicalHistoryPage from './pages/Initial record/MedicalHistoryPage';
 import FlightHistoryPage from './pages/Initial record/FlightHistoryPage';
+import YourNormalValuesPage from './pages/Initial record/YourNormalValuesPage';
+import MissionSchedulePage from './pages/Initial record/MissionSchedulePage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
 import EmergencyScreen, {
   type EmergencyReport,
@@ -89,9 +91,17 @@ function Shell() {
   );
 }
 
+type SetupStep =
+  | 'consent'
+  | 'aboutYou'
+  | 'medicalHistory'
+  | 'flightHistory'
+  | 'normalValues'
+  | 'missionSchedule'
+  | 'done';
 
 export default function App() {
-  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'medicalHistory' | 'flightHistory' | 'done'>(() => {
+  const [setupStep, setSetupStep] = useState<SetupStep>(() => {
     try {
       return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
     } catch {
@@ -111,14 +121,15 @@ export default function App() {
   return (
     <VitalsProvider>
       {setupStep === 'consent' && (
-        <ConsentPage onComplete={() => setSetupStep('aboutYou')} />
-      )}
+     <ConsentPage onComplete={() => setSetupStep('aboutYou')} />
+)}
       {setupStep === 'aboutYou' && (
         <AboutYouPage
           onBack={() => setSetupStep('consent')}
           onComplete={() => setSetupStep('medicalHistory')}
         />
       )}
+
       {setupStep === 'medicalHistory' && (
         <MedicalHistoryPage
           onBack={() => setSetupStep('aboutYou')}
@@ -126,14 +137,30 @@ export default function App() {
           onComplete={() => setSetupStep('flightHistory')}
         />
       )}
+
       {setupStep === 'flightHistory' && (
         <FlightHistoryPage
           onBack={() => setSetupStep('medicalHistory')}
-          onSkip={handleFinishOnboarding}
+          onSkip={() => setSetupStep('normalValues')}
+          onComplete={() => setSetupStep('normalValues')}
+        />
+      )}
+
+      {setupStep === 'normalValues' && (
+        <YourNormalValuesPage
+          onBack={() => setSetupStep('flightHistory')}
+          onComplete={() => setSetupStep('missionSchedule')}
+        />
+      )}
+
+      {setupStep === 'missionSchedule' && (
+        <MissionSchedulePage
+          onBack={() => setSetupStep('normalValues')}
           onComplete={handleFinishOnboarding}
         />
       )}
+
       {setupStep === 'done' && <Shell />}
-    </VitalsProvider>
+          </VitalsProvider>
   );
 }

@@ -79,6 +79,8 @@ export interface RoutineTask {
   state: 'done' | 'next' | 'scheduled';
   doneAt?: string;
   target: PageId;
+  /** Its time has passed and it is not marked done yet. */
+  overdue?: boolean;
 }
 
 export interface RoutineBlock {

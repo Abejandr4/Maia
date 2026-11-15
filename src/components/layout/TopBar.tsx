@@ -56,23 +56,6 @@ function timeAgo(iso: string, now: number) {
   return `${Math.round(hours / 24)} days ago`;
 }
 
-/** Small round asteroid face used as the app logo. */
-function Logo() {
-  return (
-    <svg className="topbar__logo" viewBox="0 0 48 48" aria-hidden="true">
-      <circle cx="24" cy="24" r="23" fill="#fff" stroke="var(--border)" />
-      <path
-        d="M10 26c-1-8 4-15 12-16 8-1 16 3 17 11 1 8-5 15-13 16-8 1-15-3-16-11z"
-        fill="#d4cfde"
-        stroke="#b8b1c8"
-        strokeWidth="1.5"
-      />
-      <circle cx="19" cy="25" r="1.8" fill="#1e1a1c" />
-      <circle cx="29" cy="25" r="1.8" fill="#1e1a1c" />
-      <path d="M21 30c1.6 1.4 4.4 1.4 6 0" fill="none" stroke="#1e1a1c" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }: TopBarProps) {
   const { paused, voiceOn, setVoiceOn, evaMode, setEvaMode, alerts, place, setPlace } = useVitals();
@@ -139,7 +122,6 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
     <div className="topbar-wrap">
     <header className="topbar">
       <button type="button" className="topbar__brand" onClick={() => onNavigate('home')} aria-label="Maia, go to Home">
-        <Logo />
         <span className="topbar__brand-text">
           <span className="topbar__name">Maia</span>
           <span className="topbar__sub">

@@ -54,7 +54,8 @@
 
 /* ================= Home ================= */
 .home-hero { text-align: center; }
-.home-greeting { font-size: 44px; font-weight: 700; letter-spacing: -0.03em; }
+.home-greeting { font-size: clamp(44px, 6vw, 72px); font-weight: 500; letter-spacing: -0.035em; line-height: 1; margin: 2px 0 6px; }
+.home-where { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-2); margin: 0; }
 .needs-chip {
   display: inline-flex;
   align-items: center;
@@ -66,6 +67,17 @@
   background: var(--surface);
   font-size: 13px;
 }
+.home-chips { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 8px; }
+.home-chips .needs-chip { margin-top: 0; }
+.water-chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 4px 4px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); font-size: 13px; color: var(--text); }
+.water-chip svg { color: var(--advisory); width: 15px; height: 15px; }
+.water-chip b { font-family: var(--font-mono); font-weight: 600; }
+.water-chip__bar { width: 54px; height: 5px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.water-chip__bar i { display: block; height: 100%; background: var(--advisory); border-radius: inherit; transition: width .4s ease; }
+.water-chip__btn { border: 0; border-radius: 999px; padding: 5px 11px; background: var(--advisory-soft); color: var(--advisory-ink); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.water-chip__btn:hover { background: var(--advisory); color: #fff; }
+.water-chip.is-done { border-color: var(--normal); }
+.water-chip:not(:has(.water-chip__btn)) { padding-right: 12px; }
 .needs-chip__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--normal); }
 .needs-chip__dot--caution { background: var(--caution); }
 .needs-chip__dot--advisory { background: var(--advisory); }
@@ -73,12 +85,37 @@
 .needs-chip__dot--critical { background: var(--critical); }
 
 .orbit {
-  --orbit-cy: 46%;          
+  --orbit-cy: 50%;
   position: relative;
-  height: 780px;           
+  /* fits the screen under the greeting, so all five circles are visible without scrolling */
+  height: clamp(520px, calc(100dvh - 300px), 720px);
   margin-top: 4px;
   isolation: isolate;
 }
+/* photo of the current place: visible around Maia, fading out towards the edges */
+.orbit__backdrop {
+  position: absolute;
+  left: 50%;
+  top: var(--orbit-cy);
+  width: min(1180px, 100%);
+  height: 118%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .9;
+  -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 30%, rgba(0, 0, 0, .55) 62%, transparent 100%);
+          mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 30%, rgba(0, 0, 0, .55) 62%, transparent 100%);
+}
+/* Maia stands out from the photo with a light rim that follows her silhouette (no disc covering the background) */
+.orbit__center > * {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, .95)) drop-shadow(0 0 10px rgba(255, 255, 255, .55)) drop-shadow(0 10px 18px rgba(20, 20, 10, .28));
+}
+.theme-dark .orbit__center > * {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, .5)) drop-shadow(0 10px 18px rgba(0, 0, 0, .5));
+}
+.orbit__credit { font-size: 11px; color: var(--text-3); margin: 6px 0 0; }
+.orbit__credit a { color: inherit; }
 .orbit__rings { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .orbit__rings ellipse { fill: none; stroke: var(--border-strong); stroke-dasharray: 2 7; vector-effect: non-scaling-stroke; }
 .orbit__center {
@@ -89,7 +126,7 @@
   animation: float 6s ease-in-out infinite;
   z-index: 2;
 }
-.orbit__bubble { position: absolute; left: 50%; top: 70%; transform: translateX(-50%); z-index: 3; }
+.orbit__bubble { position: absolute; right: 0; top: 0; z-index: 3; }
 @keyframes float { 50% { transform: translate(-50%, calc(-50% - 10px)); } }
 
 .scroll-cue {
@@ -147,7 +184,7 @@
     justify-items: center;
     padding: 24px 0;
   }
-  .orbit__rings { display: none; }
+  .orbit__rings, .orbit__backdrop { display: none; }
   .orbit__center, .orbit__bubble, .orbit .orbit-node { position: static; transform: none; animation: none; }
   .orbit .orbit-node:hover { transform: scale(1.04); }
   .orbit__center { grid-column: 1 / -1; order: -2; }

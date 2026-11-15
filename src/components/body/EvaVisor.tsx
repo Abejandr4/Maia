@@ -18,6 +18,9 @@ const S = spacewalk.samples;
 const L = spacewalk.limits;
 const DUR = spacewalk.duration_min;
 const suitImage = import.meta.env.BASE_URL + 'avatars/avatar-astronauta-gray.png';
+/** Background of the suit check: NASA Image and Video Library, id 0302381 (spacewalk). */
+const EVA_PHOTO = '0302381';
+const nasaImage = (id: string, size: 'large' | 'orig') => `https://images-assets.nasa.gov/image/${id}/${id}~${size}.jpg`;
 
 type Key = 'suit_pressure' | 'suit_co2' | 'heart_rate' | 'eva_time_remaining';
 const SIGNALS: { id: Key; label: string; unit: string; digits: number; hint: string }[] = [
@@ -85,6 +88,17 @@ function PrepScreen({ onStart, onClose }: { onStart: () => void; onClose: () => 
   useEffect(() => start.current?.focus(), []);
   return (
     <main className="eva eva--prep" aria-label="Spacewalk preparation">
+      <img
+        className="eva-backdrop"
+        src={nasaImage(EVA_PHOTO, 'large')}
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (!img.src.endsWith('~orig.jpg')) img.src = nasaImage(EVA_PHOTO, 'orig');
+          else img.style.display = 'none';
+        }}
+        alt=""
+        aria-hidden="true"
+      />
       <header className="eva__header">
         <div>
           <p className="eva-label">Spacewalk · before you go out · sample data ({spacewalk.person})</p>
@@ -136,6 +150,7 @@ function PrepScreen({ onStart, onClose }: { onStart: () => void; onClose: () => 
             {Array.from({ length: Math.floor(DUR / 60) + 1 }, (_, h) => <span key={h}>{h} h</span>)}
           </div>
           <p className="eva-note">Yellow bands = minutes outside green. Source: synthetic_data.csv (is_synthetic = yes) · limits: measurement_ranges.csv</p>
+          <p className="eva-note">Background photo: NASA · <a href={`https://images.nasa.gov/details/${EVA_PHOTO}`} target="_blank" rel="noreferrer" style={{ color: 'inherit' }}>{EVA_PHOTO}</a></p>
         </section>
       </div>
     </main>

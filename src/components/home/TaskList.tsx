@@ -32,7 +32,9 @@ export default function TaskList({ tasks, onOpen }: TaskListProps) {
                 </span>
               )}
               {t.state === 'next' && <StatusPill status="caution" label="Next" size="sm" />}
-              {t.state === 'scheduled' && <span className="task-state task-state--scheduled">Scheduled</span>}
+              {t.state === 'scheduled' && (
+                <span className="task-state task-state--scheduled">{t.overdue ? 'Pending · tap when done' : 'Scheduled'}</span>
+              )}
               <Icon name="chevron" size={14} className="task-row__chev" />
             </button>
           </li>

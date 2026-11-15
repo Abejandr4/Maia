@@ -111,3 +111,19 @@
   .eva-prep, .eva-live__readings { grid-template-columns: 1fr; }
   .eva-reading { min-height: 140px; }
 }
+
+/* NASA spacewalk photo behind the suit check, faded towards the edges and kept dim for contrast */
+.eva--prep { position: relative; isolation: isolate; }
+.eva-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: .32;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 45%, #000 25%, rgba(0, 0, 0, .5) 60%, transparent 100%);
+          mask-image: radial-gradient(ellipse closest-side at 50% 45%, #000 25%, rgba(0, 0, 0, .5) 60%, transparent 100%);
+}
+.eva--prep .eva-panel { background: rgba(18, 27, 32, .88); backdrop-filter: blur(6px); }

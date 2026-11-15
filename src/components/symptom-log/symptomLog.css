@@ -104,3 +104,53 @@
 .gc-shutter[data-ready=true] { background: var(--sl-normal); }
 .gc-toggles { display: flex; gap: 1.25rem; justify-content: center; padding: 0 1rem 1rem; background: #1b1b1b; font-size: .9rem; }
 .gc-error { margin: auto; text-align: center; padding: 2rem; display: grid; gap: 1rem; }
+
+/* ===== Maia look for "Log a symptom" (same tokens as the rest of the app; camera styles untouched) ===== */
+.sl-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius, 18px);
+  box-shadow: var(--shadow); color: var(--text); padding: 22px 24px; gap: 20px; max-width: none;
+}
+.sl-card h2 { font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+.sl-section legend, .sl-section > h3 {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--text-2); margin-bottom: 8px;
+}
+.sl-hint { font-size: 13px; color: var(--text-2); opacity: 1; }
+.sl-card label { font-size: 13px; color: var(--text-2); }
+
+/* symptom chips: white pills, black when selected */
+.sl-chip {
+  font-size: 14px; padding: 7px 14px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border-strong); transition: background .15s, border-color .15s;
+}
+.sl-chip:hover { border-color: var(--text-3); }
+.sl-chip[aria-pressed=true] { background: var(--text); color: var(--surface); border-color: var(--text); font-weight: 500; }
+
+/* one box per selected symptom */
+.sl-symptom { background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.sl-symptom h3 { font-size: 16px; font-weight: 600; }
+.sl-symptom [data-level=normal]  { color: var(--normal-ink); }
+.sl-symptom [data-level=caution] { color: var(--caution-ink); }
+.sl-symptom [data-level=warning] { color: var(--critical-ink); }
+.sl-card input[type=range] { accent-color: var(--text); }
+
+/* inputs */
+.sl-card input:not([type=range]):not([type=checkbox]), .sl-card textarea {
+  font-size: 14px; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: 12px;
+  background: var(--surface); color: var(--text);
+}
+.sl-card input:focus, .sl-card textarea:focus { outline: 2px solid var(--advisory); outline-offset: 1px; }
+
+/* photos */
+.sl-photo { background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; }
+
+/* buttons: black pills like the app; ghost = white with border */
+.sl-card .sl-btn {
+  font-size: 14px; font-weight: 500; padding: 10px 22px; min-height: 42px; border-radius: 999px;
+  background: var(--text); color: var(--surface); border: 1px solid var(--text);
+}
+.sl-card .sl-btn:hover:not(:disabled) { opacity: .88; }
+.sl-card .sl-btn--ghost { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.sl-card .sl-btn:disabled { opacity: .35; }
+.sl-section > .sl-btn { justify-self: start; }
+.sl-error { color: var(--critical-ink); }

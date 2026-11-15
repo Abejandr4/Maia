@@ -176,6 +176,10 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
   return (
     <>
     {(tab === 'live' || tab === 'analysis') && <Card className="body-grid__map" title="Body map · 10 zones" aside={<span>Tap a zone</span>}>
+      <div className="bodymap-actions bodymap-actions--top">
+        <button type="button" className="btn maia-solid-btn" onClick={() => dailyReview.current?.showModal()}>Daily measurements</button>
+        <button type="button" className="btn maia-solid-btn" onClick={onLogSymptom}>+ Log a symptom</button>
+      </div>
       <div style={{ marginBlock: 12, borderRadius: 12, background: '#f6f5f0' }}>
         <div role="group" aria-label="Body zones" style={{ position: 'relative', width: 'min(100%, 248px)', aspectRatio: '2 / 3', marginInline: 'auto' }}>
           <AvatarPortrait avatarId={profile.avatarId} tone={profile.tone} />
@@ -202,20 +206,19 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
           <span aria-hidden="true">✦ </span>AI-generated content
         </div>
       </div>
-      <div className="bodymap-actions">
-        {tab === 'live' && <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.showModal()}>Daily measurements</button>}
-        <button type="button" className="btn btn--secondary" onClick={onLogSymptom}>Log a symptom</button>
-      </div>
-      {tab === 'live' && <dialog ref={dailyReview} aria-labelledby="daily-review-title" style={{ padding: 18, borderRadius: 12, maxWidth: 'min(92vw, 540px)' }}>
-        <h2 id="daily-review-title">Daily measurements</h2>
+      <dialog ref={dailyReview} className="maia-dialog" aria-labelledby="daily-review-title">
+        <p className="eyebrow" style={{ margin: 0 }}>Saved on this device</p>
+        <h2 id="daily-review-title" className="maia-dialog__title">Daily measurements</h2>
         <RecordedMeasurements earlier={zones.flatMap((zone) => readings[zone.id] ? [{
           label: zone.measure, value: `${readings[zone.id].value} ${zone.unit} · ${readings[zone.id].time}`,
         }] : [])} />
-        <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.close()}>Close</button>
-      </dialog>}
-      <dialog ref={dialog} aria-labelledby="avatar-measure-title" style={{ padding: 18, borderRadius: 12, border: '1px solid #ddd', maxWidth: 'min(92vw, 460px)' }}>
+        <div className="maia-dialog__actions">
+          <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.close()}>Close</button>
+        </div>
+      </dialog>
+      <dialog ref={dialog} className="maia-dialog" aria-labelledby="avatar-measure-title">
         <form onSubmit={saveReading} style={{ display: 'grid', gap: 10 }}>
-          <h2 id="avatar-measure-title">Daily measurements</h2>
+          <h2 id="avatar-measure-title" className="maia-dialog__title">Record a measurement</h2>
           <label>Body zone <select value={measureId} onChange={(event) => chooseMeasurement(event.target.value)}>
             {zones.map((zone) => <option key={zone.id} value={zone.id}>{zone.label}</option>)}
           </select></label>
@@ -233,33 +236,84 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
       <div className="profile-analysis" style={{ display: 'grid', gap: 14, minWidth: 0 }}>
         {showZoneAnalysis && <Card title={selected?.label ?? 'Suit life support'} aside={<span>{orbit ? 'In space' : 'Back on Earth'}</span>}>
           {selected ? (
-            <section className="zone-detail" aria-live="polite">
-              <p className="small muted">{selected.measure}</p>
-              <p className="zone-detail__reading mono">{selected.value} {selected.unit}</p>
-              <p className="small muted">{selected.value === 'Not measured' ? 'No reading available' : `Day ${TODAY_DAY} · sample data`} · {selected.trend}</p>
-              {selected.id === 'heart' && (
-                <figure style={{ margin: '8px 0' }} aria-label="Last seven days of resting heart rate">
-                  <Sparkline values={HR_LAST7} height={44} band={PERSONAL_NORMAL.hr} />
-                  <figcaption className="small muted">Days {TODAY_DAY - 6}–{TODAY_DAY} · sample data · your band {PERSONAL_NORMAL.hr.min.toFixed(0)}–{PERSONAL_NORMAL.hr.max.toFixed(0)} bpm</figcaption>
-                </figure>
-              )}
-              {readings[selected.id] && <p className="small">My reading · {readings[selected.id].value} · {readings[selected.id].time}</p>}
-              <p className="small"><strong>Sensor or record:</strong> {selected.sensor}</p>
-              <p className="small"><strong>{orbit ? 'What space does' : 'What affects it on Earth'}:</strong> {orbit ? selected.space : selected.earth}</p>
-              <p className="small"><strong>How to care for it:</strong> {selected.care}</p>
-              {orbit && selected.eva && <p className="small"><strong>On a spacewalk:</strong> {selected.eva}</p>}
-              {selected.measures.length > 0 && <p className="small"><strong>Measured with:</strong> {selected.measures.join(' · ')}</p>}
-              {selected.symptoms.length > 0 && <div className="zone-detail__chips"><strong className="small">Symptoms to log here:</strong>
-                {selected.symptoms.map((x) => <button key={x} type="button" className="zone-chip" onClick={onLogSymptom}>{x}</button>)}</div>}
-              {selected.risks.length > 0 && <details className="small"><summary>NASA risks for this zone ({selected.risks.length})</summary>
-                <ul>{selected.risks.map((r) => <li key={r}>{r}</li>)}</ul></details>}
-              <p className="small muted">Evidence: {selected.evidence || '—'} · {selected.sources.length
-                ? selected.sources.map((x, i) => <span key={x.id}>{i > 0 && ', '}{x.link ? <a href={x.link} target="_blank" rel="noreferrer">{x.id} ↗</a> : x.id}</span>)
-                : <a href={selected.source} target="_blank" rel="noreferrer">View source ↗</a>}</p>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
-                <button type="button" className="btn btn--secondary" onClick={openMeasurements}>Record this measurement</button>
-                <button type="button" className="btn btn--secondary" onClick={() => onSelectTab('symptoms')}>View symptoms</button>
+            <section className="zone-detail zone-v2" aria-live="polite">
+              {/* 1 · today */}
+              <div className="zone-v2__today">
+                <div>
+                  <p className="zone-v2__label">{selected.measure}</p>
+                  <p className="zone-v2__value">{selected.value} <small>{selected.unit}</small></p>
+                  <p className="zone-v2__meta">
+                    {selected.value === 'Not measured' ? 'No reading available yet' : `Day ${TODAY_DAY} · sample data`} · {selected.trend}
+                  </p>
+                  {readings[selected.id] && (
+                    <p className="zone-v2__mine">Your reading: <b>{readings[selected.id].value}</b> at {readings[selected.id].time}</p>
+                  )}
+                </div>
+                {selected.id === 'heart' && (
+                  <figure className="zone-v2__spark" aria-label="Last seven days of resting heart rate">
+                    <Sparkline values={HR_LAST7} height={52} band={PERSONAL_NORMAL.hr} />
+                    <figcaption>Last 7 days · band {PERSONAL_NORMAL.hr.min.toFixed(0)}–{PERSONAL_NORMAL.hr.max.toFixed(0)} bpm</figcaption>
+                  </figure>
+                )}
               </div>
+
+              {/* 2 · three short facts */}
+              <div className="zone-v2__facts">
+                <div>
+                  <h4>{orbit ? 'What space does' : 'What affects it on Earth'}</h4>
+                  <p>{orbit ? selected.space : selected.earth}</p>
+                </div>
+                <div>
+                  <h4>How to care for it</h4>
+                  <p>{selected.care}</p>
+                </div>
+                {orbit && selected.eva && (
+                  <div>
+                    <h4>On a spacewalk</h4>
+                    <p>{selected.eva}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* 3 · what you can do */}
+              {selected.symptoms.length > 0 && (
+                <div className="zone-v2__do">
+                  <h4>Feeling something here? Log it</h4>
+                  <div className="zone-detail__chips">
+                    {selected.symptoms.map((x) => <button key={x} type="button" className="zone-chip" onClick={onLogSymptom}>{x}</button>)}
+                  </div>
+                </div>
+              )}
+              <div className="zone-v2__actions">
+                <button type="button" className="btn btn--secondary" onClick={openMeasurements}>Record this measurement</button>
+              </div>
+
+              {/* 4 · details for the curious / the doctor */}
+              <details className="zone-v2__more">
+                <summary>More details · how it is measured, NASA risks, sources</summary>
+                <dl>
+                  <dt>Sensor or record</dt>
+                  <dd>{selected.sensor}</dd>
+                  {selected.measures.length > 0 && (
+                    <>
+                      <dt>Measured with</dt>
+                      <dd className="zone-v2__tags">{selected.measures.map((m) => <span key={m}>{m}</span>)}</dd>
+                    </>
+                  )}
+                  {selected.risks.length > 0 && (
+                    <>
+                      <dt>NASA risks ({selected.risks.length})</dt>
+                      <dd><ul>{selected.risks.map((r) => <li key={r}>{r}</li>)}</ul></dd>
+                    </>
+                  )}
+                  <dt>Evidence</dt>
+                  <dd>
+                    {selected.evidence || '—'} · {selected.sources.length
+                      ? selected.sources.map((x, i) => <span key={x.id}>{i > 0 && ', '}{x.link ? <a href={x.link} target="_blank" rel="noreferrer">{x.id} ↗</a> : x.id}</span>)
+                      : <a href={selected.source} target="_blank" rel="noreferrer">View source ↗</a>}
+                  </dd>
+                </dl>
+              </details>
             </section>
           ) : (
             <section className="zone-detail" aria-live="polite">
@@ -500,7 +554,7 @@ function AnalysisPanel() {
           <div className="analysis-label">How Maia decides</div>
           <p className="small">Maia compares your readings with your personal range learned on flight days 8–21 (days 1–7 are skipped while your body adapts). It flags a change when <strong>4 or more of the last 6 days</strong> are outside that range.</p>
           <div className="analysis-footer"><span role="status" className="small muted">{exported ? 'Report summary downloaded' : 'Simulated mission data'}</span>
-            <button className="btn" type="button" onClick={exportSummary}>Download report summary</button></div>
+            <button className="btn maia-solid-btn" type="button" onClick={exportSummary}>Download report summary</button></div>
         </Card>
       </div>
     </section>
@@ -539,7 +593,6 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
             options={[
               { value: 'live', label: 'Live' },
               { value: 'analysis', label: 'Analysis' },
-              { value: 'symptoms', label: 'Symptoms' },
               { value: 'measure', label: 'Measure' },
             ]}
           />
@@ -591,8 +644,63 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
         .spacewalk-card__expect { margin: 0 0 12px; padding-left: 18px; display: grid; gap: 5px; }
         .spacewalk-card__start { background: #0b1316; color: #b8f5e9; border-color: #0b1316; margin-left: auto; }
         .spacewalk-card__row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+        .zone-v2 { display: grid; gap: 16px; }
+        .zone-v2 h4 { font-family: var(--font-mono, monospace); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .12em; color: #566878; margin: 0 0 6px; }
+        .zone-v2__today { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 18px; align-items: center; }
+        .zone-v2__today:has(> :only-child) { grid-template-columns: 1fr; }
+        .zone-v2__label { margin: 0; font-size: 14px; color: #566878; }
+        .zone-v2__value { margin: 2px 0; font-family: var(--font-mono, monospace); font-size: 34px; font-weight: 600; line-height: 1.1; }
+        .zone-v2__value small { font-size: 15px; font-weight: 400; color: #566878; }
+        .zone-v2__meta { margin: 0; font-size: 13px; color: #6b7a86; }
+        .zone-v2__mine { margin: 6px 0 0; font-size: 13px; }
+        .zone-v2__spark { margin: 0; }
+        .zone-v2__spark figcaption { font-size: 12px; color: #6b7a86; margin-top: 4px; }
+        .zone-v2__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+        .zone-v2__facts > div { background: #f6f7f4; border-radius: 12px; padding: 12px 14px; }
+        .zone-v2__facts p { margin: 0; font-size: 14px; line-height: 1.45; }
+        .zone-v2__do .zone-detail__chips { margin: 0; }
+        .zone-v2__actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+        .zone-v2__actions .btn { width: 100%; justify-content: center; }
+        .zone-v2__more { border-top: 1px solid #e6e7e2; padding-top: 10px; font-size: 13px; }
+        .zone-v2__more > summary { cursor: pointer; color: #304859; font-weight: 600; }
+        .zone-v2__more dl { display: grid; grid-template-columns: 150px 1fr; gap: 8px 14px; margin: 10px 0 0; }
+        .zone-v2__more dt { font-weight: 600; color: #304859; }
+        .zone-v2__more dd { margin: 0; color: #3b4650; }
+        .zone-v2__more ul { margin: 0; padding-left: 18px; }
+        .zone-v2__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .zone-v2__tags span { border: 1px solid #deded9; border-radius: 999px; padding: 2px 9px; font-size: 12px; }
+        @media (max-width: 640px) { .zone-v2__today { grid-template-columns: 1fr; } .zone-v2__more dl { grid-template-columns: 1fr; } }
         .demo-controls > summary { cursor: pointer; padding: 12px 16px; border: 1px dashed #b6c3c9; border-radius: 14px; font-weight: 650; color: #304859; }
         .demo-controls[open] > summary { margin-bottom: 10px; }
+        .bodymap-actions--top { margin: 6px 0 4px; }
+        .page--body .btn:not(.btn--secondary) { background: var(--text); color: var(--surface); border-color: var(--text); }
+        /* solid black buttons: !important so no shared or glass button style can turn them white */
+        .page--body .maia-solid-btn {
+          background: #181816 !important; background-image: none !important; color: #ffffff !important;
+          border: 1px solid #181816 !important; box-shadow: 0 4px 14px rgba(20, 20, 10, .18) !important;
+          -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+          font-weight: 600; min-height: 46px; opacity: 1 !important;
+        }
+        .page--body .maia-solid-btn:hover { background: #2c2c29 !important; }
+        .page--body .maia-solid-btn * { color: inherit !important; }
+        .page--body .body-grid__map { align-self: start; }
+        .maia-dialog { border: 0; border-radius: 18px; padding: 22px 24px; width: min(92vw, 520px); box-shadow: 0 20px 60px rgba(20, 20, 10, .25); background: var(--surface); color: var(--text); }
+        .maia-dialog::backdrop { background: rgba(20, 22, 26, .35); backdrop-filter: blur(2px); }
+        .maia-dialog__title { font-size: 26px !important; font-weight: 500; letter-spacing: -.01em; margin: 2px 0 14px; }
+        .maia-dialog__actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+        .maia-dialog form { display: grid; gap: 12px; }
+        .maia-dialog label { display: grid; gap: 6px; font-size: 14px; }
+        .maia-dialog select, .maia-dialog input { font: inherit; padding: 9px 12px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--surface); color: var(--text); }
+        .recorded-list { list-style: none; margin: 0; padding: 0; display: grid; }
+        .recorded-list li { display: grid; grid-template-columns: 1fr auto auto; grid-template-areas: 'name value pill' 'time time time'; gap: 2px 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .recorded-list li:last-child { border-bottom: 0; }
+        .recorded-list__name { grid-area: name; font-weight: 600; font-size: 15px; }
+        .recorded-list__value { grid-area: value; font-family: var(--font-mono, monospace); font-size: 15px; }
+        .recorded-list__pill { grid-area: pill; border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; background: var(--surface-3); color: var(--text-2); }
+        .recorded-list__pill--green { background: var(--normal-soft); color: var(--normal-ink); }
+        .recorded-list__pill--yellow { background: var(--caution-soft); color: var(--caution-ink); }
+        .recorded-list__pill--red { background: var(--critical-soft); color: var(--critical-ink); }
+        .recorded-list__time { grid-area: time; font-size: 12px; color: var(--text-3); }
         .bodymap-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 4px; }
         .bodymap-actions .btn { width: 100%; justify-content: center; text-align: center; }
         .bodymap-actions__wide { grid-column: 1 / -1; }

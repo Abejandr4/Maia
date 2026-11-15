@@ -135,6 +135,26 @@ if len(rv):
 alerts.sort(key=lambda a: -a["day"])
 write("maia_alerts.json", alerts)
 
+# ---- daily routine (daily_routine.csv) for the Routine clock ------------------------
+rt = pd.read_excel(XLSX, sheet_name="daily_routine")
+rt["time"] = rt["time"].map(lambda t: t.strftime("%H:%M") if hasattr(t, "strftime") else str(t))
+write("maia_routine.json", records(rt[["time", "task", "type", "measurement_id", "location", "source", "evidence_level"]]))
+
+# ---- locations (contexts.csv) for the location menu --------------------------------
+ctx = pd.read_excel(XLSX, sheet_name="contexts")
+for c in ("description", "comm_policy"):
+    ctx[c] = ctx[c].astype(str).str.replace("Spica", "Maia", regex=False)
+write("maia_contexts.json", records(ctx[["id", "name", "status", "gravity", "comm_delay_label", "delay_one_way_min_s",
+                                          "delay_one_way_max_s", "blackout_days_min", "blackout_days_max", "daily_dose_msv_min",
+                                          "daily_dose_msv_max", "stricter_rules", "description", "comm_policy", "source",
+                                          "evidence_level"]]))
+
+# ---- body zones and symptoms (body_zones.csv, symptoms.csv) for the body map ------------
+bz = pd.read_excel(XLSX, sheet_name="body_zones")
+write("maia_body_zones.json", records(bz))
+sx = pd.read_excel(XLSX, sheet_name="symptoms")
+write("maia_symptoms.json", records(sx))
+
 # ---- plain-language texts per measurement (measurements.csv; old app name "Spica" -> "Maia") ----
 ms = pd.read_excel(XLSX, sheet_name="measurements")
 cols = ["id", "name", "unit", "why_it_matters", "what_to_do_yellow", "what_to_do_red", "source"]

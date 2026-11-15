@@ -20,11 +20,11 @@ const ROWS: { key: Metric; label: string; unit: string; digits: number; why: str
 export default function DeviationTable() {
   const { current } = useVitals();
   const s = roundSample(current);
-  const baseline = MISSION_DAYS.slice(0, 14);
+  const baseline = MISSION_DAYS.filter((d) => d.day >= 8 && d.day <= 21);
   const recent = MISSION_DAYS.slice(-7);
 
   return (
-    <Card title="Deviation from your normal" aside={<span>baseline = mission days 1–14</span>}>
+    <Card title="Deviation from your normal" aside={<span>baseline = flight days 8–21</span>}>
       <div className="table-wrap">
         <table className="data-table">
           <thead>
@@ -44,8 +44,8 @@ export default function DeviationTable() {
               const v = s[r.key];
               const pn = PERSONAL_NORMAL[r.key];
               const d = r.digits || 1;
-              const recentAvg = mean(recent.map((x) => x[r.key]));
-              const baseAvg = mean(baseline.map((x) => x[r.key]));
+              const recentAvg = mean(recent.map((x) => x[r.key]).filter(Number.isFinite));
+              const baseAvg = mean(baseline.map((x) => x[r.key]).filter(Number.isFinite));
               return (
                 <tr key={r.key} title={r.why}>
                   <td className="is-sans">{r.label}</td>

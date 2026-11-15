@@ -9,6 +9,7 @@ type Measurement = {
   name: string;
   unit: string;
   locations: string;
+  frequency: string;
   how_to_measure: string;
   how_to_measure_space: string;
   why_it_matters: string;
@@ -44,6 +45,25 @@ const measurements = readTable<Measurement>(measurementsCsv).filter(
   (row) => !/^not (measured|used)\b/i.test(row.how_to_measure_space.trim()),
 );
 const references = readTable<Reference>(rangesCsv);
+
+/** Groups of the checklist, from the `frequency` column of measurements.csv. */
+type Group = 'daily' | 'weekly' | 'continuous' | 'spacewalk';
+const GROUPS: { id: Group; label: string; hint: string }[] = [
+  { id: 'daily', label: 'Daily', hint: 'every morning or night' },
+  { id: 'weekly', label: 'Weekly', hint: 'once a week or with symptoms' },
+  { id: 'continuous', label: 'Read from a sensor', hint: 'cabin sensor or dosimeter' },
+  { id: 'spacewalk', label: 'Spacewalk', hint: 'suit telemetry' },
+];
+function groupOf(row: Measurement): Group {
+  const f = row.frequency.toLowerCase();
+  if (row.locations === 'spacewalk') return 'spacewalk';
+  if (f.startsWith('continuous')) return 'continuous';
+  if (f.startsWith('daily') || f.startsWith('every') || f.startsWith('same as')) return 'daily';
+  if (f.includes('week')) return 'weekly';
+  return 'daily';
+}
+const shortFrequency = (row: Measurement) =>
+  row.frequency.replace(/\s*\(.*?\)/g, '').replace(/^same as .*/i, 'daily').split(',')[0].split(';')[0];
 const illustrations = import.meta.glob<{ default: ComponentType }>('../Animations/*.tsx', { eager: true });
 const prefixes: Record<string, string> = {
   bp_systolic: 'BloodPressure', bp_diastolic: 'BloodPressure', heart_rate: 'RestingHeartRate',
@@ -427,10 +447,27 @@ export default function MeasureGuide() {
     <section aria-label="Guided measurements" className="guided-measure">
       <style>{`
         .guided-measure { display: grid; gap: 14px; }
-        .guided-measure__picker { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
-        .guided-measure__picker button { border-radius: 999px; }
+        .guided-measure__group + .guided-measure__group { margin-top: 12px; }
+        .guided-measure__group h3 { font-size: 13px !important; margin: 4px 0 6px; text-transform: uppercase; letter-spacing: .08em; }
+        .guided-measure__picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+        .measure-card { display: grid; gap: 3px; align-content: start; min-height: 62px; padding: 10px 12px; text-align: left; border: 1px solid #deded9; border-radius: 12px; background: #fff; color: inherit; font: inherit; cursor: pointer; }
+        .measure-card:hover { border-color: #688594; }
+        .measure-card[aria-pressed="true"] { background: #191c20; color: #fff; border-color: #191c20; }
+        .measure-card:disabled { opacity: .45; cursor: not-allowed; }
+        .measure-card__name { font-weight: 650; font-size: 13px; line-height: 1.25; }
+        .measure-card__meta { font-size: 11px; opacity: .75; }
+        .measure-card[data-level="green"] .measure-card__meta { color: #315314; opacity: 1; }
+        .measure-card[data-level="yellow"] .measure-card__meta { color: #8a6400; opacity: 1; }
+        .measure-card[data-level="red"] .measure-card__meta { color: #a3261d; opacity: 1; }
+        .measure-card[aria-pressed="true"] .measure-card__meta { color: #fff !important; }
         .guided-measure__grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, 1fr); align-items: start; gap: 14px; }
-        .guided-measure__visual { border-radius: 18px; overflow: hidden; background: #edf2f3; min-height: 240px; display: grid; align-items: center; }
+        .guided-measure__visual { border-radius: 18px; overflow: hidden; background: #142538; height: 340px; display: grid; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
+        .guided-measure__visual > img { width: 100% !important; height: 100% !important; object-fit: contain; background: #eef2f4; }
+        .guided-measure__visual > figure { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+        .guided-measure__visual > figure > div { min-height: 0 !important; height: 100%; box-sizing: border-box; padding: 4% 6% !important; }
+        .guided-measure__visual > figure > div > img { height: 220px !important; max-height: 100%; }
+        .guided-measure__visual > figure > figcaption { font-size: 13px !important; padding: 9px 14px !important; }
+        .guided-measure__visual > .guided-measure__empty, .guided-measure__visual > div { align-self: center; background: #edf2f3; height: 100%; display: grid; place-content: center; }
         .guided-measure__empty { text-align: center; padding: 24px; color: #304859; }
         .guided-measure__panel { border-top: 3px solid #adc5ce; display: grid; gap: 10px; }
         .guided-measure__panel h2, .guided-measure__panel p { margin: 0; }
@@ -444,14 +481,30 @@ export default function MeasureGuide() {
         .guided-measure__status[data-level="review"] { color: #304859; background: #edf2f3; }
         @media (max-width: 720px) { .guided-measure__grid { grid-template-columns: 1fr; } }
       `}</style>
-      <Card title="Measurement checklist" aside={<span>ISS protocol · Demo</span>}>
-        <div className="guided-measure__picker" role="group" aria-label="Choose a measurement">
-          {measurements.map((row, index) => row.id !== 'bp_diastolic' && (
-            <button key={row.id} type="button" aria-pressed={selected === index} disabled={blockedIndex >= 0 && index !== blockedIndex}
-              className={selected === index ? 'btn' : 'btn btn--secondary'} onClick={() => choose(index)}>
-              {isRecorded(row.id) ? '✓ ' : ''}{row.id === 'bp_systolic' ? 'Blood pressure' : row.name}
-            </button>
-          ))}
+      <Card title="Measurement checklist" aside={<span>ISS protocol · {checklist.filter((row) => isRecorded(row.id)).length} of {checklist.length} done</span>}>
+        <div role="group" aria-label="Choose a measurement">
+          {GROUPS.map((group) => {
+            const rows = measurements.map((row, index) => ({ row, index }))
+              .filter(({ row }) => row.id !== 'bp_diastolic' && groupOf(row) === group.id);
+            if (rows.length === 0) return null;
+            return (
+              <section key={group.id} className="guided-measure__group">
+                <h3>{group.label} <span className="small muted">· {group.hint}</span></h3>
+                <div className="guided-measure__picker">
+                  {rows.map(({ row, index }) => {
+                    const level = saved[row.id]?.level;
+                    return (
+                      <button key={row.id} type="button" aria-pressed={selected === index} disabled={blockedIndex >= 0 && index !== blockedIndex}
+                        className="measure-card" data-level={level} onClick={() => choose(index)}>
+                        <span className="measure-card__name">{row.id === 'bp_systolic' ? 'Blood pressure' : row.name}</span>
+                        <span className="measure-card__meta">{isRecorded(row.id) ? `✓ ${level ? levelLabel[level] : 'Done'}` : shortFrequency(row)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
         </div>
       </Card>
       {checklistComplete && (

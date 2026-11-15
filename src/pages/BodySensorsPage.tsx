@@ -17,6 +17,7 @@ import { bodyZones, daily as maiaDaily, immune as maiaImmune, measurementTexts, 
 /** Personal sleep band of the analysis (median ± 2.5 robust SD, days 8–21). */
 const SLEEP_BAND = { min: maiaDaily.bands.sleep?.low ?? NaN, max: maiaDaily.bands.sleep?.high ?? NaN };
 import EarthRecovery from '../components/body/EarthRecovery';
+import SpacewalkCard from '../components/body/SpacewalkCard';
 import MeasureGuide, { RecordedMeasurements } from '../components/body/MeasureGuide';
 import './pages.css';
 
@@ -95,7 +96,6 @@ const measurementSteps: Record<string, string[]> = {
 type BodyReading = { value: string; time: string };
 type DailyLog = { date: string; readings: Record<string, BodyReading> };
 
-const astronaut = import.meta.env.BASE_URL + 'avatars/avatar-astronauta.png';
 
 function readProfile() {
   try {
@@ -124,7 +124,9 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
   children: ReactNode;
 }) {
   const [profile] = useState(readProfile);
-  const [orbit, setOrbit] = useState(false);
+  const { place } = useVitals();
+  // Zone texts follow the location chosen in the top bar (in space vs back on Earth).
+  const orbit = place !== 'earth';
   const [zoneId, setZoneId] = useState<string>('heart');
   const [showZoneAnalysis, setShowZoneAnalysis] = useState(false);
   const [measureId, setMeasureId] = useState('heart');
@@ -173,22 +175,11 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
   return (
     <>
     {(tab === 'live' || tab === 'analysis') && <Card className="body-grid__map" title="Body map · 10 zones" aside={<span>Tap a zone</span>}>
-      <SegmentedTabs<'earth' | 'orbit'>
-        ariaLabel="Body map environment"
-        value={orbit ? 'orbit' : 'earth'}
-        onChange={(mode) => {
-          setOrbit(mode === 'orbit');
-          if (mode === 'earth' && zoneId === 'eva') setZoneId('heart');
-        }}
-        options={[{ value: 'earth', label: 'Earth' }, { value: 'orbit', label: 'Orbit' }]}
-      />
-      <div style={{ marginBlock: 12, borderRadius: 12, background: orbit ? '#1d2737' : '#f6f5f0' }}>
+      <div style={{ marginBlock: 12, borderRadius: 12, background: '#f6f5f0' }}>
         <div role="group" aria-label="Body zones" style={{ position: 'relative', width: 'min(100%, 248px)', aspectRatio: '2 / 3', marginInline: 'auto' }}>
-          {orbit
-            ? <img src={astronaut} alt="Astronaut with a white suit and gray accents" width={512} height={768} style={{ display: 'block', width: '100%', height: 'auto', filter: 'grayscale(1)' }} />
-            : <AvatarPortrait avatarId={profile.avatarId} tone={profile.tone} />}
+          <AvatarPortrait avatarId={profile.avatarId} tone={profile.tone} />
           {zones.map((zone, index) => {
-            const [x, y] = orbit ? zone.orbit : zone.point;
+            const [x, y] = zone.point;
             const chosen = zone.id === zoneId;
             return (
               <button
@@ -213,7 +204,6 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
       <div className="bodymap-actions">
         {tab === 'live' && <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.showModal()}>Daily measurements</button>}
         <button type="button" className="btn btn--secondary" onClick={onLogSymptom}>Log a symptom</button>
-        {orbit && <button type="button" className="btn btn--secondary bodymap-actions__wide" aria-pressed={zoneId === 'eva'} onClick={() => openAnalysis('eva')}>Suit life support</button>}
       </div>
       {tab === 'live' && <dialog ref={dailyReview} aria-labelledby="daily-review-title" style={{ padding: 18, borderRadius: 12, maxWidth: 'min(92vw, 540px)' }}>
         <h2 id="daily-review-title">Daily measurements</h2>
@@ -240,7 +230,7 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
     </Card>}
     {tab === 'analysis' && (
       <div className="profile-analysis" style={{ display: 'grid', gap: 14, minWidth: 0 }}>
-        {showZoneAnalysis && <Card title={selected?.label ?? 'Suit life support'} aside={<span>{orbit ? 'Orbit' : 'Earth'}</span>}>
+        {showZoneAnalysis && <Card title={selected?.label ?? 'Suit life support'} aside={<span>{orbit ? 'In space' : 'Back on Earth'}</span>}>
           {selected ? (
             <section className="zone-detail" aria-live="polite">
               <p className="small muted">{selected.measure}</p>
@@ -569,6 +559,20 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
         .earth-tile__value small { font-size: 12px; color: #566878; }
         .earth-tile__pill { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 700; background: #eee; }
         .earth-tile__pill--green { background: #e8f3d6; color: #315314; } .earth-tile__pill--yellow { background: #f8e9ad; color: #5f4600; } .earth-tile__pill--red { background: #f8d8d6; color: #8a211b; }
+        .spacewalk-card { background: linear-gradient(150deg, #eef4f6, #fff 60%); }
+        .spacewalk-card__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+        @media (max-width: 760px) { .spacewalk-card__grid { grid-template-columns: 1fr; } }
+        .spacewalk-card__h { font-size: 13px !important; text-transform: uppercase; letter-spacing: .1em; margin: 0 0 8px; }
+        .spacewalk-card__check { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+        .spacewalk-card__check li { display: grid; grid-template-columns: 1fr auto auto; gap: 2px 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid #e6e7e2; }
+        .spacewalk-card__check li > .small { grid-column: 1 / -1; margin-top: -2px; }
+        .spacewalk-card__check strong { font-family: var(--font-mono, monospace); font-size: 17px; }
+        .spacewalk-card__check small { font-size: 11px; color: #566878; }
+        .spacewalk-card__pill { border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 700; background: #eee; }
+        .spacewalk-card__pill--green { background: #e8f3d6; color: #315314; } .spacewalk-card__pill--yellow { background: #f8e9ad; color: #5f4600; } .spacewalk-card__pill--red { background: #f8d8d6; color: #8a211b; }
+        .spacewalk-card__expect { margin: 0 0 12px; padding-left: 18px; display: grid; gap: 5px; }
+        .spacewalk-card__start { background: #0b1316; color: #b8f5e9; border-color: #0b1316; margin-left: auto; }
+        .spacewalk-card__row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
         .demo-controls > summary { cursor: pointer; padding: 12px 16px; border: 1px dashed #b6c3c9; border-radius: 14px; font-weight: 650; color: #304859; }
         .demo-controls[open] > summary { margin-bottom: 10px; }
         .bodymap-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 4px; }
@@ -656,6 +660,7 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
                   sampleAt={current.t}
                 />
               ))}
+              <div className="body-grid__console"><SpacewalkCard /></div>
               <details className="body-grid__console demo-controls">
                 <summary>Demo controls · simulate a sensor alert</summary>
                 <SensorConsole />

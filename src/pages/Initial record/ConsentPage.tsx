@@ -53,7 +53,7 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
   };
 
   return (
-    <div className="page consent">
+    <div className="page consent consent--roomy">
       <header className="consent__header">
         <div className="consent__brand">
           <span className="consent__logo">Maia</span>
@@ -61,19 +61,19 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
         </div>
         <div className="setup-actions">
           <button
-          type="button"
-          className="btn btn--secondary btn--small"
-          onClick={() => {
-            setStoreLocal(DEMO_CONSENT.storeLocal);
-            setShareTeam(DEMO_CONSENT.shareTeam);
-          }}
-  >
-    Autofill demo
-  </button>
-  <span className="consent__step">
-    Step {CURRENT_STEP} of {TOTAL_STEPS}
-  </span>
-</div>
+            type="button"
+            className="btn btn--secondary btn--small"
+            onClick={() => {
+              setStoreLocal(DEMO_CONSENT.storeLocal);
+              setShareTeam(DEMO_CONSENT.shareTeam);
+            }}
+          >
+            Autofill demo
+          </button>
+          <span className="consent__step">
+            Step {CURRENT_STEP} of {TOTAL_STEPS}
+          </span>
+        </div>
       </header>
 
       <div

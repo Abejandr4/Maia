@@ -1121,3 +1121,68 @@
     max-width: none;
   }
 }
+
+/* ----- Consent page only: more breathing room at the edges ----- */
+.consent.consent--roomy {
+  padding: 48px 56px 56px;
+}
+
+.consent--roomy .consent__header {
+  align-items: center;
+  padding: 8px 4px 0;
+  margin-bottom: 28px;
+}
+
+.consent--roomy .setup-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.consent--roomy .progress {
+  margin-bottom: 48px;
+}
+
+.consent--roomy .consent__footer {
+  margin-top: 36px;
+}
+
+@media (max-width: 900px) {
+  .consent.consent--roomy {
+    padding: 28px 24px 40px;
+  }
+}
+
+/* ----- Setup pages only (Consent + About You): breathing room at the edges ----- */
+.page.consent--roomy,
+.page.about--roomy {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 1120px !important;
+  margin: 0 auto !important;
+  padding: 48px 56px 56px !important;
+}
+
+.page.consent--roomy .consent__header,
+.page.about--roomy .consent__header {
+  align-items: center;
+  padding: 8px 4px 0 !important;
+  margin-bottom: 28px !important;
+}
+
+.page.consent--roomy .progress,
+.page.about--roomy .progress {
+  margin-bottom: 48px !important;
+}
+
+.page.consent--roomy .consent__footer,
+.page.about--roomy .about__footer {
+  margin-top: 36px !important;
+}
+
+@media (max-width: 900px) {
+  .page.consent--roomy,
+  .page.about--roomy {
+    padding: 28px 24px 40px !important;
+  }
+}

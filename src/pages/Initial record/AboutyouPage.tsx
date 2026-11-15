@@ -239,7 +239,7 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
   };
 
   return (
-    <div className="page">
+    <div className="page about--roomy">
       <header className="consent__header">
         <div className="consent__brand">
           <span className="consent__logo">Maia</span>

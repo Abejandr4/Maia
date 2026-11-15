@@ -144,7 +144,8 @@ function PrepScreen({ onStart, onClose }: { onStart: () => void; onClose: () => 
 
 /* ---------- screen 2: outside (simple, big, high contrast) ---------- */
 function LiveScreen({ onEnd }: { onEnd: () => void }) {
-  const { voiceOn, setVoiceOn } = useVitals();
+  const { voiceOn, setVoiceOn, setEvaDone } = useVitals();
+  useEffect(() => setEvaDone(true), [setEvaDone]);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [log, setLog] = useState('Spacewalk started');

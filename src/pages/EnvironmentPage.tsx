@@ -2,7 +2,8 @@ import type { Status } from '../utils/types';
 import { useEnvironmentSummary, useIssPosition, worstSource, type DataSource } from '../utils/api';
 import { ageLabel } from '../utils/format';
 import { useNow } from '../utils/hooks';
-import { REPORT_DAY, daily, reportSection, upTo } from '../data/maiaData';
+import { REPORT_DAY, contexts, daily, reportSection, upTo } from '../data/maiaData';
+import { useVitals } from '../utils/VitalsContext';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/Card';
 import StatusPill from '../components/ui/StatusPill';
@@ -24,6 +25,10 @@ export default function EnvironmentPage() {
   const env = useEnvironmentSummary();
   const issFeed = useIssPosition();
   const summary = env.data;
+  const { place } = useVitals();
+  const ctxId = { iss: 'iss', earth: 'back_on_earth', lunar: 'lunar_surface', mars: 'mars_transit' }[place];
+  const here = contexts.find((c) => c.id === ctxId);
+  const away = place !== 'iss';
 
   /* ---- radiation (SAMPLE: guide §6, 0.4 mSv/day from 18 % prior career dose) ---- */
   const rad = upTo(daily.radiation_pct_of_career_limit);
@@ -90,6 +95,22 @@ export default function EnvironmentPage() {
           </>
         }
       />
+
+      {away && here && (
+        <section className="card env-here">
+          <div>
+            <p className="eyebrow" style={{ margin: '0 0 4px' }}>Where you are now · {here.name}{here.status === 'preview' ? ' · preview' : ''}</p>
+            <p style={{ margin: 0 }}>{here.description.replace(/^Preview\.\s*/, '')}</p>
+          </div>
+          <dl className="env-here__facts">
+            <div><dt>Gravity</dt><dd>{here.gravity}</dd></div>
+            <div><dt>Radiation</dt><dd>{here.daily_dose_msv_min === here.daily_dose_msv_max ? here.daily_dose_msv_max : `${here.daily_dose_msv_min}–${here.daily_dose_msv_max}`} mSv/day</dd></div>
+            <div><dt>Link to Earth</dt><dd>{here.comm_delay_label.replace(' X min', ' minutes')}</dd></div>
+          </dl>
+          <p className="small muted" style={{ margin: 0 }}>Below: the record of your ISS mission (cabin air, radiation and space weather up to day {REPORT_DAY}). Source: contexts.csv ({here.source}).</p>
+        </section>
+      )}
+      {away && <p className="eyebrow" style={{ margin: '4px 0 10px' }}>ISS mission record</p>}
 
       <div className="env-grid">
         <Card

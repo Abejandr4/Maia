@@ -96,7 +96,10 @@ function PrepScreen({ onStart, onClose }: { onStart: () => void; onClose: () => 
 
       <div className="eva-prep">
         <figure className="eva-prep__suit">
-          <img src={suitImage} alt="Spacesuit" width={1024} height={1536} />
+          <div className="eva-prep__portrait">
+            <img src={suitImage} alt="Spacesuit" width={1024} height={1536} />
+            <span className="eva-prep__image-credit"><span aria-hidden="true">✦ </span>AI-generated content</span>
+          </div>
           <figcaption className={`eva-state eva-state--${ready ? 'green' : 'yellow'}`}>{ready ? 'Ready to go out' : 'Check before going out'}</figcaption>
         </figure>
 

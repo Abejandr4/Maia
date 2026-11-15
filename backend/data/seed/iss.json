@@ -1,0 +1,12 @@
+{
+ "name": "iss",
+ "id": 25544,
+ "latitude": -12.41,
+ "longitude": -38.77,
+ "altitude": 418.2,
+ "velocity": 27583.6,
+ "visibility": "daylight",
+ "timestamp": 1794700000,
+ "units": "kilometers",
+ "_note": "Seed snapshot for offline demos. Shapes follow the public feeds; values are illustrative."
+}

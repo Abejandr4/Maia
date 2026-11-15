@@ -29,6 +29,9 @@ export interface VitalsContextValue {
   /** Where the crew member is (ISS, back on Earth…); a spacewalk is evaMode on top of it. */
   place: Place;
   setPlace: (p: Place) => void;
+  /** True once a spacewalk was started in this session (its log goes into the report). */
+  evaDone: boolean;
+  setEvaDone: (v: boolean) => void;
   voiceOn: boolean;
   setVoiceOn: (v: boolean) => void;
   alerts: AlertEntry[];
@@ -49,6 +52,7 @@ export function VitalsProvider({ children }: { children: ReactNode }) {
   const [paused, setPaused] = useState(false);
   const [evaMode, setEvaMode] = useState(false);
   const [place, setPlace] = useState<Place>('iss');
+  const [evaDone, setEvaDone] = useState(false);
   const [voiceOn, setVoiceOn] = useState(true);
   const [alerts, setAlerts] = useState<AlertEntry[]>(INITIAL_ALERTS);
   const [symptoms, setSymptoms] = useState<SymptomEntry[]>(INITIAL_SYMPTOMS);
@@ -163,6 +167,8 @@ export function VitalsProvider({ children }: { children: ReactNode }) {
       setEvaMode,
       place,
       setPlace,
+      evaDone,
+      setEvaDone,
       voiceOn,
       setVoiceOn,
       alerts,
@@ -172,7 +178,7 @@ export function VitalsProvider({ children }: { children: ReactNode }) {
       dismissSpoken,
       testVoice,
     }),
-    [current, history, evaluations, overall, scenario, setScenario, paused, evaMode, place, voiceOn, alerts, symptoms, addSymptom, lastSpoken, dismissSpoken, testVoice],
+    [current, history, evaluations, overall, scenario, setScenario, paused, evaMode, place, evaDone, voiceOn, alerts, symptoms, addSymptom, lastSpoken, dismissSpoken, testVoice],
   );
 
   return <VitalsContext.Provider value={value}>{children}</VitalsContext.Provider>;

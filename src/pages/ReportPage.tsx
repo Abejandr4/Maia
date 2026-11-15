@@ -3,6 +3,8 @@ import { reportSection } from '../data/maiaData';
 import PageHeader from '../components/ui/PageHeader';
 import AstronautView from '../components/maia/report/AstronautView';
 import DoctorView from '../components/maia/report/DoctorView';
+import ValuesLog, { logSizeKb, valuesLogsFor } from '../components/maia/report/ValuesLog';
+import { useVitals } from '../utils/VitalsContext';
 import '../components/maia/maia.css';
 import './pages.css';
 
@@ -14,8 +16,11 @@ export default function ReportPage({ onLogSymptom }: { onLogSymptom: () => void 
   const [doctor, setDoctor] = useState(false);
   const [note, setNote] = useState('');
   const [sent, setSent] = useState(false);
+  const { place, evaDone } = useVitals();
+  const logs = valuesLogsFor(place, evaDone);
   const send = reportSection<{ size_kb: number }>('Send');
-  const sizeKb = (send?.size_kb ?? 0) + new Blob([note]).size / 1024;
+  // packet = analysis report + values log + astronaut note
+  const sizeKb = (send?.size_kb ?? 0) + logSizeKb(logs) + new Blob([note]).size / 1024;
   const go = (d: boolean) => {
     setDoctor(d);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -25,6 +30,7 @@ export default function ReportPage({ onLogSymptom }: { onLogSymptom: () => void 
     return (
       <div className="page page--report">
         <DoctorView note={note} sizeKb={sizeKb} sent={sent} onBack={() => go(false)} />
+        {logs.map((l) => <ValuesLog key={l.title} log={l} technical />)}
       </div>
     );
   }
@@ -53,6 +59,7 @@ export default function ReportPage({ onLogSymptom }: { onLogSymptom: () => void 
         onLogSymptom={onLogSymptom}
         onShowDoctor={() => go(true)}
       />
+      <div style={{ marginTop: 16 }}>{logs.map((l) => <ValuesLog key={l.title} log={l} />)}</div>
     </div>
   );
 }

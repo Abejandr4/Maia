@@ -129,3 +129,16 @@ p {
     transition: none !important;
   }
 }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url('./assets/stars.png') center top / 900px auto repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.3; /* sube a 0.45 para más presencia, baja a 0.2 para más sutil */
+}
+
+/* En la página oscura (Environment) las estrellas negras no se verían */
+body:has(.theme-dark)::before { display: none; }

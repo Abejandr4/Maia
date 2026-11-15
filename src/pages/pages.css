@@ -155,7 +155,7 @@
   .orbit .orbit-node--body { grid-column: 1 / -1; order: -3; }
   .routine-grid__bottom { grid-template-columns: 1fr; }
 }
-/* ================= Consent & Setup ================= */
+/* ================= Consent & Setup (Steps 1–8) ================= */
 .consent {
   max-width: 1120px;
   margin: 0 auto;
@@ -163,24 +163,30 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .consent__header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
+  align-items: baseline;
+  margin-bottom: 18px;
   font-size: 13px;
 }
 
 .consent__brand {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 12px;
 }
 
 .consent__logo {
-  font-weight: 700;
+  font-family: Outfit, var(--font-sans);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
 
@@ -205,37 +211,52 @@
 }
 
 .progress__segment--active {
-  background: #d9a5b3;
+  background: var(--text);
 }
 
-.consent__body {
-  display: grid;
-  grid-template-columns: minmax(260px, 340px) 1fr;
-  gap: 40px;
-  align-items: start;
-  flex: 1;
-}
-
-.consent__intro h1 {
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0 0 12px;
+/* ----- Encabezados unificados (48px Outfit Regular + 15px Poppins) ----- */
+.consent__intro h1,
+.about__intro h1,
+.medical__intro h1,
+.normal__intro h1,
+.mission__intro h1,
+.maia__intro h1,
+.contacts__intro h1 {
+  font-family: Outfit, var(--font-sans);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 6px 0 14px;
   color: var(--text);
 }
 
-.consent__intro p {
+.consent__intro p,
+.about__intro p,
+.medical__intro p,
+.normal__intro p,
+.mission__intro p,
+.maia__intro p,
+.contacts__intro p {
+  font-family: var(--font-sans);
   font-size: 15px;
   color: var(--text-2);
-  line-height: 1.5;
+  line-height: 1.55;
   margin: 0;
 }
 
-.consent__card {
+/* ----- Tarjetas unificadas (18px radio, borde 1px, sombra ligera) ----- */
+.consent__card,
+.about__card,
+.medical__card,
+.normal__card,
+.mission__card,
+.maia__card,
+.contacts__card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 28px 32px;
 }
 
@@ -257,6 +278,79 @@
   color: var(--text);
   line-height: 1.5;
   margin: 0;
+}
+
+/* ----- Botones en forma de píldora y ancho uniforme ----- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 132px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--text);
+  background: var(--text);
+  color: var(--surface);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.btn,
+.btn--primary,
+.consent__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid #181816;
+  background-color: #181816;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover:not(:disabled),
+.btn--primary:hover:not(:disabled),
+.consent__btn:hover:not(:disabled) {
+  background-color: #2c2c29;
+  border-color: #2c2c29;
+  opacity: 1;
+}
+
+.btn:disabled,
+.btn--primary:disabled,
+.consent__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn--secondary {
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  min-width: 140px;
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+/* ----- Consent (Step 1) ----- */
+.consent__body {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: 40px;
+  align-items: start;
+  flex: 1;
 }
 
 .access-table {
@@ -321,51 +415,52 @@
   height: 22px;
   flex-shrink: 0;
   border-radius: 6px;
-  border: 1.5px solid #d9a5b3;
-  background: transparent;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
   display: grid;
   place-items: center;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .check input:checked + .check__box {
-  background: #d9a5b3;
+  background: var(--text);
+  border-color: var(--text);
 }
 
 .check input:checked + .check__box::after {
   content: "✓";
-  color: #232323;
+  color: var(--surface);
   font-size: 13px;
   font-weight: 700;
 }
 
-.consent__footer {
+.consent__footer,
+.about__footer {
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
   margin-top: 28px;
 }
 
 .consent__btn {
-  padding: 12px 28px;
-  border-radius: 12px;
+  min-width: 132px;
+  padding: 12px 26px;
+  border-radius: 999px;
   border: none;
-  background: #d9a5b3;
-  color: #232323;
-  font-weight: 600;
+  background: var(--text);
+  color: var(--surface);
+  font-weight: 500;
   font-size: 14px;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
 .consent__btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-@media (max-width: 860px) {
-  .consent { padding: 20px; }
-  .consent__body { grid-template-columns: 1fr; gap: 24px; }
-}
+/* ----- About You (Step 2) ----- */
 .about__body {
   flex: 1;
   display: grid;
@@ -383,7 +478,6 @@
   flex-direction: column;
   gap: 24px;
   min-height: 0;
-  background: var(--surface, #faf9f6);
 }
 
 .about__top {
@@ -395,27 +489,32 @@
 
 .about__note {
   margin: 0;
-  font-size: 17px;
+  font-size: 14px;
   line-height: 1.5;
-  color: var(--muted, #5f5c58);
+  color: var(--text-2);
 }
 
 .field__label {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text, #232323);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
 }
 
 .field__input {
   width: 100%;
-  padding: 18px 18px;
-  border: 1px solid var(--line, #d9d6d1);
-  border-radius: 14px;
-  background: #ffffff;
-  color: var(--text, #232323);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
   font-family: inherit;
-  font-size: 17px;
+  font-size: 15px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field__input[type="number"],
+.field__input[type="time"] {
+  font-family: var(--font-mono);
 }
 
 .avatar-picker__preview {
@@ -424,26 +523,11 @@
   height: 116px;
   border-radius: 50%;
   overflow: hidden;
-  border: none;
+  border: 1px solid var(--border);
   transition: background-color 0.2s ease;
 }
 
-.btn--secondary {
-  background: var(--surface, #faf9f6);
-  color: var(--text, #232323);
-  border: 1px solid var(--line, #d9d6d1);
-  min-width: 108px;
-}
-
-.btn--secondary:hover:not(:disabled) {
-  background: rgba(222, 188, 247, 0.25);
-  border-color: var(--accent-strong, #d3a8f2);
-}
-
-/* ========================================================================== */
-/* Medical History (Step 3)                                                   */
-/* ========================================================================== */
-
+/* ----- Medical History (Step 3) ----- */
 .medical__body {
   flex: 1;
   display: grid;
@@ -452,47 +536,26 @@
   align-items: start;
 }
 
-.medical__intro h1 {
-  margin: 0 0 16px;
-  font-size: 46px;
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text, #000);
-}
-
-.medical__intro p {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted, #5f5c58);
-}
-
 .medical__card {
   display: flex;
   flex-direction: column;
   gap: 26px;
-  background: var(--surface, #faf9f6);
 }
-
-/* ----- Banner informativo ----- */
 
 .banner {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  border-radius: 14px;
-  background: rgba(222, 188, 247, 0.35);
-  color: var(--text, #232323);
-  font-size: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--advisory-soft);
+  color: var(--advisory-ink);
+  font-size: 14px;
 }
 
 .banner__icon {
   flex: 0 0 auto;
 }
-
-/* ----- Chips ----- */
 
 .chip-section .card__label {
   margin-bottom: 14px;
@@ -509,59 +572,53 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
-  border: 1px solid var(--line, #d9d6d1);
+  padding: 9px 16px;
+  border: 1px solid var(--border);
   border-radius: 999px;
-  background: #ffffff;
-  color: var(--text, #232323);
+  background: var(--surface);
+  color: var(--text);
   font-family: inherit;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .chip:hover {
-  border-color: var(--accent-strong, #d3a8f2);
+  border-color: var(--border-strong);
+  background: var(--surface-2);
 }
 
 .chip--active {
-  background: var(--accent, #debcf7);
-  border-color: var(--text, #232323);
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
 }
 
 .chip--add {
   border-style: dashed;
-  color: var(--muted, #5f5c58);
+  color: var(--text-2);
   background: transparent;
 }
 
 .chip__remove {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
-}
-
-.chip:focus-visible {
-  outline: 3px solid var(--accent-strong, #d3a8f2);
-  outline-offset: 2px;
 }
 
 .chip-input {
   min-width: 200px;
-  padding: 10px 16px;
-  border: 1px solid var(--accent-strong, #d3a8f2);
+  padding: 9px 16px;
+  border: 1px solid var(--advisory);
   border-radius: 999px;
-  background: #ffffff;
-  color: var(--text, #232323);
+  background: var(--surface);
+  color: var(--text);
   font-family: inherit;
-  font-size: 16px;
-  box-shadow: 0 0 0 3px rgba(222, 188, 247, 0.55);
+  font-size: 14px;
 }
 
 .chip-input:focus {
   outline: none;
 }
-
-/* ----- Filas del formulario ----- */
 
 .medical__row {
   display: grid;
@@ -575,60 +632,29 @@
   gap: 18px 40px;
 }
 
-/* ----- Footer ----- */
-
 .medical__actions {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
 }
 
 .btn-text {
   padding: 8px 4px;
   border: none;
   background: transparent;
-  color: var(--text, #232323);
+  color: var(--text-2);
   font-family: inherit;
-  font-size: 17px;
+  font-size: 14px;
   text-decoration: underline;
   text-underline-offset: 4px;
   cursor: pointer;
 }
 
 .btn-text:hover {
-  color: var(--muted, #5f5c58);
+  color: var(--text);
 }
 
-.btn-text:focus-visible {
-  outline: 3px solid var(--accent-strong, #d3a8f2);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-/* ----- Responsive ----- */
-
-@media (max-width: 900px) {
-  .medical__body {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .medical__intro h1 {
-    font-size: 36px;
-  }
-
-  .medical__row {
-    grid-template-columns: 1fr;
-  }
-
-  .medical__actions {
-    gap: 16px;
-  }
-}
-/* ========================================================================== */
-/* Your Normal Values (Step 5)                                                */
-/* ========================================================================== */
-
+/* ----- Your Normal Values (Step 5) ----- */
 .normal__body {
   flex: 1;
   display: grid;
@@ -641,31 +667,12 @@
   align-self: start;
 }
 
-.normal__intro h1 {
-  margin: 0 0 16px;
-  font-size: 46px;
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text, #000);
-}
-
-.normal__intro p {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted, #5f5c58);
-}
-
 .normal__card {
   display: flex;
   flex-direction: column;
   gap: 20px;
   min-height: 0;
-  background: var(--surface, #faf9f6);
 }
-
-/* ----- Cabecera de la tarjeta ----- */
 
 .measure-head {
   display: flex;
@@ -676,21 +683,21 @@
 
 .measure-head__title {
   margin: 0;
+  font-size: 16.5px;
 }
 
 .measure-head__count {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--muted, #5f5c58);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
 }
-
-/* ----- Lista de mediciones ----- */
 
 .measure-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line, #d9d6d1);
+  border-top: 1px solid var(--border);
 }
 
 .measure-row {
@@ -699,9 +706,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px 20px;
-  min-height: 86px;
+  min-height: 78px;
   padding: 14px 0;
-  border-bottom: 1px solid var(--line, #d9d6d1);
+  border-bottom: 1px solid var(--border);
 }
 
 .measure-row:last-child {
@@ -714,15 +721,15 @@
 
 .measure-row__title {
   margin: 0 0 4px;
-  font-size: 19px;
-  font-weight: 600;
-  color: var(--text, #232323);
+  font-size: 16.5px;
+  font-weight: 400;
+  color: var(--text);
 }
 
 .measure-row__sub {
   margin: 0;
-  font-size: 16px;
-  color: var(--muted, #5f5c58);
+  font-size: 14px;
+  color: var(--text-2);
 }
 
 .measure-row__action {
@@ -732,15 +739,14 @@
   margin-left: auto;
 }
 
-/* ----- Estado Done ----- */
-
 .measure-done {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 19px;
-  font-weight: 600;
-  color: var(--check, #3d5a1f);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--normal-ink);
 }
 
 .measure-done--button {
@@ -756,22 +762,12 @@
   text-underline-offset: 4px;
 }
 
-.measure-done--button:focus-visible {
-  outline: 3px solid var(--accent-strong, #d3a8f2);
-  outline-offset: 2px;
-  border-radius: 8px;
-}
-
-/* ----- Boton Measure / Save ----- */
-
 .btn--measure {
-  min-width: 0;
-  padding: 14px 26px;
-  border-radius: 16px;
-  font-size: 18px;
+  min-width: 116px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
 }
-
-/* ----- Editor inline ----- */
 
 .measure-editor {
   display: flex;
@@ -789,19 +785,19 @@
 
 .measure-editor__input {
   width: 120px;
-  padding: 12px 14px;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
 }
 
 .measure-editor__unit {
-  font-size: 16px;
-  color: var(--muted, #5f5c58);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-3);
 }
 
 .measure-editor__cancel {
-  font-size: 16px;
+  font-size: 14px;
 }
-
-/* ----- Selector de animo ----- */
 
 .mood-scale {
   display: flex;
@@ -809,58 +805,30 @@
 }
 
 .mood-scale__btn {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line, #d9d6d1);
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: #ffffff;
-  color: var(--text, #232323);
-  font-family: inherit;
-  font-size: 17px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .mood-scale__btn:hover {
-  border-color: var(--accent-strong, #d3a8f2);
+  border-color: var(--border-strong);
+  background: var(--surface-2);
 }
 
 .mood-scale__btn--active {
-  background: var(--accent, #debcf7);
-  border-color: var(--text, #232323);
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
 }
 
-.mood-scale__btn:focus-visible {
-  outline: 3px solid var(--accent-strong, #d3a8f2);
-  outline-offset: 2px;
-}
-
-/* ----- Responsive ----- */
-
-@media (max-width: 900px) {
-  .normal__body {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .normal__intro h1 {
-    font-size: 36px;
-  }
-
-  .measure-row__action {
-    width: 100%;
-    margin-left: 0;
-    justify-content: flex-start;
-  }
-
-  .measure-editor {
-    justify-content: flex-start;
-  }
-}
-/* ========================================================================== */
-/* Mission & Schedule (Step 6)                                                */
-/* ========================================================================== */
-
+/* ----- Mission & Schedule (Step 6) ----- */
 .mission__body {
   flex: 1;
   display: grid;
@@ -873,28 +841,11 @@
   align-self: start;
 }
 
-.mission__intro h1 {
-  margin: 0 0 16px;
-  font-size: 46px;
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text, #000);
-}
-
-.mission__intro p {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted, #5f5c58);
-}
-
 .mission__card {
   display: flex;
   flex-direction: column;
   gap: 24px;
   min-height: 0;
-  background: var(--surface, #faf9f6);
 }
 
 .mission__row {
@@ -902,8 +853,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
-
-/* ----- Ubicacion actual ----- */
 
 .location-section .card__label {
   margin-bottom: 14px;
@@ -920,12 +869,12 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  min-height: 150px;
+  min-height: 140px;
   padding: 16px;
-  border: 1px solid var(--line, #d9d6d1);
-  border-radius: 16px;
-  background: #ffffff;
-  color: var(--text, #232323);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
   font-family: inherit;
   text-align: left;
   cursor: pointer;
@@ -933,80 +882,43 @@
 }
 
 .location-card:hover {
-  border-color: var(--accent-strong, #d3a8f2);
+  border-color: var(--border-strong);
+  background: var(--surface-2);
 }
 
 .location-card--active {
-  background: var(--accent, #debcf7);
-  border: 1.5px solid #2b2429;
-}
-
-.location-card:focus-visible {
-  outline: 3px solid var(--accent-strong, #d3a8f2);
-  outline-offset: 2px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--text);
 }
 
 .location-card__title {
-  font-size: 19px;
-  font-weight: 500;
+  font-family: Outfit, var(--font-sans);
+  font-size: 16.5px;
+  font-weight: 400;
   line-height: 1.25;
 }
 
 .location-card__sub {
-  font-size: 15px;
-  color: var(--muted, #5f5c58);
+  font-size: 13px;
+  color: var(--text-2);
 }
 
 .location-card__badge {
   display: inline-block;
-  padding: 3px 12px;
+  padding: 3px 10px;
   border-radius: 999px;
-  background: #e6ddd3;
-  color: var(--text, #232323);
-  font-size: 13px;
-  font-weight: 600;
+  background: var(--surface-3);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
 }
-
-/* ----- Inputs de hora ----- */
 
 .field__input[type="time"] {
-  min-height: 62px;
+  min-height: 52px;
 }
 
-/* ----- Responsive ----- */
-
-@media (max-width: 1100px) {
-  .location-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 900px) {
-  .mission__body {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .mission__intro h1 {
-    font-size: 36px;
-  }
-
-  .mission__row {
-    grid-template-columns: 1fr;
-  }
-
-  .location-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .location-card {
-    min-height: 0;
-  }
-}
-/* ========================================================================== */
-/* Meet Maia (Step 7)                                                         */
-/* ========================================================================== */
-
+/* ----- Meet Maia (Step 7) ----- */
 .maia__body {
   flex: 1;
   display: grid;
@@ -1019,28 +931,11 @@
   align-self: start;
 }
 
-.maia__intro h1 {
-  margin: 0 0 16px;
-  font-size: 46px;
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text, #000);
-}
-
-.maia__intro p {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted, #5f5c58);
-}
-
 .maia__card {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 0;
-  
 }
 
 .maia__content {
@@ -1050,8 +945,6 @@
   gap: 48px;
   width: 100%;
 }
-
-/* ----- Espacio para la animacion ----- */
 
 .maia__animation-slot {
   flex: 0 0 auto;
@@ -1068,58 +961,34 @@
   font-weight: 500;
 }
 
-/* ----- Texto ----- */
-
 .maia__text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 18px;
+  gap: 16px;
   max-width: 420px;
 }
 
 .maia__bubble {
   margin: 0;
-  padding: 18px 24px;
-  border-radius: 20px;
-  background: var(--accent, #debcf7);
-  color: var(--text, #232323);
-  font-size: 24px;
-  font-weight: 600;
+  padding: 16px 22px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: Outfit, var(--font-sans);
+  font-size: 22px;
+  font-weight: 400;
 }
 
 .maia__paragraph {
   margin: 0;
-  font-size: 19px;
+  font-size: 15px;
   line-height: 1.6;
-  color: var(--text, #232323);
+  color: var(--text-2);
 }
 
-/* ----- Responsive ----- */
-
-@media (max-width: 900px) {
-  .maia__body {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .maia__intro h1 {
-    font-size: 36px;
-  }
-
-  .maia__content {
-    flex-direction: column;
-    gap: 28px;
-  }
-
-  .maia__text {
-    max-width: none;
-  }
-}
-/* ========================================================================== */
-/* Contacts (Step 8)                                                          */
-/* ========================================================================== */
-
+/* ----- Contacts (Step 8) ----- */
 .contacts__body {
   flex: 1;
   display: grid;
@@ -1132,28 +1001,11 @@
   align-self: start;
 }
 
-.contacts__intro h1 {
-  margin: 0 0 16px;
-  font-size: 46px;
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text, #000);
-}
-
-.contacts__intro p {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted, #5f5c58);
-}
-
 .contacts__card {
   display: flex;
   flex-direction: column;
   gap: 22px;
   min-height: 0;
-  background: var(--surface, #faf9f6);
 }
 
 .contacts__section .card__label {
@@ -1166,17 +1018,69 @@
   gap: 18px;
 }
 
+/* ----- Responsive ----- */
+@media (max-width: 1100px) {
+  .location-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 900px) {
-  .contacts__body {
-    grid-template-columns: 1fr;
-    gap: 28px;
+  .consent {
+    padding: 20px;
   }
 
+  .consent__body,
+  .about__body,
+  .medical__body,
+  .normal__body,
+  .mission__body,
+  .maia__body,
+  .contacts__body {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .consent__intro h1,
+  .about__intro h1,
+  .medical__intro h1,
+  .normal__intro h1,
+  .mission__intro h1,
+  .maia__intro h1,
   .contacts__intro h1 {
     font-size: 36px;
   }
 
+  .medical__row,
+  .mission__row,
   .contacts__row {
     grid-template-columns: 1fr;
+  }
+
+  .location-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .location-card {
+    min-height: 0;
+  }
+
+  .measure-row__action {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+
+  .measure-editor {
+    justify-content: flex-start;
+  }
+
+  .maia__content {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .maia__text {
+    max-width: none;
   }
 }

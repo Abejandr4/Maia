@@ -208,3 +208,5 @@
 .goal__row { display: flex; justify-content: space-between; font-size: 13px; }
 .goal__label { display: inline-flex; align-items: center; gap: 6px; }
 .goal__val { font-family: var(--font-mono); }
+/* goal bars: the onboarding .progress (pages.css) is a grid — keep goal bars a plain bar */
+.goal .progress { display: block; margin-bottom: 0; }

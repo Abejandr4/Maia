@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { PageId } from '../../utils/types';
-import { ASTRONAUT, TODAY_DAY } from '../../utils/mockData';
+import { ASTRONAUT, TODAY_DAY, dayForDate } from '../../utils/mockData';
+import { contexts, type ContextRow } from '../../data/maiaData';
 import { useVitals } from '../../utils/VitalsContext';
 import { useNow } from '../../utils/hooks';
 import Icon from '../ui/Icon';
@@ -16,13 +17,23 @@ const NAV: { id: PageId; label: string }[] = [
 
 type LocationId = 'iss' | 'eva' | 'earth' | 'lunar' | 'mars';
 
-const LOCATIONS: { id: LocationId; label: string; title: string; preview?: boolean }[] = [
-  { id: 'iss', label: 'On the ISS', title: 'ISS health monitor' },
-  { id: 'eva', label: 'Spacewalk', title: 'Spacewalk monitor' },
-  { id: 'earth', label: 'Back on Earth', title: 'Earth health monitor' },
-  { id: 'lunar', label: 'Lunar Surface', title: 'Lunar health monitor', preview: true },
-  { id: 'mars', label: 'Mars Transit', title: 'Mars transit monitor', preview: true },
+const LOCATIONS: { id: LocationId; label: string; title: string; preview?: boolean; context: string }[] = [
+  { id: 'iss', label: 'On the ISS', title: 'ISS health monitor', context: 'iss' },
+  { id: 'eva', label: 'Spacewalk', title: 'Spacewalk monitor', context: 'spacewalk' },
+  { id: 'earth', label: 'Back on Earth', title: 'Earth health monitor', context: 'back_on_earth' },
+  { id: 'lunar', label: 'Lunar Surface', title: 'Lunar health monitor', preview: true, context: 'lunar_surface' },
+  { id: 'mars', label: 'Mars Transit', title: 'Mars transit monitor', preview: true, context: 'mars_transit' },
 ];
+
+const ctxOf = (id: string): ContextRow | undefined => contexts.find((c) => c.id === id);
+const range = (a: number | null, b: number | null, unit: string) =>
+  a == null ? '' : a === b || b == null ? `${a} ${unit}` : `${a}–${b} ${unit}`;
+/** One line per location from contexts.csv: gravity · communication · daily radiation dose. */
+function contextLine(c?: ContextRow) {
+  if (!c) return '';
+  const dose = range(c.daily_dose_msv_min, c.daily_dose_msv_max, 'mSv/day');
+  return [c.gravity, c.comm_delay_label, dose].filter(Boolean).join(' · ');
+}
 
 type MenuId = 'location' | 'alerts' | 'settings';
 
@@ -114,9 +125,12 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
     setEvaMode(false);
   };
 
-  // Alerts that still need a look: warning or critical in the last 24 h.
-  const recent = alerts.filter((a) => now - new Date(a.time).getTime() <= 24 * 3_600_000);
-  const urgent = recent.filter((a) => a.level === 'warning' || a.level === 'critical').length;
+  // Alerts of the last 7 mission days: live sensor alerts + the alerts of the analysis.
+  const recent = alerts
+    .filter((a) => now - new Date(a.time).getTime() <= 7 * 24 * 3_600_000)
+    .sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
+  const urgent = recent.filter((a) => a.level !== 'advisory').length;
+  const currentCtx = ctxOf(current.context);
   const clock = new Date(now).toISOString().slice(11, 16);
 
   return (
@@ -172,10 +186,22 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
                   onClick={() => chooseLocation(l.id)}
                 >
                   <span className="topbar__menu-check">{l.id === location && <Icon name="check" size={14} strokeWidth={2.5} />}</span>
-                  {l.label}
-                  {l.preview && <span className="topbar__tag">Preview</span>}
+                  <span className="topbar__loc-text">
+                    <span>
+                      {l.label}
+                      {l.preview && <span className="topbar__tag">Preview</span>}
+                    </span>
+                    <span className="topbar__loc-meta">{contextLine(ctxOf(l.context))}</span>
+                  </span>
                 </button>
               ))}
+              {currentCtx && (
+                <div className="topbar__loc-about">
+                  <p>{currentCtx.description}</p>
+                  <p className="topbar__loc-meta">{currentCtx.comm_policy}</p>
+                  <p className="topbar__loc-src">contexts.csv · {currentCtx.source}</p>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -195,9 +221,9 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
           </button>
           {openMenu === 'alerts' && (
             <div className="topbar__menu topbar__menu--wide" role="dialog" aria-label="Alerts">
-              <p className="topbar__menu-title">Alerts · last 24 h</p>
+              <p className="topbar__menu-title">Alerts · last 7 days</p>
               {recent.length === 0 ? (
-                <p className="topbar__menu-empty">No alerts in the last 24 hours.</p>
+                <p className="topbar__menu-empty">No alerts in the last 7 days.</p>
               ) : (
                 <ul className="topbar__alerts">
                   {recent.slice(0, 6).map((a) => (
@@ -205,7 +231,9 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
                       <div className="topbar__alert-head">
                         <StatusPill status={a.level} size="sm" />
                         <span className="topbar__alert-vital">{a.vital}</span>
-                        <span className="topbar__alert-time">{timeAgo(a.time, now)}</span>
+                        <span className="topbar__alert-time">
+                          D{dayForDate(new Date(a.time))} · {timeAgo(a.time, now)}
+                        </span>
                       </div>
                       <p>{a.message}</p>
                     </li>
@@ -217,10 +245,10 @@ export default function TopBar({ page, onNavigate, onLogSymptom, emergencySlot }
                 className="topbar__menu-link"
                 onClick={() => {
                   setOpenMenu(null);
-                  onNavigate('body');
+                  onNavigate('report');
                 }}
               >
-                See the evidence in Body &amp; Sensors
+                See the evidence in Reports
                 <Icon name="chevron" size={14} />
               </button>
             </div>

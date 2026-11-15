@@ -21,4 +21,8 @@ TTL = {
     "donki": 60 * 60,
 }
 
-FRONTEND_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
+FRONTEND_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    *[o.strip() for o in os.getenv("FRONTEND_ORIGINS", "").split(",") if o.strip()],
+]

@@ -12,6 +12,10 @@ import sourcesJson from './generated/maia_sources.json'
 import alertsJson from './generated/maia_alerts.json'
 import measurementsJson from './generated/maia_measurements.json'
 import pastReportsJson from './generated/maia_past_reports.json'
+import routineJson from './generated/maia_routine.json'
+import contextsJson from './generated/maia_contexts.json'
+import bodyZonesJson from './generated/maia_body_zones.json'
+import symptomsJson from './generated/maia_symptoms.json'
 
 // ---------- types ----------
 export type Side = '' | 'high' | 'low' | 'missing' | 'eva_shown'
@@ -105,6 +109,33 @@ export interface MeasurementText {
 export interface PastReport { day: number; headline: string; n_changes: number; data_completeness_pct: number; size_kb: number }
 /** Earlier weekly reports, made with the same method on an earlier report day. */
 export const pastReports = pastReportsJson as unknown as PastReport[]
+
+export interface RoutineRow { time: string; task: string; type: string; measurement_id: string | null; location: string; source: string; evidence_level: string }
+/** Daily routine from daily_routine.csv (times are DEMO, sleep period cited). */
+export const routine = routineJson as unknown as RoutineRow[]
+
+export interface ContextRow {
+  id: string; name: string; status: string; gravity: string; comm_delay_label: string
+  delay_one_way_min_s: number | null; delay_one_way_max_s: number | null
+  blackout_days_min: number | null; blackout_days_max: number | null
+  daily_dose_msv_min: number | null; daily_dose_msv_max: number | null
+  stricter_rules: string; description: string; comm_policy: string; source: string; evidence_level: string
+}
+/** Locations from contexts.csv (ISS, spacewalk, back on Earth, lunar and Mars previews). */
+export const contexts = contextsJson as unknown as ContextRow[]
+
+export interface BodyZoneRow {
+  id: string; name: string; pos_x: number; pos_y: number
+  what_it_does: string; what_space_does: string; what_affects_it_on_earth: string
+  measurements: string | null; how_to_care: string; eva_focus: string; nasa_risks: string; symptoms: string
+  source: string; evidence_level: string
+}
+/** The 10 body zones of body_zones.csv (single source for the body map). */
+export const bodyZones = bodyZonesJson as unknown as BodyZoneRow[]
+
+export interface SymptomRow { id: string; zone: string; name: string; severity_scale: string; environment_link: string | null; notes: string | null; source: string; evidence_level: string }
+/** Symptom list of symptoms.csv (id, zone, name). */
+export const symptomList = symptomsJson as unknown as SymptomRow[]
 
 export const measurementTexts = measurementsJson as unknown as Record<string, MeasurementText>
 

@@ -50,7 +50,7 @@ export interface AlertEntry {
   id: string;
   vital: string;
   message: string;
-  level: 'advisory' | 'warning' | 'critical';
+  level: 'advisory' | 'caution' | 'warning' | 'critical';
   time: string; // ISO
   source: 'sensor' | 'simulated' | 'system';
 }

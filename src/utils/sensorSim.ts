@@ -1,14 +1,16 @@
 import type { Metric, Scenario, VitalEvaluation, VitalKey, VitalSample } from './types';
+import { PERSONAL_NORMAL, mid } from './baselines';
+import { TODAY_DAY, valueOn } from './mockData';
 
 export const TICK_MS = 1500;
 
-export const NOMINAL: Record<Metric, number> = {
-  systolic: 123,
-  diastolic: 79,
-  hr: 60,
-  spo2: 98,
-  temp: 36.6,
-};
+/** Live feed centre = today's morning check from the analysis (SAMPLE); band middle if a value is missing. */
+export const NOMINAL: Record<Metric, number> = Object.fromEntries(
+  (['systolic', 'diastolic', 'hr', 'spo2', 'temp'] as Metric[]).map((m) => {
+    const v = valueOn(m, TODAY_DAY);
+    return [m, Number.isFinite(v) ? v : mid(PERSONAL_NORMAL[m])];
+  }),
+) as Record<Metric, number>;
 
 const NOISE: Record<Metric, number> = {
   systolic: 1.2,
@@ -23,10 +25,11 @@ export const SCENARIOS: Record<
   { label: string; detail: string; severity: 'warning' | 'critical'; target: Partial<Record<Metric, number>> }
 > = {
   nominal: { label: 'Nominal', detail: 'Personal baseline', severity: 'warning', target: {} },
-  hypertension: { label: 'High pressure', detail: '162 / 101 mmHg', severity: 'critical', target: { systolic: 162, diastolic: 101, hr: 78 } },
-  tachycardia: { label: 'Tachycardia', detail: '148 bpm', severity: 'critical', target: { hr: 148 } },
-  hypoxia: { label: 'Hypoxia', detail: '86 % SpO₂', severity: 'critical', target: { spo2: 86, hr: 96 } },
-  fever: { label: 'Fever', detail: '39.4 °C', severity: 'warning', target: { temp: 39.4, hr: 86 } },
+  // Targets from data/sensor_scenarios.csv (simulated values, labelled as such in the app)
+  hypertension: { label: 'High pressure', detail: '185 / 122 mmHg', severity: 'critical', target: { systolic: 185, diastolic: 122 } },
+  tachycardia: { label: 'Tachycardia', detail: '155 bpm', severity: 'critical', target: { hr: 155 } },
+  hypoxia: { label: 'Hypoxia', detail: '86 % SpO₂', severity: 'critical', target: { spo2: 86 } },
+  fever: { label: 'Fever', detail: '39.2 °C', severity: 'critical', target: { temp: 39.2 } },
 };
 
 const METRICS: Metric[] = ['systolic', 'diastolic', 'hr', 'spo2', 'temp'];

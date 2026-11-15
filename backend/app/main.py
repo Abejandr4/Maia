@@ -11,7 +11,13 @@ from .sources import register_all
 register_all()
 
 app = FastAPI(title="Maia backend", version="0.1.0")
-app.add_middleware(CORSMiddleware, allow_origins=config.FRONTEND_ORIGINS, allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=config.FRONTEND_ORIGINS,
+    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(dataset.router)
 app.include_router(environment.router)

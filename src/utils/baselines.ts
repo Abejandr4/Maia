@@ -1,31 +1,37 @@
 import type { Metric, Range, Status, VitalEvaluation, VitalSample } from './types';
 
-/** Learned from the astronaut's own data on mission days 1–14. */
-export const PERSONAL_NORMAL: Record<Metric, Range> = {
-  systolic: { min: 120, max: 126 },
-  diastolic: { min: 76, max: 82 },
-  hr: { min: 52, max: 68 },
-  spo2: { min: 96, max: 99 },
-  temp: { min: 36.3, max: 36.9 },
-};
+import { daily } from '../data/maiaData';
 
-/** General adult reference ranges. */
-export const GENERAL_REF: Record<Metric, Range> = {
-  systolic: { min: 100, max: 130 },
-  diastolic: { min: 60, max: 85 },
-  hr: { min: 45, max: 90 },
-  spo2: { min: 92, max: 100 },
-  temp: { min: 35.5, max: 37.5 },
-};
+/* Ranges come from the analysis (src/data/generated/maia_daily.json):
+ *  - PERSONAL_NORMAL = personal band, median ± 2.5 robust SD learned on flight days 8–21 (guide 3.1)
+ *  - GENERAL_REF     = green reference range of measurement_ranges.csv (ISS)
+ *  - SAFETY_LIMIT    = red limits of measurement_ranges.csv; past them the emergency card opens
+ * When the CSV has no green limit on one side, the red limit is used on that side.
+ */
+const KEY: Record<Metric, string> = { systolic: 'bp_systolic', diastolic: 'bp_diastolic', hr: 'heart_rate', spo2: 'spo2', temp: 'temperature' };
+const METRICS = Object.keys(KEY) as Metric[];
+const num = (v: number | null | undefined, fallback: number) => (v == null || !Number.isFinite(v) ? fallback : v);
 
-/** Outside these = critical. Between general ref and these = warning. */
-export const SAFETY_LIMIT: Record<Metric, Range> = {
-  systolic: { min: 85, max: 155 },
-  diastolic: { min: 50, max: 98 },
-  hr: { min: 40, max: 130 },
-  spo2: { min: 89, max: 100 },
-  temp: { min: 35, max: 39.5 },
-};
+export const PERSONAL_NORMAL: Record<Metric, Range> = Object.fromEntries(
+  METRICS.map((m) => {
+    const b = daily.bands[KEY[m]];
+    return [m, { min: num(b?.low, -Infinity), max: num(b?.high, Infinity) }];
+  }),
+) as Record<Metric, Range>;
+
+export const SAFETY_LIMIT: Record<Metric, Range> = Object.fromEntries(
+  METRICS.map((m) => {
+    const r = daily.reference[KEY[m]];
+    return [m, { min: num(r?.red_below, -Infinity), max: num(r?.red_above, Infinity) }];
+  }),
+) as Record<Metric, Range>;
+
+export const GENERAL_REF: Record<Metric, Range> = Object.fromEntries(
+  METRICS.map((m) => {
+    const r = daily.reference[KEY[m]];
+    return [m, { min: num(r?.green_min, SAFETY_LIMIT[m].min), max: num(r?.green_max, SAFETY_LIMIT[m].max) }];
+  }),
+) as Record<Metric, Range>;
 
 export const STATUS_RANK: Record<Status, number> = {
   normal: 0,
@@ -50,11 +56,20 @@ export function rangeText(r: Range, digits = 0) {
   return `${r.min.toFixed(digits)}–${r.max.toFixed(digits)}`;
 }
 
+/**
+ * One live reading:
+ *  red limit passed            → critical (emergency card, spoken alert)
+ *  outside the green reference → caution
+ *  outside your personal band  → advisory (one reading is never a marked change: that needs 4 of 6 days)
+ *  otherwise                   → normal
+ */
 export function classify(metric: Metric, value: number): Status {
-  if (inRange(value, PERSONAL_NORMAL[metric])) return 'normal';
-  if (inRange(value, GENERAL_REF[metric])) return 'caution';
-  if (inRange(value, SAFETY_LIMIT[metric])) return 'warning';
-  return 'critical';
+  if (!inRange(value, SAFETY_LIMIT[metric])) return 'critical';
+  if (!inRange(value, GENERAL_REF[metric])) return 'caution';
+  // high SpO₂ is never a concern: only the low side counts
+  if (metric === 'spo2' && value > PERSONAL_NORMAL.spo2.max) return 'normal';
+  if (!inRange(value, PERSONAL_NORMAL[metric])) return 'advisory';
+  return 'normal';
 }
 
 export function worstStatus(list: Status[]): Status {

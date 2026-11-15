@@ -67,9 +67,9 @@ export default function EnvironmentPage() {
         value: 'Offline',
         status: 'advisory' as Status,
         label: 'No live feed',
-        detail: replay
-          ? `Backend offline. Demo replays the ${replay.date.slice(0, 10)} storm (${replay.noaa_s_scale}, ${replay.proton_flux_pfu} pfu) on mission day 30.`
-          : 'Backend offline.',
+        detail: env.error
+        ? `Backend error: ${env.error}. ${replay ? `Demo replays the ${replay.date.slice(0, 10)} storm (${replay.noaa_s_scale}, ${replay.proton_flux_pfu} pfu) on mission day 30.` : ''}`
+        : 'Connecting to the backend…',
       };
 
   const source: DataSource | 'offline' = summary ? worstSource(Object.values(summary.sources)) : 'offline';

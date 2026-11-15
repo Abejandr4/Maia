@@ -11,19 +11,19 @@ import EvaVisor from "./components/body/EvaVisor";
 import BodySensorsPage from "./pages/BodySensorsPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ReportPage from "./pages/ReportPage";
-import ConsentPage from './pages/Initial record/ConsentPage';
-import AboutYouPage from './pages/Initial record/AboutyouPage';
-import MedicalHistoryPage from './pages/Initial record/MedicalHistoryPage';
-import FlightHistoryPage from './pages/Initial record/FlightHistoryPage';
-import YourNormalValuesPage from './pages/Initial record/YourNormalValuesPage';
-import MissionSchedulePage from './pages/Initial record/MissionSchedulePage';
-import MeetMaiaPage from './pages/Initial record/MeetMaiaPage';
-import ContactsPage from './pages/Initial record/ContactsPage';
+import ConsentPage from "./pages/Initial record/ConsentPage";
+import AboutYouPage from "./pages/Initial record/AboutyouPage";
+import MedicalHistoryPage from "./pages/Initial record/MedicalHistoryPage";
+import FlightHistoryPage from "./pages/Initial record/FlightHistoryPage";
+import YourNormalValuesPage from "./pages/Initial record/YourNormalValuesPage";
+import MissionSchedulePage from "./pages/Initial record/MissionSchedulePage";
+import MeetMaiaPage from "./pages/Initial record/MeetMaiaPage";
+import ContactsPage from "./pages/Initial record/ContactsPage";
 import EmergencyButton from "./components/emergency/EmergencyButton";
-import { saveDemoSetup } from './utils/demoProfile';
 import EmergencyScreen, {
   type EmergencyReport,
 } from "./components/emergency/EmergencyScreen";
+import { saveDemoSetup } from "./utils/demoProfile";
 import { ASTRONAUT } from "./utils/mockData";
 
 function Shell() {
@@ -49,6 +49,7 @@ function Shell() {
     },
     [addSymptom],
   );
+
   const navigate = useCallback((p: PageId) => {
     setPage(p);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -56,165 +57,147 @@ function Shell() {
 
   return (
     <>
-    {evaMode && <div className="eva-shell"><EvaVisor /></div>}
-    <div hidden={evaMode} style={evaMode ? { display: "none" } : undefined}
-      className={`app app--${page} ${page === "environment" ? "theme-dark" : ""}`}
-    >
-      <TopBar
-        page={page}
-        onNavigate={navigate}
-        onLogSymptom={openLog}
-        emergencySlot={
-          <EmergencyButton onClick={() => setEmergencyOpen(true)} />
-        }
-      />
-
-      <main className="app-main">
-        <AlertBanner />
-        {page === "home" && <HomePage onNavigate={navigate} />}
-        {page === "body" && <BodySensorsPage onLogSymptom={openLog} />}
-        {page === "environment" && <EnvironmentPage />}
-        {page === "report" && <ReportPage onLogSymptom={openLog} />}
-      </main>
-
-      <Modal open={logOpen} onClose={closeLog} title="Log a symptom">
-        <SymptomLog onClose={closeLog} onSubmit={addSymptom} />
-      </Modal>
-
-      {emergencyOpen && (
-        <EmergencyScreen
-          open
-          onClose={closeEmergency}
-          crew={{
-            id: "CM-01",
-            name: ASTRONAUT.name,
-            mission: "Space Apps 2026",
-          }}
-          onSend={sendEmergency}
-        />
+      {evaMode && (
+        <div className="eva-shell">
+          <EvaVisor />
+        </div>
       )}
-    </div>
+      <div
+        hidden={evaMode}
+        style={evaMode ? { display: "none" } : undefined}
+        className={`app app--${page} ${page === "environment" ? "theme-dark" : ""}`}
+      >
+        <TopBar
+          page={page}
+          onNavigate={navigate}
+          onLogSymptom={openLog}
+          emergencySlot={<EmergencyButton onClick={() => setEmergencyOpen(true)} />}
+        />
+
+        <main className="app-main">
+          <AlertBanner />
+          {page === "home" && <HomePage onNavigate={navigate} />}
+          {page === "body" && <BodySensorsPage onLogSymptom={openLog} />}
+          {page === "environment" && <EnvironmentPage />}
+          {page === "report" && <ReportPage onLogSymptom={openLog} />}
+        </main>
+
+        <Modal open={logOpen} onClose={closeLog} title="Log a symptom">
+          <SymptomLog onClose={closeLog} onSubmit={addSymptom} />
+        </Modal>
+
+        {emergencyOpen && (
+          <EmergencyScreen
+            open
+            onClose={closeEmergency}
+            crew={{ id: "CM-01", name: ASTRONAUT.name, mission: "Space Apps 2026" }}
+            onSend={sendEmergency}
+          />
+        )}
+      </div>
     </>
   );
 }
 
 type SetupStep =
-  | 'consent'
-  | 'aboutYou'
-  | 'medicalHistory'
-  | 'flightHistory'
-  | 'normalValues'
-  | 'missionSchedule'
-  | 'meetMaia'
-  | 'contacts'
-  | 'done';
+  | "consent"
+  | "aboutYou"
+  | "medicalHistory"
+  | "flightHistory"
+  | "normalValues"
+  | "missionSchedule"
+  | "meetMaia"
+  | "contacts"
+  | "done";
 
 export default function App() {
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [setupStep, setSetupStep] = useState<SetupStep>(() => {
-=======
-  const skipWithDemo = () => {
-  saveDemoSetup();
-  setSetupStep('done');
-};
-
-
-  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
->>>>>>> skipQuestionnaire
-=======
-  const [setupStep, setSetupStep] = useState<SetupStep>(() => {
->>>>>>> c129a2b25728f99666501d6257b355c5257a6b0f
     try {
-      return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
+      return localStorage.getItem("hasCompletedSetup") === "true" ? "done" : "consent";
     } catch {
-      return 'consent';
+      return "consent";
     }
   });
 
   const handleFinishOnboarding = () => {
     try {
-      localStorage.setItem('hasCompletedSetup', 'true');
+      localStorage.setItem("hasCompletedSetup", "true");
     } catch {
-      // Ignorar si localStorage no está disponible
+      // Ignore if localStorage is unavailable
     }
-    setSetupStep('done');
+    setSetupStep("done");
+  };
+
+  const skipWithDemo = () => {
+    saveDemoSetup();
+    setSetupStep("done");
   };
 
   return (
     <VitalsProvider>
-      {setupStep === 'consent' && (
-     <ConsentPage onComplete={() => setSetupStep('aboutYou')} />
-)}
-      {setupStep === 'aboutYou' && (
+      {setupStep === "consent" && (
+        <ConsentPage onComplete={() => setSetupStep("aboutYou")} />
+      )}
+
+      {setupStep === "aboutYou" && (
         <AboutYouPage
-          onBack={() => setSetupStep('consent')}
-          onComplete={() => setSetupStep('medicalHistory')}
+          onBack={() => setSetupStep("consent")}
+          onComplete={() => setSetupStep("medicalHistory")}
         />
       )}
 
-      {setupStep === 'medicalHistory' && (
+      {setupStep === "medicalHistory" && (
         <MedicalHistoryPage
-          onBack={() => setSetupStep('aboutYou')}
-          onSkip={() => setSetupStep('flightHistory')}
-          onComplete={() => setSetupStep('flightHistory')}
+          onBack={() => setSetupStep("aboutYou")}
+          onSkip={() => setSetupStep("flightHistory")}
+          onComplete={() => setSetupStep("flightHistory")}
         />
       )}
 
-      {setupStep === 'flightHistory' && (
+      {setupStep === "flightHistory" && (
         <FlightHistoryPage
-          onBack={() => setSetupStep('medicalHistory')}
-          onSkip={() => setSetupStep('normalValues')}
-          onComplete={() => setSetupStep('normalValues')}
+          onBack={() => setSetupStep("medicalHistory")}
+          onSkip={() => setSetupStep("normalValues")}
+          onComplete={() => setSetupStep("normalValues")}
         />
       )}
 
-      {setupStep === 'normalValues' && (
+      {setupStep === "normalValues" && (
         <YourNormalValuesPage
-          onBack={() => setSetupStep('flightHistory')}
-          onComplete={() => setSetupStep('missionSchedule')}
+          onBack={() => setSetupStep("flightHistory")}
+          onComplete={() => setSetupStep("missionSchedule")}
         />
       )}
-      {setupStep === 'missionSchedule' && (
+
+      {setupStep === "missionSchedule" && (
         <MissionSchedulePage
-          onBack={() => setSetupStep('normalValues')}
-          onComplete={() => setSetupStep('meetMaia')}
+          onBack={() => setSetupStep("normalValues")}
+          onComplete={() => setSetupStep("meetMaia")}
         />
       )}
 
-      {setupStep === 'meetMaia' && (
+      {setupStep === "meetMaia" && (
         <MeetMaiaPage
-          onBack={() => setSetupStep('missionSchedule')}
-          onComplete={() => setSetupStep('contacts')}
+          onBack={() => setSetupStep("missionSchedule")}
+          onComplete={() => setSetupStep("contacts")}
         />
       )}
 
-      {setupStep === 'contacts' && (
+      {setupStep === "contacts" && (
         <ContactsPage
-          onBack={() => setSetupStep('meetMaia')}
+          onBack={() => setSetupStep("meetMaia")}
           onSkip={handleFinishOnboarding}
           onComplete={handleFinishOnboarding}
         />
       )}
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-      {setupStep !== 'done' && (
+      {setupStep !== "done" && (
         <button type="button" className="demo-skip" onClick={skipWithDemo}>
           Skip setup · demo profile
-          </button>
-        )}
-        {setupStep !== 'done' && (
-          <button type="button" className="demo-skip" onClick={skipWithDemo}>
-            Skip setup · demo profile
-            </button>
-          )}
->>>>>>> skipQuestionnaire
-=======
+        </button>
+      )}
 
->>>>>>> c129a2b25728f99666501d6257b355c5257a6b0f
-      {setupStep === 'done' && <Shell />}
+      {setupStep === "done" && <Shell />}
     </VitalsProvider>
   );
 }

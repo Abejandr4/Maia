@@ -191,6 +191,26 @@ function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; 
   );
 }
 
+/** Mounts the 3D mascot only while it is on or near the screen. */
+function LazyMascot({ size }: { size: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
+      rootMargin: '200px 0px', // start a little before it scrolls in
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{ width: size, height: size }}>
+      {visible && <Mascot size={size} />}
+    </div>
+  );
+}
+
 /** The red "immune thread" note that runs through the whole page. */
 function ImmuneThread({ children }: { children: ReactNode }) {
   return (
@@ -323,7 +343,7 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
         <div className="hero__stars" aria-hidden="true" />
         <div className="hero__orbit" aria-hidden="true" />
         <div className="hero__mascot">
-          <Mascot size={300} />
+          <LazyMascot size={300} />
         </div>
         <div className="hero__copy">
           <p className="landing__eyebrow">Health monitoring for space missions</p>
@@ -350,18 +370,11 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
             </button>
           </div>
         </div>
-        <button
-          type="button"
-          className="hero__scroll"
-          onClick={() => hazardsRef.current?.scrollIntoView({ behavior: 'smooth' })}
-          aria-label="Scroll to learn more"
-        >
-          <span />
-        </button>
+
       </section>
 
       {/* ---------- 2. hazards by environment ---------- */}
-      <section className="lsection" ref={hazardsRef}>
+      <section className="lsection lsection--first" ref={hazardsRef}>
         <Reveal>
           <p className="landing__eyebrow">01 · The environment</p>
           <h2 className="lsection__title">Five hazards follow every crew.</h2>
@@ -409,7 +422,7 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
           <p className="lsection__fine">
             Hazard descriptions:{' '}
             <a className="nasa-link"
-            href="https://www.nasa.gov/hrp/risks/"
+            href="https://www.nasa.gov/hrp/hazards/"
              target="_blank"
              rel="noopener noreferrer"
              >
@@ -457,19 +470,48 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
             </div>
           </article>
           <RiskWheel selected={riskIdx} onSelect={setRiskIdx} />
+          <p className="lsection__fine">
+            Risks of Human Spaceflight:{' '}
+            <a className="nasa-link"
+            href="https://www.nasa.gov/hrp/risks/"
+             target="_blank"
+             rel="noopener noreferrer"
+             >
+              Data from NASA ↗
+              </a>{' '}
+               · Bars show relative exposure between environments, for illustration.
+          </p>
         </Reveal>
       </section>
 
       {/* ---------- 4. the problem ---------- */}
       <section className="lsection">
-        <Reveal>
-          <p className="landing__eyebrow">03 · The problem</p>
-          <h2 className="lsection__title">The doctor is very, very far away.</h2>
-          <p className="lsection__lede">
-            On Earth, a strange rash means a quick visit. In space, the crew has a limited medical kit, usually no physician on board,
-            and a ground team that sees them through a delayed, part-time link.
-          </p>
-        </Reveal>
+        <div className="problem-intro">
+          <Reveal>
+            <p className="landing__eyebrow">03 · The problem</p>
+            <h2 className="lsection__title">The doctor is very, very far away.</h2>
+            <p className="lsection__lede">
+              On Earth, a strange rash means a quick visit. In space, the crew has a limited medical kit, usually no physician on board,
+              and a ground team that sees them through a delayed, part-time link.
+            </p>
+          </Reveal>
+
+          <Reveal delay={150} className="problem-intro__aside">
+            <p className="immune-aside">
+              Risk is inherent in space missions, but it should be managed and prevented as much as possible. According to NASA's Human
+              Research Program, astronauts' body systems, including their immune system, are at risk from the hazards found in space,
+              which may result in bodily reactions and symptoms.
+            </p>
+            <blockquote className="immune-quote">
+              "Given that medical conditions will occur during human spaceflight missions, there is a possibility of adverse health
+              outcomes &amp; decrements in performance during these missions and for long term health."
+              <cite>NASA Human Research Roadmap</cite>
+            </blockquote>
+            <p className="immune-aside">
+              This means astronauts' health should be tracked closely, and followed with treatment when needed.
+            </p>
+          </Reveal>
+        </div>
 
         <div className="problems">
           {[
@@ -478,7 +520,7 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
             { big: '1 kit', label: 'of medical supplies, no hospital', sub: 'what is on board is what there is' },
             { big: '4–6', label: 'people, isolated for months', sub: 'often no physician among them' },
           ].map((p, i) => (
-            <Reveal key={p.big} delay={i * 90} className="problem">
+            <Reveal key={p.big} delay={i * 110} className="problem">
               <span className="problem__big">{p.big}</span>
               <span className="problem__label">{p.label}</span>
               <span className="problem__sub">{p.sub}</span>
@@ -486,11 +528,14 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
           ))}
         </div>
 
-        <Reveal delay={120}>
-          <ImmuneThread>
-            Immune changes often show first on the skin and in how the body feels: a rash, shingles, a new allergy, constant tiredness.
-            By the time a lab result comes back, the moment to act may be gone. A clear photo and a timeline help the flight surgeon see it now.
-          </ImmuneThread>
+        <Reveal delay={100}>
+          <p className="lsection__fine sources">
+            Sources, all NASA:{' '}
+            <a className="nasa-link" href="https://www.nasa.gov/directorates/esdmd/hhp/immune-risk/" target="_blank" rel="noopener noreferrer">Immune Risk ↗</a>
+            <a className="nasa-link" href="https://www.nasa.gov/reference/risk-of-altered-immune-system-responses/" target="_blank" rel="noopener noreferrer">Altered Immune System Responses ↗</a>
+            <a className="nasa-link" href="https://www.nasa.gov/hhp/human-system-risks/" target="_blank" rel="noopener noreferrer">Human System Risks ↗</a>
+            <a className="nasa-link" href="https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=95" target="_blank" rel="noopener noreferrer">Risk of Adverse Health Outcomes ↗</a>
+          </p>
         </Reveal>
       </section>
 
@@ -521,8 +566,8 @@ export default function LandingPage({ onStart, onDemo }: LandingPageProps) {
 
         <Reveal delay={200} className="cta">
           <div className="cta__mascot">
-            <Mascot size={120} />
-          </div>
+          <LazyMascot size={120} />
+        </div>
           <div>
             <h3 className="cta__title">Ready to set up your health record?</h3>
             <p className="cta__sub">It takes a few minutes and works without a connection.</p>

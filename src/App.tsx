@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage";
 import BodySensorsPage from "./pages/BodySensorsPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ReportPage from "./pages/ReportPage";
+import ConsentPage from './pages/ConsentPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
 import EmergencyScreen, {
   type EmergencyReport,
@@ -86,9 +87,21 @@ function Shell() {
 }
 
 export default function App() {
+  const [hasConsented, setHasConsented] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('hasCompletedSetup') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
   return (
     <VitalsProvider>
-      <Shell />
+      {hasConsented ? (
+        <Shell />
+      ) : (
+        <ConsentPage onComplete={() => setHasConsented(true)} />
+      )}
     </VitalsProvider>
   );
 }

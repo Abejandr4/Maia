@@ -258,3 +258,65 @@
   .em-grid, .em-list, .em-two, .em-choices { grid-template-columns: 1fr; }
   .em__title { font-size: 26px; }
 }
+
+/* ---------- cards with the photo of each emergency ---------- */
+.em-card--photo,
+.em-card--photo:hover,
+.em-card--photo:active {
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  background-color: var(--surface);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* dark veil: strong at the bottom where the text is, light at the top so the photo shows */
+.em-card--photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(14, 16, 19, .25) 0%, rgba(14, 16, 19, .55) 45%, rgba(14, 16, 19, .92) 100%);
+  transition: background .15s;
+}
+.em-card--photo:hover::before { background: linear-gradient(180deg, rgba(14, 16, 19, .12) 0%, rgba(14, 16, 19, .45) 45%, rgba(14, 16, 19, .9) 100%); }
+.em-card--photo .em-card__text strong { color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .6); }
+.em-card--photo .em-card__text span { color: #e3e6ea; text-shadow: 0 1px 2px rgba(0, 0, 0, .6); }
+.em-card--photo .em-card__icon { background: rgba(14, 16, 19, .6); color: #fff; backdrop-filter: blur(4px); }
+.em-card--photo .em-card__chev { color: #fff; }
+.em-card--photo.is-suggested { border-color: var(--critical); box-shadow: 0 0 0 2px var(--critical); }
+.em-card--photo.is-suggested::before { background: linear-gradient(180deg, rgba(60, 10, 12, .3) 0%, rgba(38, 23, 24, .7) 50%, rgba(38, 23, 24, .95) 100%); }
+.em-grid .em-card { min-height: 190px; }
+.em-card--photo { justify-content: flex-end; }
+
+/* ---------- clearer hover on the photo cards ---------- */
+.em-grid .em-card--photo {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.em-grid .em-card--photo:hover,
+.em-grid .em-card--photo:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, .75);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .35);
+}
+.em-grid .em-card--photo:hover::before,
+.em-grid .em-card--photo:focus-visible::before {
+  background: linear-gradient(180deg, rgba(14, 16, 19, 0) 0%, rgba(14, 16, 19, .25) 45%, rgba(14, 16, 19, .85) 100%);
+}
+.em-grid .em-card--photo .em-card__chev {
+  transition: transform .18s ease, background .18s ease, color .18s ease;
+  border-radius: 50%;
+  padding: 4px;
+  box-sizing: content-box;
+}
+.em-grid .em-card--photo:hover .em-card__chev,
+.em-grid .em-card--photo:focus-visible .em-card__chev {
+  transform: translateX(4px);
+  background: #fff;
+  color: #111316;
+}
+.em-grid .em-card--photo:active { transform: translateY(-1px) scale(.99); }
+@media (prefers-reduced-motion: reduce) {
+  .em-grid .em-card--photo, .em-grid .em-card--photo .em-card__chev { transition: none; }
+  .em-grid .em-card--photo:hover { transform: none; }
+}

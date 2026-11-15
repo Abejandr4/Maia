@@ -185,17 +185,6 @@
 
 .app { position: relative; isolation: isolate; }
 
-.app:not(.theme-dark)::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: url('./assets/stars.png') center top / 1000px auto repeat;
-  mix-blend-mode: multiply;
-  opacity: 0.7; /* antes 0.3: más presencia. Ajusta entre 0.5 y 0.9 */
-}
-
 .app {
   min-height: 100vh;
   background: var(--bg);

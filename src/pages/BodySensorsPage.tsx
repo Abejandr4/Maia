@@ -12,6 +12,10 @@ import VitalCard from '../components/body/VitalCard';
 import SensorConsole from '../components/body/SensorConsole';
 
 import { dayForDate, EVENTS, MISSION_DAYS, TODAY_DAY, WEEK_SAMPLES } from '../utils/mockData';
+import { bodyZones, daily as maiaDaily, immune as maiaImmune, measurementTexts, sourceLinks, symptomList } from '../data/maiaData';
+
+/** Personal sleep band of the analysis (median ± 2.5 robust SD, days 8–21). */
+const SLEEP_BAND = { min: maiaDaily.bands.sleep?.low ?? NaN, max: maiaDaily.bands.sleep?.high ?? NaN };
 import MeasureGuide, { RecordedMeasurements } from '../components/body/MeasureGuide';
 import './pages.css';
 
@@ -26,18 +30,53 @@ const RANGES: Record<VitalKey, { personal: Range; general: Range; digits: number
   temp: { personal: PERSONAL_NORMAL.temp, general: GENERAL_REF.temp, digits: 1 },
 };
 
-const zones = [
-  {"id":"brain","label":"Brain","point":[43,6],"orbit":[48,6],"measure":"Sleep logged","value":"7.2","unit":"h","trend":"↑ 0.3 h vs. last reading","sensor":"Sleep log","action":"Record how you felt when you woke up.","earth":"Rest provides context for attention and performance.","space":"Changes in light and schedules can shift sleep patterns.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"eyes","label":"Eyes","point":[52,11],"orbit":[55,13],"measure":"Near focus","value":"No change","unit":"","trend":"Same as last reading","sensor":"Visual self-report","action":"Record when a change started and which eye you notice it in.","earth":"Compare your focus in familiar lighting.","space":"Fluid shifts in microgravity can affect vision.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"ears","label":"Ears","point":[35,16],"orbit":[35,17],"measure":"Perceived balance","value":"No dizziness","unit":"","trend":"Same as last reading","sensor":"Vestibular self-report","action":"Record whether symptoms occur during movement or a change in position.","earth":"The inner ear helps with balance and orientation.","space":"Gravity changes can affect how the body orients itself.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"heart","label":"Heart","point":[55,27],"orbit":[55,27],"measure":"Resting heart rate","value":"68","unit":"bpm","trend":"↑ 4 bpm vs. demo baseline","sensor":"Heart-rate monitor","action":"Compare readings taken at rest under similar conditions.","earth":"Recent activity and your baseline help explain a pulse reading.","space":"The cardiovascular system adapts to fluid shifts in orbit.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"lungs","label":"Lungs","point":[44,32],"orbit":[42,33],"measure":"Respiratory rate","value":"15","unit":"breaths/min","trend":"↑ 1 breaths/min vs. last reading","sensor":"Respiratory band","action":"Record whether you were resting or active.","earth":"Respiratory rate is measured in breaths per minute.","space":"Cabin conditions and respiratory readings are tracked separately.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"bones","label":"Bones","point":[41,76],"orbit":[62,76],"measure":"Bone mineral density","value":"Not measured","unit":"","trend":"No comparison available","sensor":"Clinical densitometry","action":"Check the date of your last assessment with the medical team.","earth":"Bone-density scans can show changes between assessments.","space":"Reduced loading in microgravity can accelerate bone mineral loss.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"muscles","label":"Muscles","point":[58,64],"orbit":[41,65],"measure":"Exercise logged","value":"45","unit":"min","trend":"↑ 3 min vs. last reading","sensor":"Training log","action":"Record duration and perceived effort.","earth":"Training duration describes a session. Strength is assessed separately.","space":"Exercise helps maintain muscle function during reduced loading.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"kidneys","label":"Kidneys","point":[48,37],"orbit":[48,41],"measure":"Fluid intake logged","value":"1.8","unit":"L","trend":"↓ 0.1 L vs. last reading","sensor":"Intake log","action":"Check whether your log includes all drinks up to the same time.","earth":"Recorded intake helps track hydration.","space":"Dehydration and increased urinary calcium can contribute to kidney stones.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"skin","label":"Skin","point":[29,48],"orbit":[26,52],"measure":"Skin observation","value":"No change","unit":"","trend":"Same as last reading","sensor":"Inspection and self-report","action":"Record the location and timing of any observed change.","earth":"Describe the same area for comparison next time.","space":"A dosimeter measures radiation exposure during the mission.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
-  {"id":"immune","label":"Immune system","point":[58,47],"orbit":[64,48],"measure":"Symptoms logged","value":"0","unit":"reports","trend":"Same as last reading","sensor":"Symptom log","action":"Record when symptoms began and report persistent symptoms.","earth":"Clinical assessment is needed to evaluate immune function.","space":"The enclosed environment and flight stressors can affect immune response.","source":"https://www.nasa.gov/humans-in-space/the-human-body-in-space/"}
+const fmtDay = (v: number | undefined, d: number) => (v != null && Number.isFinite(v) ? v.toFixed(d) : '—');
+const IMMUNE_TREND = (() => {
+  const t = maiaImmune.timeline.find((d) => d.day === TODAY_DAY);
+  return t?.immune_review ? `${t.n_domains} of 4 immune domains · review` : 'No immune review';
+})();
+
+const ZONE_DEMO = [
+  {"id": "brain", "label": "Brain", "point": [43, 6], "orbit": [48, 6], "measure": "Sleep logged", "value": fmtDay(MISSION_DAYS.at(-1)?.sleep, 1), "unit": "h", "trend": `Last night · your band ${SLEEP_BAND.min.toFixed(1)}–${SLEEP_BAND.max.toFixed(1)} h`, "sensor": "Sleep log", "action": "Record how you felt when you woke up.", "earth": "Rest provides context for attention and performance.", "space": "Changes in light and schedules can shift sleep patterns.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "eyes", "label": "Eyes", "point": [52, 11], "orbit": [55, 13], "measure": "Near focus", "value": "No change", "unit": "", "trend": "Same as last reading", "sensor": "Visual self-report", "action": "Record when a change started and which eye you notice it in.", "earth": "Compare your focus in familiar lighting.", "space": "Fluid shifts in microgravity can affect vision.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "ears", "label": "Ears", "point": [35, 16], "orbit": [35, 17], "measure": "Perceived balance", "value": "No dizziness", "unit": "", "trend": "Same as last reading", "sensor": "Vestibular self-report", "action": "Record whether symptoms occur during movement or a change in position.", "earth": "The inner ear helps with balance and orientation.", "space": "Gravity changes can affect how the body orients itself.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "heart", "label": "Heart", "point": [55, 27], "orbit": [55, 27], "measure": "Resting heart rate", "value": fmtDay(MISSION_DAYS.at(-1)?.hr, 0), "unit": "bpm", "trend": `Morning check D${TODAY_DAY} · your band ${PERSONAL_NORMAL.hr.min.toFixed(0)}–${PERSONAL_NORMAL.hr.max.toFixed(0)} bpm`, "sensor": "Heart-rate monitor", "action": "Compare readings taken at rest under similar conditions.", "earth": "Recent activity and your baseline help explain a pulse reading.", "space": "The cardiovascular system adapts to fluid shifts in orbit.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "lungs", "label": "Lungs", "point": [44, 32], "orbit": [42, 33], "measure": "Respiratory rate", "value": "Not measured", "unit": "", "trend": "No respiratory data in this demo", "sensor": "Respiratory band", "action": "Record whether you were resting or active.", "earth": "Respiratory rate is measured in breaths per minute.", "space": "Cabin conditions and respiratory readings are tracked separately.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "bones", "label": "Bones", "point": [41, 76], "orbit": [62, 76], "measure": "Bone mineral density", "value": "Not measured", "unit": "", "trend": "No comparison available", "sensor": "Clinical densitometry", "action": "Check the date of your last assessment with the medical team.", "earth": "Bone-density scans can show changes between assessments.", "space": "Reduced loading in microgravity can accelerate bone mineral loss.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "muscles", "label": "Muscles", "point": [58, 64], "orbit": [41, 65], "measure": "Exercise logged", "value": "Log it", "unit": "", "trend": "No exercise logged yet today", "sensor": "Training log", "action": "Record duration and perceived effort.", "earth": "Training duration describes a session. Strength is assessed separately.", "space": "Exercise helps maintain muscle function during reduced loading.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "kidneys", "label": "Kidneys", "point": [48, 37], "orbit": [48, 41], "measure": "Fluid intake logged", "value": "Log it", "unit": "", "trend": "No drinks logged yet today", "sensor": "Intake log", "action": "Check whether your log includes all drinks up to the same time.", "earth": "Recorded intake helps track hydration.", "space": "Dehydration and increased urinary calcium can contribute to kidney stones.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "skin", "label": "Skin", "point": [29, 48], "orbit": [26, 52], "measure": "Skin observation", "value": maiaDaily.events.some((e) => e.id === 'rash' && e.day <= TODAY_DAY) ? 'Rash logged' : 'No change', "unit": "", "trend": "From your symptom log", "sensor": "Inspection and self-report", "action": "Record the location and timing of any observed change.", "earth": "Describe the same area for comparison next time.", "space": "A dosimeter measures radiation exposure during the mission.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
+  {"id": "immune", "label": "Immune system", "point": [58, 47], "orbit": [64, 48], "measure": "Symptoms logged", "value": String(maiaDaily.events.filter((e) => e.kind === 'symptom' && e.day <= TODAY_DAY).length), "unit": "reports", "trend": IMMUNE_TREND, "sensor": "Symptom log", "action": "Record when symptoms began and report persistent symptoms.", "earth": "Clinical assessment is needed to evaluate immune function.", "space": "The enclosed environment and flight stressors can affect immune response.", "source": "https://www.nasa.gov/humans-in-space/the-human-body-in-space/"},
 ];
+
+/**
+ * Single source for the body map: body_zones.csv (+ symptoms.csv, measurements.csv).
+ * ZONE_DEMO only keeps the dot positions tuned to the avatar images and today's reading.
+ */
+const SYMPTOM_NAME = Object.fromEntries(symptomList.map((x) => [x.id, x.name]));
+const zones = ZONE_DEMO.map((z) => {
+  const row = bodyZones.find((b) => b.id === z.id);
+  if (!row) return { ...z, risks: [] as string[], symptoms: [] as string[], measures: [] as string[], care: '', eva: '', sources: [] as ReturnType<typeof sourceLinks>, evidence: '' };
+  const firstLink = sourceLinks(row.source).find((x) => x.link)?.link;
+  return {
+    ...z,
+    label: row.name,
+    space: row.what_space_does,
+    earth: row.what_affects_it_on_earth,
+    action: row.how_to_care,
+    care: row.how_to_care,
+    eva: row.eva_focus,
+    risks: row.nasa_risks.split('|').filter(Boolean),
+    symptoms: row.symptoms.split('|').filter(Boolean).map((id) => SYMPTOM_NAME[id] ?? id.replaceAll('_', ' ')),
+    measures: (row.measurements ?? '').split('|').filter(Boolean).map((id) => measurementTexts[id]?.name ?? id.replaceAll('_', ' ')),
+    sources: sourceLinks(row.source),
+    evidence: row.evidence_level,
+    source: firstLink ?? z.source,
+  };
+});
+const HR_LAST7 = MISSION_DAYS.slice(-7).map((d) => d.hr).filter(Number.isFinite);
+/** Symptom name (lower case) → body-zone label, from symptoms.csv. */
+const SYMPTOM_ZONE: Record<string, string> = Object.fromEntries(symptomList.map((x) => [x.name.toLowerCase(), bodyZones.find((b) => b.id === x.zone)?.name ?? x.zone]));
 
 const measurementSteps: Record<string, string[]> = {
   "brain": ["Review last night’s sleep log.","Enter the hours you slept."],
@@ -167,11 +206,11 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
           })}
         </div>
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+      <div className="bodymap-actions">
         {tab === 'live' && <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.showModal()}>Daily measurements</button>}
-        {orbit && <button type="button" className="btn btn--secondary" aria-pressed={zoneId === 'eva'} onClick={() => openAnalysis('eva')}>Suit life support</button>}
+        <button type="button" className="btn btn--secondary" onClick={onLogSymptom}>Log a symptom</button>
+        {orbit && <button type="button" className="btn btn--secondary bodymap-actions__wide" aria-pressed={zoneId === 'eva'} onClick={() => openAnalysis('eva')}>Suit life support</button>}
       </div>
-      <button type="button" className="btn btn--secondary" onClick={onLogSymptom}>Log a symptom</button>
       {tab === 'live' && <dialog ref={dailyReview} aria-labelledby="daily-review-title" style={{ padding: 18, borderRadius: 12, maxWidth: 'min(92vw, 540px)' }}>
         <h2 id="daily-review-title">Daily measurements</h2>
         <RecordedMeasurements earlier={zones.flatMap((zone) => readings[zone.id] ? [{
@@ -202,18 +241,26 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
             <section className="zone-detail" aria-live="polite">
               <p className="small muted">{selected.measure}</p>
               <p className="zone-detail__reading mono">{selected.value} {selected.unit}</p>
-              <p className="small muted">{selected.value === 'Not measured' ? 'No reading available' : 'Demo reading · T+ 04:12'} · {selected.trend}</p>
+              <p className="small muted">{selected.value === 'Not measured' ? 'No reading available' : `Day ${TODAY_DAY} · sample data`} · {selected.trend}</p>
               {selected.id === 'heart' && (
-                <figure style={{ margin: '8px 0' }} aria-label="Seven simulated days of heart rate">
-                  <Sparkline values={[64, 65, 64, 66, 65, 67, 68]} height={44} band={{ min: 64, max: 64 }} />
-                  <figcaption className="small muted">Last 7 simulated days · Baseline 64 bpm</figcaption>
+                <figure style={{ margin: '8px 0' }} aria-label="Last seven days of resting heart rate">
+                  <Sparkline values={HR_LAST7} height={44} band={PERSONAL_NORMAL.hr} />
+                  <figcaption className="small muted">Days {TODAY_DAY - 6}–{TODAY_DAY} · sample data · your band {PERSONAL_NORMAL.hr.min.toFixed(0)}–{PERSONAL_NORMAL.hr.max.toFixed(0)} bpm</figcaption>
                 </figure>
               )}
               {readings[selected.id] && <p className="small">My reading · {readings[selected.id].value} · {readings[selected.id].time}</p>}
               <p className="small"><strong>Sensor or record:</strong> {selected.sensor}</p>
-              <p className="small"><strong>What to observe:</strong> {selected.action}</p>
-              <p className="small"><strong>{orbit ? 'Why it matters in orbit' : 'Why it matters on Earth'}:</strong> {orbit ? selected.space : selected.earth}</p>
-              <a className="small" href={selected.source} target="_blank" rel="noreferrer">View source ↗</a>
+              <p className="small"><strong>{orbit ? 'What space does' : 'What affects it on Earth'}:</strong> {orbit ? selected.space : selected.earth}</p>
+              <p className="small"><strong>How to care for it:</strong> {selected.care}</p>
+              {orbit && selected.eva && <p className="small"><strong>On a spacewalk:</strong> {selected.eva}</p>}
+              {selected.measures.length > 0 && <p className="small"><strong>Measured with:</strong> {selected.measures.join(' · ')}</p>}
+              {selected.symptoms.length > 0 && <div className="zone-detail__chips"><strong className="small">Symptoms to log here:</strong>
+                {selected.symptoms.map((x) => <button key={x} type="button" className="zone-chip" onClick={onLogSymptom}>{x}</button>)}</div>}
+              {selected.risks.length > 0 && <details className="small"><summary>NASA risks for this zone ({selected.risks.length})</summary>
+                <ul>{selected.risks.map((r) => <li key={r}>{r}</li>)}</ul></details>}
+              <p className="small muted">Evidence: {selected.evidence || '—'} · {selected.sources.length
+                ? selected.sources.map((x, i) => <span key={x.id}>{i > 0 && ', '}{x.link ? <a href={x.link} target="_blank" rel="noreferrer">{x.id} ↗</a> : x.id}</span>)
+                : <a href={selected.source} target="_blank" rel="noreferrer">View source ↗</a>}</p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
                 <button type="button" className="btn btn--secondary" onClick={openMeasurements}>Record this measurement</button>
                 <button type="button" className="btn btn--secondary" onClick={() => onSelectTab('symptoms')}>View symptoms</button>
@@ -243,7 +290,7 @@ function SymptomsPanel({ onLogSymptom }: { onLogSymptom: () => void }) {
   const days = [...new Set(headaches.map((entry) => dayForDate(new Date(entry.time))))];
   const readings = MISSION_DAYS.filter((day) => day.day >= (days[0] ?? TODAY_DAY - 7));
   const co2 = (readings.length > 1 ? readings : MISSION_DAYS.slice(-7)).map((day) => day.co2);
-  const zone: Record<string, string> = { headache: 'Brain', dizziness: 'Ears', nausea: 'Abdomen', 'eye strain': 'Eyes', 'muscle soreness': 'Muscles', 'lower back pain': 'Lower back' };
+  const zone: Record<string, string> = { ...SYMPTOM_ZONE, rash: 'Skin', headache: 'Brain', nausea: 'Abdomen', 'eye strain': 'Eyes', 'lower back pain': 'Bones' };
   const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
 
   return (
@@ -299,7 +346,6 @@ const ANALYSIS_METRICS = {
   spo2: ['SpO₂', '%', 'SpO₂'],
   temp: ['Temperature', '°C', 'Core Temperature'],
   sleep: ['Sleep', 'h', 'Sleep'],
-  mass: ['Body mass', 'kg', 'Body Mass'],
 } as const;
 
 type AnalysisMetric = keyof typeof ANALYSIS_METRICS;
@@ -312,34 +358,36 @@ function AnalysisPanel() {
   const [exported, setExported] = useState(false);
   const [inspected, setInspected] = useState<number | null>(null);
   const [label, unit, alertName] = ANALYSIS_METRICS[metric];
-  const daily = MISSION_DAYS.map((record) => ({
-    ...record,
-    // Simulated daily readings for the inertial body-mass device.
-    mass: Number((64 + Math.sin(record.day) * .2 - record.day * .012).toFixed(1)),
-  }));
+  // Daily values of the analysis (SAMPLE). Missing days stay missing: they are not drawn and never count as normal.
+  const daily = MISSION_DAYS;
   const first = period === 'Mission' ? 1 : period === '7 days' ? TODAY_DAY - 6 : TODAY_DAY;
-  const intraday = period === '24 h' && metric !== 'sleep' && metric !== 'mass';
+  const intraday = period === '24 h' && metric !== 'sleep';
   const now = Date.now();
   const since = now - 86400000;
-  const visible = daily.filter((record) => record.day >= first);
+  const visible = daily.filter((record) => record.day >= first && Number.isFinite(record[metric]));
   const points = intraday
     ? [...WEEK_SAMPLES, ...history].filter((sample) => sample.t >= since && sample.t <= now)
         .sort((a, b) => a.t - b.t).map((sample) => ({ value: sample[metric], position: (sample.t - since) / 86400000 }))
     : visible.map((record) => ({ value: record[metric], position: first === TODAY_DAY ? .5 : (record.day - first) / (TODAY_DAY - first) }));
-  const baseline = daily.slice(0, 14).map((record) => record[metric]);
+  // learning window of the analysis: flight days 8–21 (days 1–7 skipped for adaptation)
+  const baseline = daily.filter((record) => record.day >= 8 && record.day <= 21 && Number.isFinite(record[metric])).map((record) => record[metric]);
   const average = (values: number[]) => values.reduce((sum, value) => sum + value, 0) / values.length;
-  const personal = metric === 'sleep' || metric === 'mass'
-    ? { min: Math.min(...baseline), max: Math.max(...baseline) }
-    : PERSONAL_NORMAL[metric];
-  const general = metric === 'sleep' || metric === 'mass' ? undefined : GENERAL_REF[metric];
+  const personal = metric === 'sleep' ? SLEEP_BAND : PERSONAL_NORMAL[metric];
+  const general = metric === 'sleep' ? undefined : GENERAL_REF[metric];
   const outside = (value: number) => value < personal.min || value > personal.max;
-  const lastSix = daily.slice(-6).filter((record) => outside(record[metric])).length;
+  const lastSix = daily.slice(-6).filter((record) => Number.isFinite(record[metric]) && outside(record[metric])).length;
   const values = points.map(({ value }) => value);
+  // Break the line where a day is missing, so a gap is never drawn as data.
+  const segments = intraday ? [points] : visible.reduce<{ position: number; value: number }[][]>((acc, record, i) => {
+    const p = points[i];
+    if (i === 0 || record.day - visible[i - 1].day > 1) acc.push([p]); else acc[acc.length - 1].push(p);
+    return acc;
+  }, []);
   const activePoint = inspected === null ? undefined : points[inspected];
   const latest = values.at(-1);
   const status = lastSix >= 4 ? 'Change detected' : latest === undefined ? 'No readings' : outside(latest) ? 'Latest outside your band' : 'Inside your band';
   const countNormal = values.filter((value) => !outside(value)).length;
-  const delta = average(daily.slice(-7).map((record) => record[metric])) - average(baseline);
+  const delta = average(daily.slice(-7).map((record) => record[metric]).filter(Number.isFinite)) - average(baseline);
   const alertCount = alerts.filter((alert) => alert.vital === alertName && (period === '24 h'
     ? Date.parse(alert.time) >= since : dayForDate(new Date(alert.time)) >= first)).length;
   const min = Math.min(personal.min, general?.min ?? Infinity, ...values);
@@ -352,12 +400,12 @@ function AnalysisPanel() {
   const dayX = (day: number) => x(first === TODAY_DAY ? .5 : (day - first) / (TODAY_DAY - first));
   const ticks = period === 'Mission' ? [1, 7, 14, 21, 28, 35, TODAY_DAY] : visible.map(({ day }) => day);
   const events = [...visible.filter(({ event }) => event).map(({ day, event }) => ({ day, label: event })),
-    ...(first <= EVENTS.co2Rise ? [{ day: EVENTS.co2Rise, label: 'CO₂ rise' }] : [])];
+    ...(first <= EVENTS.co2Rise && EVENTS.co2Rise <= TODAY_DAY ? [{ day: EVENTS.co2Rise, label: 'CO₂ peak' }] : [])];
   const summary = [
     ['Readings logged', String(values.length), 'Selected window'],
     ['Alerts raised', String(alertCount), label],
     ['Readings in personal range', values.length ? `${Math.round(100 * countNormal / values.length)}%` : '—', 'Selected window'],
-    ['Change vs personal normal', `${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${unit}`, 'Last 7 days vs. days 1–14'],
+    ['Change vs personal normal', `${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${unit}`, 'Last 7 days vs. days 8–21'],
   ];
 
   function exportSummary() {
@@ -385,7 +433,7 @@ function AnalysisPanel() {
           ))}
         </div>
         <div className="analysis-legend small muted">
-          <span data-key="band">Personal normal (days 1–14)</span>
+          <span data-key="band">Personal normal (days 8–21)</span>
           {general && <span data-key="reference">General reference</span>}
           <span data-key="series">Your readings</span>
           <span data-key="event">Mission event</span>
@@ -422,11 +470,11 @@ function AnalysisPanel() {
             </g>)}
             <rect x={x(0)} y={y(personal.max)} width="1110" height={Math.max(1, y(personal.min) - y(personal.max))} fill="#e8e7e1" />
             {general && [general.min, general.max].map((value) => <line key={value} x1={x(0)} x2={x(1)} y1={y(value)} y2={y(value)} stroke="#8a98a4" strokeDasharray="5 4" />)}
-            {events.map((event) => <g key={event.day}>
+            {events.map((event, i) => <g key={event.day}>
               <line x1={dayX(event.day)} x2={dayX(event.day)} y1="28" y2="183" stroke="#a6a8a7" strokeDasharray="3 3" />
-              <text x={dayX(event.day)} y="18" textAnchor="middle">{event.label}</text>
+              <text x={dayX(event.day)} y={i % 2 ? 26 : 14} textAnchor="middle">{event.label}</text>
             </g>)}
-            <polyline points={points.map(({ position, value }) => `${x(position)},${y(value)}`).join(' ')} fill="none" stroke="#191c20" strokeWidth="2" />
+            {segments.map((seg, i) => <polyline key={i} points={seg.map(({ position, value }) => `${x(position)},${y(value)}`).join(' ')} fill="none" stroke="#191c20" strokeWidth="2" />)}
             {points.map(({ position, value }, index) => <circle key={index} cx={x(position)} cy={y(value)} r={intraday ? 1.7 : 3} fill="#191c20"><title>{Number(value.toFixed(2))} {unit}</title></circle>)}
             {activePoint && <g pointerEvents="none">
               <line x1={x(activePoint.position)} x2={x(activePoint.position)} y1="28" y2="183" stroke="#47758a" strokeDasharray="3 3" />
@@ -455,7 +503,7 @@ function AnalysisPanel() {
         </div>
         <Card className="analysis-method">
           <div className="analysis-label">How Maia decides</div>
-          <p className="small">Maia compares your readings with your personal range from mission days 1–14. It flags a change when <strong>4 or more of the last 6 days</strong> are outside that range.</p>
+          <p className="small">Maia compares your readings with your personal range learned on flight days 8–21 (days 1–7 are skipped while your body adapts). It flags a change when <strong>4 or more of the last 6 days</strong> are outside that range.</p>
           <div className="analysis-footer"><span role="status" className="small muted">{exported ? 'Report summary downloaded' : 'Simulated mission data'}</span>
             <button className="btn" type="button" onClick={exportSummary}>Download report summary</button></div>
         </Card>
@@ -483,7 +531,7 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
   return (
     <div className="page page--body">
       <PageHeader
-        eyebrow="Personal normal · learned on days 1–14"
+        eyebrow="Personal normal · learned on days 8–21"
         title="Body & Sensors"
         subtitle="Ten zones, four live signals. Every reading shows its age."
         aside={
@@ -506,6 +554,14 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
         .page--body h2 { font-size: 2.25em; }
         .page--body h3 { font-size: 1.755em; }
         .page--body .card__title { font-size: 16.5px; }
+        .demo-controls > summary { cursor: pointer; padding: 12px 16px; border: 1px dashed #b6c3c9; border-radius: 14px; font-weight: 650; color: #304859; }
+        .demo-controls[open] > summary { margin-bottom: 10px; }
+        .bodymap-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 4px; }
+        .bodymap-actions .btn { width: 100%; justify-content: center; text-align: center; }
+        .bodymap-actions__wide { grid-column: 1 / -1; }
+        .zone-detail__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-block: 6px; }
+        .zone-chip { border: 1px solid #deded9; border-radius: 999px; padding: 3px 10px; background: #fff; font: inherit; font-size: 12px; cursor: pointer; color: inherit; }
+        .zone-chip:hover { border-color: #688594; background: #eef4f6; }
         .profile-body-zone { background: #ffffff59; cursor: pointer; text-shadow: 0 0 2px #fff8; }
         .profile-body-zone:hover, .profile-body-zone:focus-visible { background: #fff; }
         .profile-body-zone[aria-pressed="true"] { box-shadow: 0 0 0 1px #ffffff9c; }
@@ -584,7 +640,10 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
                   sampleAt={current.t}
                 />
               ))}
-              <div className="body-grid__console"><SensorConsole /></div>
+              <details className="body-grid__console demo-controls">
+                <summary>Demo controls · simulate a sensor alert</summary>
+                <SensorConsole />
+              </details>
             </>
           )}
           {tab === 'analysis' && <AnalysisPanel />}

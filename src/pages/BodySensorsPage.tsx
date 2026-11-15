@@ -12,7 +12,7 @@ import VitalCard from '../components/body/VitalCard';
 import SensorConsole from '../components/body/SensorConsole';
 
 import { dayForDate, EVENTS, MISSION_DAYS, TODAY_DAY, WEEK_SAMPLES } from '../utils/mockData';
-import MeasureGuide from '../components/body/MeasureGuide';
+import MeasureGuide, { RecordedMeasurements } from '../components/body/MeasureGuide';
 import './pages.css';
 
 type BodyTab = 'live' | 'analysis' | 'symptoms' | 'measure';
@@ -92,6 +92,7 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
   const [feedback, setFeedback] = useState('');
   const [dailyLog, setDailyLog] = useState(() => readDailyLog(new Date().toDateString()));
   const dialog = useRef<HTMLDialogElement>(null);
+  const dailyReview = useRef<HTMLDialogElement>(null);
   const today = new Date().toDateString();
   const readings = dailyLog.date === today ? dailyLog.readings : {};
   const selected = zones.find((zone) => zone.id === zoneId);
@@ -167,10 +168,17 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
         </div>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-        <button type="button" className="btn btn--secondary" onClick={openMeasurements}>Daily measurements · {Object.keys(readings).length} of 10</button>
+        {tab === 'live' && <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.showModal()}>Daily measurements</button>}
         {orbit && <button type="button" className="btn btn--secondary" aria-pressed={zoneId === 'eva'} onClick={() => openAnalysis('eva')}>Suit life support</button>}
       </div>
       <button type="button" className="btn btn--secondary" onClick={onLogSymptom}>Log a symptom</button>
+      {tab === 'live' && <dialog ref={dailyReview} aria-labelledby="daily-review-title" style={{ padding: 18, borderRadius: 12, maxWidth: 'min(92vw, 540px)' }}>
+        <h2 id="daily-review-title">Daily measurements</h2>
+        <RecordedMeasurements earlier={zones.flatMap((zone) => readings[zone.id] ? [{
+          label: zone.measure, value: `${readings[zone.id].value} ${zone.unit} · ${readings[zone.id].time}`,
+        }] : [])} />
+        <button type="button" className="btn btn--secondary" onClick={() => dailyReview.current?.close()}>Close</button>
+      </dialog>}
       <dialog ref={dialog} aria-labelledby="avatar-measure-title" style={{ padding: 18, borderRadius: 12, border: '1px solid #ddd', maxWidth: 'min(92vw, 460px)' }}>
         <form onSubmit={saveReading} style={{ display: 'grid', gap: 10 }}>
           <h2 id="avatar-measure-title">Daily measurements</h2>

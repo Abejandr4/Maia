@@ -306,6 +306,36 @@ function VisionTest({ onRecorded, onComplete }: { onRecorded: () => void; onComp
   );
 }
 
+export function RecordedMeasurements({ earlier = [] }: { earlier?: { label: string; value: string }[] }) {
+  const saved = restore<Record<string, Reading>>(STORAGE_KEY, {});
+  const attention = restore<number[]>(ATTENTION_KEY, []).at(-1);
+  const vision = restore<VisionFinding[]>(VISION_KEY, []);
+  const rows = measurements.flatMap((measurement) => {
+    const { id, name, unit } = measurement;
+    const reading = saved[id];
+    if (id === 'bp_diastolic') return [];
+    if (id === 'cognition_pvt' && attention !== undefined) return [{ label: name, value: `${attention} ms` }];
+    if (id === 'vision_acuity' && vision.length === visionStages.length) return [{
+      label: name,
+      value: visionStages.map(({ eye, test }, index) =>
+        `${eye} ${test.toLowerCase()}: ${typeof vision[index] === 'number' ? `level ${vision[index]}` : vision[index]}`).join(' · '),
+    }];
+    if (!reading) return [];
+    const value = id === 'bp_systolic'
+      ? `${reading.values.bp_systolic}/${reading.values.bp_diastolic}`
+      : String(reading.values[id]);
+    return [{ label: id === 'bp_systolic' ? 'Blood pressure' : name,
+      value: `${value} ${unit} · ${levelLabel[reading.level]} · ${new Date(reading.at).toLocaleString()}` }];
+  });
+  const entries = [...rows, ...earlier];
+  if (!entries.length) return <p className="small muted">No recorded measurements yet. Readings saved in Measure will appear here.</p>;
+  return <ul style={{ paddingInlineStart: 20 }}>
+    {entries.map(({ label, value }, index) => <li key={index} style={{ marginBlock: 8 }}>
+      <strong>{label}</strong><div className="small muted">{value}</div>
+    </li>)}
+  </ul>;
+}
+
 export default function MeasureGuide() {
   const { evaMode } = useVitals();
   const [profile] = useState(() => restore<{ sex?: string; avatarId?: string }>('userProfile', {}));

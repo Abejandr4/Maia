@@ -7,6 +7,7 @@ import AlertBanner from "./components/layout/AlertBanner";
 import Modal from "./components/ui/Modal";
 import { SymptomLog } from "./components/external";
 import HomePage from "./pages/HomePage";
+import EvaVisor from "./components/body/EvaVisor";
 import BodySensorsPage from "./pages/BodySensorsPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ReportPage from "./pages/ReportPage";
@@ -24,7 +25,7 @@ function Shell() {
   const [page, setPage] = useState<PageId>("home");
   const [logOpen, setLogOpen] = useState(false);
   const [emergencyOpen, setEmergencyOpen] = useState(false);
-  const { addSymptom } = useVitals();
+  const { addSymptom, evaMode } = useVitals();
 
   const openLog = useCallback(() => setLogOpen(true), []);
   const closeLog = useCallback(() => setLogOpen(false), []);
@@ -49,7 +50,9 @@ function Shell() {
   }, []);
 
   return (
-    <div
+    <>
+    {evaMode && <div className="eva-shell"><EvaVisor /></div>}
+    <div hidden={evaMode} style={evaMode ? { display: "none" } : undefined}
       className={`app app--${page} ${page === "environment" ? "theme-dark" : ""}`}
     >
       <TopBar
@@ -86,6 +89,7 @@ function Shell() {
         />
       )}
     </div>
+    </>
   );
 }
 

@@ -35,7 +35,7 @@ export default function MeasurementScene({ avatar, title, caption, marker, cue, 
   unavailable?: boolean;
 }) {
   const character = avatar === 'W' ? 'avatar-mujer' : 'avatar-hombre';
-  const portrait = suit ? 'avatar-astronauta' : character;
+  const portrait = suit ? 'avatar-astronauta-gray' : character;
   const color = marker === 'R' ? '#ff8589' : marker === 'A' || marker === 'AYR' ? '#ffd17a' : '#78e2e1';
   const label = marker === 'AYR' ? 'YELLOW / RED' : marker === 'A' ? 'YELLOW' : marker === 'R' ? 'RED' : `STEP ${marker}`;
 

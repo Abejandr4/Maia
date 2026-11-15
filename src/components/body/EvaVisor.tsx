@@ -17,7 +17,7 @@ import './evaVisor.css';
 const S = spacewalk.samples;
 const L = spacewalk.limits;
 const DUR = spacewalk.duration_min;
-const suitImage = import.meta.env.BASE_URL + 'avatars/avatar-astronauta.png';
+const suitImage = import.meta.env.BASE_URL + 'avatars/avatar-astronauta-gray.png';
 
 type Key = 'suit_pressure' | 'suit_co2' | 'heart_rate' | 'eva_time_remaining';
 const SIGNALS: { id: Key; label: string; unit: string; digits: number; hint: string }[] = [

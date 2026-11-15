@@ -8,7 +8,7 @@ interface HabitBubbleProps {
   progress?: { value: number; target: number; unit: string; meta?: string };
   action?: ReactNode;
   pointer?: boolean;
-  /** Si se pasa, muestra una "X" en la esquina para descartar la burbuja. */
+  /** If passed, displays an "X" in the corner to dismiss the bubble. */
   onDismiss?: () => void;
 }
 

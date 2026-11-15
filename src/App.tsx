@@ -26,6 +26,7 @@ import EmergencyScreen, {
 import { saveDemoSetup } from "./utils/demoProfile";
 import { ASTRONAUT } from "./utils/mockData";
 
+
 function Shell() {
   const [page, setPage] = useState<PageId>("home");
   const [logOpen, setLogOpen] = useState(false);

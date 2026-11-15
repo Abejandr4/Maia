@@ -16,6 +16,7 @@ import TaskList from '../components/home/TaskList';
 import GoalBars from '../components/home/GoalBars';
 import './pages.css';
 import OrbitRing from '../components/home/OrbitRing';
+import DomeBackground from '../components/home/DomeBackground';
 
 const SHORT_LABEL: Record<VitalEvaluation['key'], string> = {
   bp: 'Systolic',
@@ -220,10 +221,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
         </span>
 
         <div className="orbit">
-          <svg className="orbit__rings" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-            <ellipse cx="500" cy="300" rx="470" ry="290" />
-            <ellipse cx="500" cy="300" rx="270" ry="190" />
-          </svg>
+          <DomeBackground />
 
           <OrbitRing>
             <OrbitNode
@@ -268,7 +266,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
 
 
           <div className="orbit__center">
-            <Mascot size={280} state="idle" />
+            <Mascot size={420} state="idle" />
           </div>
 
           {bubbleOpen && (

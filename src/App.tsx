@@ -17,6 +17,7 @@ import FlightHistoryPage from './pages/Initial record/FlightHistoryPage';
 import YourNormalValuesPage from './pages/Initial record/YourNormalValuesPage';
 import MissionSchedulePage from './pages/Initial record/MissionSchedulePage';
 import MeetMaiaPage from './pages/Initial record/MeetMaiaPage';
+import ContactsPage from './pages/Initial record/ContactsPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
 import EmergencyScreen, {
   type EmergencyReport,
@@ -100,6 +101,7 @@ type SetupStep =
   | 'normalValues'
   | 'missionSchedule'
   | 'meetMaia'
+  | 'contacts'
   | 'done';
 
 export default function App() {
@@ -154,30 +156,29 @@ export default function App() {
           onComplete={() => setSetupStep('missionSchedule')}
         />
       )}
-
       {setupStep === 'missionSchedule' && (
         <MissionSchedulePage
           onBack={() => setSetupStep('normalValues')}
+          onComplete={() => setSetupStep('meetMaia')}
+        />
+      )}
+
+      {setupStep === 'meetMaia' && (
+        <MeetMaiaPage
+          onBack={() => setSetupStep('missionSchedule')}
+          onComplete={() => setSetupStep('contacts')}
+        />
+      )}
+
+      {setupStep === 'contacts' && (
+        <ContactsPage
+          onBack={() => setSetupStep('meetMaia')}
+          onSkip={handleFinishOnboarding}
           onComplete={handleFinishOnboarding}
         />
       )}
-      {setupStep === 'missionSchedule' && (
-   <MissionSchedulePage
-     onBack={() => setSetupStep('normalValues')}
-     onComplete={() => setSetupStep('meetMaia')}
-   />
- )}
-
- {setupStep === 'meetMaia' && (
-   <MeetMaiaPage
-     onBack={() => setSetupStep('missionSchedule')}
-     onComplete={handleFinishOnboarding}
-   />
- )}
-
- {setupStep === 'done' && <Shell />}
 
       {setupStep === 'done' && <Shell />}
-          </VitalsProvider>
+    </VitalsProvider>
   );
 }

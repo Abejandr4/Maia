@@ -11,7 +11,7 @@
  *     entry = { name, severity: 'mild'|'moderate'|'severe', note?, time: ISO string }
  *     onSubmit adds the entry to the Report page's symptom log.
  */
-export { default as Mascot } from './MascotPlaceholder';
-export { default as SymptomLog } from './SymptomLogPlaceholder';
+export { default as Mascot } from './MascotPlaceholder'; // swap for your asteroid later
+export { default as SymptomLog } from './SymptomLogAdapter';
 export type { MascotProps } from './MascotPlaceholder';
-export type { SymptomLogProps } from './SymptomLogPlaceholder';
+export type { SymptomLogProps } from './SymptomLogAdapter';

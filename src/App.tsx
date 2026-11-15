@@ -7,11 +7,18 @@ import AlertBanner from "./components/layout/AlertBanner";
 import Modal from "./components/ui/Modal";
 import { SymptomLog } from "./components/external";
 import HomePage from "./pages/HomePage";
+import EvaVisor from "./components/body/EvaVisor";
 import BodySensorsPage from "./pages/BodySensorsPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ReportPage from "./pages/ReportPage";
 import ConsentPage from './pages/Initial record/ConsentPage';
 import AboutYouPage from './pages/Initial record/AboutyouPage';
+import MedicalHistoryPage from './pages/Initial record/MedicalHistoryPage';
+import FlightHistoryPage from './pages/Initial record/FlightHistoryPage';
+import YourNormalValuesPage from './pages/Initial record/YourNormalValuesPage';
+import MissionSchedulePage from './pages/Initial record/MissionSchedulePage';
+import MeetMaiaPage from './pages/Initial record/MeetMaiaPage';
+import ContactsPage from './pages/Initial record/ContactsPage';
 import EmergencyButton from "./components/emergency/EmergencyButton";
 import { saveDemoSetup } from './utils/demoProfile';
 import EmergencyScreen, {
@@ -23,7 +30,7 @@ function Shell() {
   const [page, setPage] = useState<PageId>("home");
   const [logOpen, setLogOpen] = useState(false);
   const [emergencyOpen, setEmergencyOpen] = useState(false);
-  const { addSymptom } = useVitals();
+  const { addSymptom, evaMode } = useVitals();
 
   const openLog = useCallback(() => setLogOpen(true), []);
   const closeLog = useCallback(() => setLogOpen(false), []);
@@ -48,7 +55,9 @@ function Shell() {
   }, []);
 
   return (
-    <div
+    <>
+    {evaMode && <div className="eva-shell"><EvaVisor /></div>}
+    <div hidden={evaMode} style={evaMode ? { display: "none" } : undefined}
       className={`app app--${page} ${page === "environment" ? "theme-dark" : ""}`}
     >
       <TopBar
@@ -85,17 +94,23 @@ function Shell() {
         />
       )}
     </div>
+    </>
   );
 }
 
+type SetupStep =
+  | 'consent'
+  | 'aboutYou'
+  | 'medicalHistory'
+  | 'flightHistory'
+  | 'normalValues'
+  | 'missionSchedule'
+  | 'meetMaia'
+  | 'contacts'
+  | 'done';
+
 export default function App() {
-  const skipWithDemo = () => {
-  saveDemoSetup();
-  setSetupStep('done');
-};
-
-
-  const [setupStep, setSetupStep] = useState<'consent' | 'aboutYou' | 'done'>(() => {
+  const [setupStep, setSetupStep] = useState<SetupStep>(() => {
     try {
       return localStorage.getItem('hasCompletedSetup') === 'true' ? 'done' : 'consent';
     } catch {
@@ -115,24 +130,59 @@ export default function App() {
   return (
     <VitalsProvider>
       {setupStep === 'consent' && (
-        <ConsentPage onComplete={() => setSetupStep('aboutYou')} />
-      )}
+     <ConsentPage onComplete={() => setSetupStep('aboutYou')} />
+)}
       {setupStep === 'aboutYou' && (
         <AboutYouPage
           onBack={() => setSetupStep('consent')}
+          onComplete={() => setSetupStep('medicalHistory')}
+        />
+      )}
+
+      {setupStep === 'medicalHistory' && (
+        <MedicalHistoryPage
+          onBack={() => setSetupStep('aboutYou')}
+          onSkip={() => setSetupStep('flightHistory')}
+          onComplete={() => setSetupStep('flightHistory')}
+        />
+      )}
+
+      {setupStep === 'flightHistory' && (
+        <FlightHistoryPage
+          onBack={() => setSetupStep('medicalHistory')}
+          onSkip={() => setSetupStep('normalValues')}
+          onComplete={() => setSetupStep('normalValues')}
+        />
+      )}
+
+      {setupStep === 'normalValues' && (
+        <YourNormalValuesPage
+          onBack={() => setSetupStep('flightHistory')}
+          onComplete={() => setSetupStep('missionSchedule')}
+        />
+      )}
+      {setupStep === 'missionSchedule' && (
+        <MissionSchedulePage
+          onBack={() => setSetupStep('normalValues')}
+          onComplete={() => setSetupStep('meetMaia')}
+        />
+      )}
+
+      {setupStep === 'meetMaia' && (
+        <MeetMaiaPage
+          onBack={() => setSetupStep('missionSchedule')}
+          onComplete={() => setSetupStep('contacts')}
+        />
+      )}
+
+      {setupStep === 'contacts' && (
+        <ContactsPage
+          onBack={() => setSetupStep('meetMaia')}
+          onSkip={handleFinishOnboarding}
           onComplete={handleFinishOnboarding}
         />
       )}
-      {setupStep !== 'done' && (
-        <button type="button" className="demo-skip" onClick={skipWithDemo}>
-          Skip setup · demo profile
-          </button>
-        )}
-        {setupStep !== 'done' && (
-          <button type="button" className="demo-skip" onClick={skipWithDemo}>
-            Skip setup · demo profile
-            </button>
-          )}
+
       {setupStep === 'done' && <Shell />}
     </VitalsProvider>
   );

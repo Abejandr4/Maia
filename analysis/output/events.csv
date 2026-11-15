@@ -1,0 +1,7 @@
+person,day,kind,id,description,is_synthetic,source,evidence_level
+lucia (sample),30,event,solar_event,"Solar particle event replay (10 May 2024, S2, 149 pfu)",yes,S53; S48,demo
+lucia (sample),33,event,schedule_shift,Schedule shift: sleep −2 h for 3 nights,yes,S48,demo
+lucia (sample),41,symptom,rash,rash photo (immune storyline 4.4); severity not given [UNVERIFIED],yes,S87; S48,demo
+lucia (sample),45,event,eva,Spacewalk (EVA),yes,S48,demo
+lucia (sample),52,event,co2_peak,Cabin CO₂ 4.0 mmHg for 6 h,yes,S48,demo
+lucia (sample),52,symptom,headache,logged with the CO₂ peak (guide section 6); severity not given [UNVERIFIED],yes,S63,demo

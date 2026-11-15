@@ -1,0 +1,334 @@
+/* =====================================================================
+   Maia — Liquid glass layer
+   ---------------------------------------------------------------------
+   One self-contained file. It only ADDS styles on top of the existing
+   CSS (every rule is prefixed with .app or body so it wins without
+   editing any component file). Delete the import in main.tsx and the
+   app goes back to exactly how it looked before.
+
+   Safety rules kept from NASA-STD-3001 Vol. 2 App. F:
+   - Status colors (pills, alert banners, orbit rings) stay SOLID.
+   - Emergency screen and the report letter stay OPAQUE (no glass).
+   - Content glass is >= 72% opaque so text contrast stays high.
+   - Users with "reduce transparency" or browsers without
+     backdrop-filter get solid surfaces automatically.
+   ===================================================================== */
+
+/* ---------- Tokens ---------- */
+:root {
+  --glass-blur: 18px;
+  --glass-sat: 1.8;
+  /* content surfaces (cards, tiles) — more opaque for readability */
+  --glass-bg: color-mix(in srgb, var(--surface) 74%, transparent);
+  /* chrome surfaces (buttons, chips, menus) — a bit lighter */
+  --glass-bg-soft: color-mix(in srgb, var(--surface) 58%, transparent);
+  --glass-bg-strong: color-mix(in srgb, var(--surface) 86%, transparent);
+  --glass-border: rgba(255, 255, 255, 0.72);
+  --glass-edge-top: rgba(255, 255, 255, 0.9);
+  --glass-edge-bottom: rgba(0, 0, 0, 0.05);
+  --glass-sheen: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.12) 38%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  --glass-shadow: 0 8px 28px rgba(20, 20, 10, 0.08);
+  --glass-shadow-hover: 0 14px 38px rgba(20, 20, 10, 0.12);
+}
+
+.theme-dark {
+  --glass-bg: color-mix(in srgb, var(--surface) 70%, transparent);
+  --glass-bg-soft: color-mix(in srgb, var(--surface) 55%, transparent);
+  --glass-bg-strong: color-mix(in srgb, var(--surface) 85%, transparent);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-edge-top: rgba(255, 255, 255, 0.14);
+  --glass-edge-bottom: rgba(0, 0, 0, 0.35);
+  --glass-sheen: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --glass-shadow-hover: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Something for the glass to refract ---------- */
+/* Light theme already has color blobs (layout.css). Dark theme
+   (Environment) gets its own, very subtle, so the glass reads. */
+.app.theme-dark::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(560px 380px at 10% 10%, rgba(158, 217, 210, 0.14), transparent 70%),
+    radial-gradient(600px 400px at 90% 6%, rgba(230, 188, 199, 0.12), transparent 70%),
+    radial-gradient(700px 460px at 50% 100%, rgba(57, 157, 227, 0.14), transparent 70%);
+}
+
+/* =====================================================================
+   1) CONTENT GLASS — cards, tiles, panels
+   ===================================================================== */
+.app .card,
+.app .stat-tile,
+.app .trend,
+.app .maia-console,
+.app .consent__card,
+.app .location-card,
+.app .habit-bubble {
+  background-color: var(--glass-bg);
+  background-image: var(--glass-sheen);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-top),
+    inset 0 -1px 0 var(--glass-edge-bottom),
+    var(--glass-shadow);
+}
+
+/* Habit bubble arrow matches the glass color */
+.app .habit-bubble--pointer::before {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border);
+}
+
+/* Clickable tiles lift a little */
+.app .stat-tile,
+.app .trend,
+.app .location-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.app .location-card:hover,
+.app button.stat-tile:hover,
+.app button.trend:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-top),
+    inset 0 -1px 0 var(--glass-edge-bottom),
+    var(--glass-shadow-hover);
+}
+
+/* Rows inside cards: transparent so the card glass shows through */
+.app .task-row { background: transparent; }
+.app .task-row:hover { background: color-mix(in srgb, var(--text) 5%, transparent); }
+.app .task-row.is-next { background: color-mix(in srgb, var(--caution) 14%, transparent); }
+
+/* Tables: header becomes frosted, body transparent */
+.app .table-wrap { border-color: var(--glass-border); }
+.app .data-table th {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* =====================================================================
+   2) HOME — orbit bubbles
+   ===================================================================== */
+.app .orbit-node {
+  background-color: var(--glass-bg);
+  background-image:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 46%),
+    radial-gradient(circle at 70% 85%, rgba(158, 217, 210, 0.18), rgba(158, 217, 210, 0) 55%);
+  backdrop-filter: blur(14px) saturate(1.7);
+  -webkit-backdrop-filter: blur(14px) saturate(1.7);
+}
+/* Plain bubbles get the glass rim; status-ring bubbles keep their
+   colored ring untouched (color + icon + word rule). */
+.app .orbit-node:not(.orbit-node--ring) {
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 1px var(--glass-edge-top),
+    inset 0 -6px 14px rgba(255, 255, 255, 0.25),
+    var(--glass-shadow);
+}
+.app.theme-dark .orbit-node {
+  background-image:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 46%);
+}
+
+/* Small chips on Home */
+.app .needs-chip,
+.app .count-chip {
+  background-color: var(--glass-bg-soft);
+  background-image: var(--glass-sheen);
+  backdrop-filter: blur(14px) saturate(1.8);
+  -webkit-backdrop-filter: blur(14px) saturate(1.8);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-edge-top), 0 4px 14px rgba(20, 20, 10, 0.06);
+}
+
+/* =====================================================================
+   3) CONTROLS — buttons, icon buttons, segmented tabs, chips, inputs
+   ===================================================================== */
+.app .btn:not(.btn--primary):not(.btn--ghost),
+.app .icon-btn,
+.app .topbar__icon,
+.app .topbar__location,
+.app .sim-btn,
+.app .chip,
+.app .mood-scale__btn {
+  background-color: var(--glass-bg-soft);
+  background-image: var(--glass-sheen);
+  backdrop-filter: blur(12px) saturate(1.8);
+  -webkit-backdrop-filter: blur(12px) saturate(1.8);
+  border-color: var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-top),
+    inset 0 -1px 0 var(--glass-edge-bottom),
+    0 2px 8px rgba(20, 20, 10, 0.06);
+  transition: background-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.app .btn:not(.btn--primary):not(.btn--ghost):hover,
+.app .icon-btn:hover,
+.app .topbar__icon:hover,
+.app .topbar__location:hover,
+.app .sim-btn:hover,
+.app .chip:hover,
+.app .mood-scale__btn:hover {
+  background-color: var(--glass-bg-strong);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-top),
+    inset 0 -1px 0 var(--glass-edge-bottom),
+    0 6px 16px rgba(20, 20, 10, 0.1);
+}
+
+/* Segmented tabs (24 h / 7 d / mission, Live / Analysis…) */
+.app .segmented {
+  background-color: var(--glass-bg-soft);
+  backdrop-filter: blur(14px) saturate(1.8);
+  -webkit-backdrop-filter: blur(14px) saturate(1.8);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06), inset 0 -1px 0 var(--glass-edge-top);
+}
+.app .segmented__opt.is-active {
+  background-color: var(--glass-bg-strong);
+  background-image: var(--glass-sheen);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-top),
+    0 2px 8px rgba(20, 20, 10, 0.12);
+}
+
+/* Text fields stay almost opaque: typing needs a calm surface */
+.app .field__input,
+.app .chip-input,
+.app .maia-textarea,
+.app .select {
+  background-color: var(--glass-bg-strong);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: var(--glass-border);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* =====================================================================
+   4) FLOATING LAYERS — menus, tooltips, modal
+   ===================================================================== */
+.app .topbar__menu,
+.app .chart-tooltip {
+  background-color: var(--glass-bg-strong);
+  background-image: var(--glass-sheen);
+  backdrop-filter: blur(24px) saturate(1.9);
+  -webkit-backdrop-filter: blur(24px) saturate(1.9);
+  border-color: var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-top),
+    0 16px 40px rgba(20, 20, 10, 0.16);
+}
+.app .topbar__menu-item:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+
+/* Modal is rendered outside .app (portal), so it is scoped to body */
+body .modal-backdrop {
+  background: rgba(15, 15, 12, 0.32);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+body .modal {
+  background-color: rgba(255, 255, 255, 0.88);
+  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 55%);
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 24px 70px rgba(0, 0, 0, 0.22);
+}
+body .modal__head { border-bottom-color: rgba(0, 0, 0, 0.08); }
+
+/* =====================================================================
+   5) ALERT BANNER — keeps its status color; only gains depth.
+      (Background stays >= 92% of the status tint for contrast.)
+   ===================================================================== */
+.app .alert-banner {
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 8px 24px rgba(20, 20, 10, 0.08);
+}
+.app .alert-banner--warning { background: color-mix(in srgb, var(--warning-soft) 94%, transparent); }
+.app .alert-banner--critical { background: color-mix(in srgb, var(--critical-soft) 94%, transparent); }
+
+/* =====================================================================
+   6) EXCLUSIONS — stay solid on purpose
+   ===================================================================== */
+/* Emergency card: stressed user, no visual noise behind text */
+.app .em,
+.app .em-card,
+.app .em-panel,
+.app .em-step,
+.app .em-choice {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* The flight-surgeon letter reads like paper */
+.app .maia-letter {
+  background: var(--surface);
+  background-image: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* Status pills never become translucent */
+.app .pill { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* =====================================================================
+   7) FALLBACKS & ACCESSIBILITY
+   ===================================================================== */
+/* Browsers without backdrop-filter: use solid surfaces */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root, .theme-dark {
+    --glass-bg: var(--surface);
+    --glass-bg-soft: var(--surface);
+    --glass-bg-strong: var(--surface);
+  }
+  body .modal { background-color: #fff; }
+}
+
+/* OS setting "Reduce transparency" */
+@media (prefers-reduced-transparency: reduce) {
+  :root, .theme-dark {
+    --glass-bg: var(--surface);
+    --glass-bg-soft: var(--surface);
+    --glass-bg-strong: var(--surface);
+    --glass-sheen: none;
+  }
+  body .modal { background-color: #fff; background-image: none; }
+}
+
+/* High contrast preference: drop glass entirely */
+@media (prefers-contrast: more) {
+  :root, .theme-dark {
+    --glass-bg: var(--surface);
+    --glass-bg-soft: var(--surface);
+    --glass-bg-strong: var(--surface);
+    --glass-sheen: none;
+    --glass-border: var(--border-strong);
+  }
+}
+
+/* Small screens: lighter blur keeps scrolling smooth */
+@media (max-width: 640px) {
+  :root { --glass-blur: 12px; }
+}

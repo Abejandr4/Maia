@@ -1,0 +1,481 @@
+person,location,day,measurement_id,value,note,is_synthetic,source,evidence_level
+lucia (sample),iss,1,heart_rate,62.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,2,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,3,heart_rate,62.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,4,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,5,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,6,heart_rate,57.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,7,heart_rate,60.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,8,heart_rate,65.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,9,heart_rate,62.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,10,heart_rate,60.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,11,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,12,heart_rate,64.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,13,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,14,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,15,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,16,heart_rate,64.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,17,heart_rate,58.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,18,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,19,heart_rate,54.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,20,heart_rate,53.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,21,heart_rate,51.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,22,heart_rate,56.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,23,heart_rate,55.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,24,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,25,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,26,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,27,heart_rate,53.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,28,heart_rate,56.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,29,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,30,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,31,heart_rate,56.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,32,heart_rate,57.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,33,heart_rate,70.0,injected +14 bpm,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,34,heart_rate,56.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,35,heart_rate,77.0,injected +14 bpm,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,36,heart_rate,74.0,injected +14 bpm,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,37,heart_rate,75.0,injected +14 bpm,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,38,heart_rate,78.0,injected +14 bpm,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,39,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,40,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,41,heart_rate,74.0,injected +12 bpm (synthetic_data.csv),yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,42,heart_rate,62.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,43,heart_rate,58.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,44,heart_rate,60.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,45,heart_rate,66.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,46,heart_rate,59.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,47,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,48,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,49,heart_rate,60.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,50,heart_rate,68.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,51,heart_rate,68.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,52,heart_rate,61.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,53,heart_rate,62.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,54,heart_rate,64.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,55,heart_rate,62.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,56,heart_rate,64.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,57,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,58,heart_rate,65.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,59,heart_rate,68.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,60,heart_rate,63.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,1,bp_systolic,117.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,2,bp_systolic,114.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,3,bp_systolic,116.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,4,bp_systolic,110.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,5,bp_systolic,110.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,6,bp_systolic,112.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,7,bp_systolic,119.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,8,bp_systolic,123.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,9,bp_systolic,113.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,10,bp_systolic,110.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,11,bp_systolic,116.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,12,bp_systolic,106.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,13,bp_systolic,109.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,14,bp_systolic,112.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,15,bp_systolic,120.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,16,bp_systolic,122.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,17,bp_systolic,117.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,18,bp_systolic,115.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,19,bp_systolic,114.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,20,bp_systolic,,missing (sensor off),yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,21,bp_systolic,,missing (sensor off),yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,22,bp_systolic,,missing (sensor off),yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,23,bp_systolic,117.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,24,bp_systolic,116.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,25,bp_systolic,115.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,26,bp_systolic,110.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,27,bp_systolic,113.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,28,bp_systolic,112.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,29,bp_systolic,120.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,30,bp_systolic,121.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,31,bp_systolic,119.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,32,bp_systolic,121.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,33,bp_systolic,117.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,34,bp_systolic,122.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,35,bp_systolic,119.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,36,bp_systolic,120.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,37,bp_systolic,112.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,38,bp_systolic,116.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,39,bp_systolic,107.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,40,bp_systolic,101.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,41,bp_systolic,128.0,set to 128 (synthetic_data.csv),yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,42,bp_systolic,107.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,43,bp_systolic,112.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,44,bp_systolic,126.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,45,bp_systolic,117.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,46,bp_systolic,113.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,47,bp_systolic,116.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,48,bp_systolic,118.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,49,bp_systolic,116.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,50,bp_systolic,115.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,51,bp_systolic,119.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,52,bp_systolic,120.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,53,bp_systolic,113.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,54,bp_systolic,114.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,55,bp_systolic,115.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,56,bp_systolic,110.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,57,bp_systolic,114.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,58,bp_systolic,111.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,59,bp_systolic,118.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,60,bp_systolic,118.0,,yes,S66; S48,estimate (baseline); demo
+lucia (sample),iss,1,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,2,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,3,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,4,bp_diastolic,66.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,5,bp_diastolic,66.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,6,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,7,bp_diastolic,65.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,8,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,9,bp_diastolic,67.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,10,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,11,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,12,bp_diastolic,75.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,13,bp_diastolic,75.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,14,bp_diastolic,69.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,15,bp_diastolic,76.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,16,bp_diastolic,80.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,17,bp_diastolic,77.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,18,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,19,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,20,bp_diastolic,,missing (sensor off),yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,21,bp_diastolic,,missing (sensor off),yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,22,bp_diastolic,,missing (sensor off),yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,23,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,24,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,25,bp_diastolic,70.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,26,bp_diastolic,68.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,27,bp_diastolic,75.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,28,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,29,bp_diastolic,77.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,30,bp_diastolic,76.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,31,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,32,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,33,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,34,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,35,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,36,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,37,bp_diastolic,68.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,38,bp_diastolic,68.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,39,bp_diastolic,77.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,40,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,41,bp_diastolic,82.0,set to 82 (synthetic_data.csv),yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,42,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,43,bp_diastolic,78.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,44,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,45,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,46,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,47,bp_diastolic,66.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,48,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,49,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,50,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,51,bp_diastolic,71.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,52,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,53,bp_diastolic,72.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,54,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,55,bp_diastolic,69.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,56,bp_diastolic,68.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,57,bp_diastolic,75.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,58,bp_diastolic,73.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,59,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,60,bp_diastolic,74.0,,yes,S66; S92; S48,disputed (drift); demo
+lucia (sample),iss,1,temperature,36.5,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,2,temperature,36.5,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,3,temperature,36.7,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,4,temperature,36.6,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,5,temperature,36.6,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,6,temperature,36.7,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,7,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,8,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,9,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,10,temperature,36.7,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,11,temperature,36.5,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,12,temperature,36.8,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,13,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,14,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,15,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,16,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,17,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,18,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,19,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,20,temperature,37.2,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,21,temperature,36.8,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,22,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,23,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,24,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,25,temperature,37.4,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,26,temperature,37.4,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,27,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,28,temperature,36.7,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,29,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,30,temperature,36.8,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,31,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,32,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,33,temperature,36.8,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,34,temperature,36.6,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,35,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,36,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,37,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,38,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,39,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,40,temperature,36.8,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,41,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,42,temperature,36.9,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,43,temperature,36.8,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,44,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,45,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,46,temperature,37.2,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,47,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,48,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,49,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,50,temperature,37.0,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,51,temperature,37.2,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,52,temperature,37.1,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,53,temperature,37.3,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,54,temperature,37.4,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,55,temperature,37.7,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,56,temperature,37.3,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,57,temperature,37.5,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,58,temperature,37.4,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,59,temperature,37.4,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,60,temperature,37.2,,yes,S21; S48,estimate (drift); demo
+lucia (sample),iss,1,sleep,5.7,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,2,sleep,6.3,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,3,sleep,6.1,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,4,sleep,6.1,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,5,sleep,5.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,6,sleep,6.6,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,7,sleep,6.3,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,8,sleep,4.8,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,9,sleep,5.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,10,sleep,4.3,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,11,sleep,3.2,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,12,sleep,4.3,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,13,sleep,5.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,14,sleep,6.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,15,sleep,5.3,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,16,sleep,5.1,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,17,sleep,6.2,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,18,sleep,6.2,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,19,sleep,6.1,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,20,sleep,6.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,21,sleep,6.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,22,sleep,6.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,23,sleep,6.6,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,24,sleep,6.4,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,25,sleep,5.6,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,26,sleep,6.1,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,27,sleep,5.6,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,28,sleep,6.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,29,sleep,5.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,30,sleep,5.7,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,31,sleep,5.8,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,32,sleep,5.1,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,33,sleep,4.6,schedule shift −2 h,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,34,sleep,5.2,schedule shift −2 h,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,35,sleep,4.3,schedule shift −2 h,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,36,sleep,6.6,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,37,sleep,6.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,38,sleep,4.7,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,39,sleep,5.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,40,sleep,2.0,set to 2 h (synthetic_data.csv),yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,41,sleep,5.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,42,sleep,5.3,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,43,sleep,5.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,44,sleep,5.6,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,45,sleep,6.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,46,sleep,6.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,47,sleep,6.2,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,48,sleep,7.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,49,sleep,6.2,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,50,sleep,5.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,51,sleep,4.8,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,52,sleep,6.4,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,53,sleep,6.8,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,54,sleep,6.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,55,sleep,6.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,56,sleep,6.5,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,57,sleep,6.4,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,58,sleep,6.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,59,sleep,5.9,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,60,sleep,6.0,,yes,S40; S96,consensus (mean); demo
+lucia (sample),iss,1,spo2,100.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,2,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,3,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,4,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,5,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,6,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,7,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,8,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,9,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,10,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,11,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,12,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,13,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,14,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,15,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,16,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,17,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,18,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,19,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,20,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,21,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,22,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,23,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,24,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,25,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,26,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,27,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,28,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,29,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,30,spo2,100.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,31,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,32,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,33,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,34,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,35,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,36,spo2,96.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,37,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,38,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,39,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,40,spo2,100.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,41,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,42,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,43,spo2,100.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,44,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,45,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,46,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,47,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,48,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,49,spo2,99.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,50,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,51,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,52,spo2,97.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,53,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,54,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,55,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,56,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,57,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,58,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,59,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,60,spo2,98.0,,yes,S48,[UNVERIFIED]; demo
+lucia (sample),iss,1,radiation_dose,18.0667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,2,radiation_dose,18.1333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,3,radiation_dose,18.2,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,4,radiation_dose,18.2667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,5,radiation_dose,18.3333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,6,radiation_dose,18.4,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,7,radiation_dose,18.4667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,8,radiation_dose,18.5333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,9,radiation_dose,18.6,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,10,radiation_dose,18.6667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,11,radiation_dose,18.7333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,12,radiation_dose,18.8,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,13,radiation_dose,18.8667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,14,radiation_dose,18.9333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,15,radiation_dose,19.0,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,16,radiation_dose,19.0667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,17,radiation_dose,19.1333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,18,radiation_dose,19.2,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,19,radiation_dose,19.2667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,20,radiation_dose,19.3333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,21,radiation_dose,19.4,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,22,radiation_dose,19.4667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,23,radiation_dose,19.5333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,24,radiation_dose,19.6,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,25,radiation_dose,19.6667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,26,radiation_dose,19.7333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,27,radiation_dose,19.8,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,28,radiation_dose,19.8667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,29,radiation_dose,19.9333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,30,radiation_dose,20.0,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,31,radiation_dose,20.0667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,32,radiation_dose,20.1333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,33,radiation_dose,20.2,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,34,radiation_dose,20.2667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,35,radiation_dose,20.3333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,36,radiation_dose,20.4,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,37,radiation_dose,20.4667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,38,radiation_dose,20.5333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,39,radiation_dose,20.6,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,40,radiation_dose,20.6667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,41,radiation_dose,20.7333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,42,radiation_dose,20.8,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,43,radiation_dose,20.8667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,44,radiation_dose,20.9333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,45,radiation_dose,21.0,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,46,radiation_dose,21.0667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,47,radiation_dose,21.1333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,48,radiation_dose,21.2,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,49,radiation_dose,21.2667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,50,radiation_dose,21.3333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,51,radiation_dose,21.4,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,52,radiation_dose,21.4667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,53,radiation_dose,21.5333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,54,radiation_dose,21.6,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,55,radiation_dose,21.6667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,56,radiation_dose,21.7333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,57,radiation_dose,21.8,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,58,radiation_dose,21.8667,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,59,radiation_dose,21.9333,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,60,radiation_dose,22.0,0.4 mSv/day; solar-event dose not cited -> not added,yes,S06; S93,estimate; demo
+lucia (sample),iss,1,cabin_co2,2.4,daily value (SD 0.4 day to day); max 1-h = 2.4,yes,S05,consensus (range); demo
+lucia (sample),iss,2,cabin_co2,2.95,daily value (SD 0.4 day to day); max 1-h = 2.95,yes,S05,consensus (range); demo
+lucia (sample),iss,3,cabin_co2,2.78,daily value (SD 0.4 day to day); max 1-h = 2.78,yes,S05,consensus (range); demo
+lucia (sample),iss,4,cabin_co2,2.51,daily value (SD 0.4 day to day); max 1-h = 2.51,yes,S05,consensus (range); demo
+lucia (sample),iss,5,cabin_co2,1.77,daily value (SD 0.4 day to day); max 1-h = 1.77,yes,S05,consensus (range); demo
+lucia (sample),iss,6,cabin_co2,2.12,daily value (SD 0.4 day to day); max 1-h = 2.12,yes,S05,consensus (range); demo
+lucia (sample),iss,7,cabin_co2,1.49,daily value (SD 0.4 day to day); max 1-h = 1.49,yes,S05,consensus (range); demo
+lucia (sample),iss,8,cabin_co2,1.35,daily value (SD 0.4 day to day); max 1-h = 1.35,yes,S05,consensus (range); demo
+lucia (sample),iss,9,cabin_co2,2.07,daily value (SD 0.4 day to day); max 1-h = 2.07,yes,S05,consensus (range); demo
+lucia (sample),iss,10,cabin_co2,2.38,daily value (SD 0.4 day to day); max 1-h = 2.38,yes,S05,consensus (range); demo
+lucia (sample),iss,11,cabin_co2,2.24,daily value (SD 0.4 day to day); max 1-h = 2.24,yes,S05,consensus (range); demo
+lucia (sample),iss,12,cabin_co2,1.63,daily value (SD 0.4 day to day); max 1-h = 1.63,yes,S05,consensus (range); demo
+lucia (sample),iss,13,cabin_co2,1.78,daily value (SD 0.4 day to day); max 1-h = 1.78,yes,S05,consensus (range); demo
+lucia (sample),iss,14,cabin_co2,1.76,daily value (SD 0.4 day to day); max 1-h = 1.76,yes,S05,consensus (range); demo
+lucia (sample),iss,15,cabin_co2,2.2,daily value (SD 0.4 day to day); max 1-h = 2.2,yes,S05,consensus (range); demo
+lucia (sample),iss,16,cabin_co2,2.98,daily value (SD 0.4 day to day); max 1-h = 2.98,yes,S05,consensus (range); demo
+lucia (sample),iss,17,cabin_co2,2.67,daily value (SD 0.4 day to day); max 1-h = 2.67,yes,S05,consensus (range); demo
+lucia (sample),iss,18,cabin_co2,2.16,daily value (SD 0.4 day to day); max 1-h = 2.16,yes,S05,consensus (range); demo
+lucia (sample),iss,19,cabin_co2,1.78,daily value (SD 0.4 day to day); max 1-h = 1.78,yes,S05,consensus (range); demo
+lucia (sample),iss,20,cabin_co2,1.97,daily value (SD 0.4 day to day); max 1-h = 1.97,yes,S05,consensus (range); demo
+lucia (sample),iss,21,cabin_co2,2.02,daily value (SD 0.4 day to day); max 1-h = 2.02,yes,S05,consensus (range); demo
+lucia (sample),iss,22,cabin_co2,1.71,daily value (SD 0.4 day to day); max 1-h = 1.71,yes,S05,consensus (range); demo
+lucia (sample),iss,23,cabin_co2,2.0,daily value (SD 0.4 day to day); max 1-h = 2.0,yes,S05,consensus (range); demo
+lucia (sample),iss,24,cabin_co2,1.7,daily value (SD 0.4 day to day); max 1-h = 1.7,yes,S05,consensus (range); demo
+lucia (sample),iss,25,cabin_co2,2.34,daily value (SD 0.4 day to day); max 1-h = 2.34,yes,S05,consensus (range); demo
+lucia (sample),iss,26,cabin_co2,2.64,daily value (SD 0.4 day to day); max 1-h = 2.64,yes,S05,consensus (range); demo
+lucia (sample),iss,27,cabin_co2,2.79,daily value (SD 0.4 day to day); max 1-h = 2.79,yes,S05,consensus (range); demo
+lucia (sample),iss,28,cabin_co2,2.33,daily value (SD 0.4 day to day); max 1-h = 2.33,yes,S05,consensus (range); demo
+lucia (sample),iss,29,cabin_co2,2.44,daily value (SD 0.4 day to day); max 1-h = 2.44,yes,S05,consensus (range); demo
+lucia (sample),iss,30,cabin_co2,2.28,daily value (SD 0.4 day to day); max 1-h = 2.28,yes,S05,consensus (range); demo
+lucia (sample),iss,31,cabin_co2,2.1,daily value (SD 0.4 day to day); max 1-h = 2.1,yes,S05,consensus (range); demo
+lucia (sample),iss,32,cabin_co2,2.03,daily value (SD 0.4 day to day); max 1-h = 2.03,yes,S05,consensus (range); demo
+lucia (sample),iss,33,cabin_co2,1.67,daily value (SD 0.4 day to day); max 1-h = 1.67,yes,S05,consensus (range); demo
+lucia (sample),iss,34,cabin_co2,1.43,daily value (SD 0.4 day to day); max 1-h = 1.43,yes,S05,consensus (range); demo
+lucia (sample),iss,35,cabin_co2,2.09,daily value (SD 0.4 day to day); max 1-h = 2.09,yes,S05,consensus (range); demo
+lucia (sample),iss,36,cabin_co2,2.08,daily value (SD 0.4 day to day); max 1-h = 2.08,yes,S05,consensus (range); demo
+lucia (sample),iss,37,cabin_co2,2.21,daily value (SD 0.4 day to day); max 1-h = 2.21,yes,S05,consensus (range); demo
+lucia (sample),iss,38,cabin_co2,2.55,daily value (SD 0.4 day to day); max 1-h = 2.55,yes,S05,consensus (range); demo
+lucia (sample),iss,39,cabin_co2,1.78,daily value (SD 0.4 day to day); max 1-h = 1.78,yes,S05,consensus (range); demo
+lucia (sample),iss,40,cabin_co2,1.72,daily value (SD 0.4 day to day); max 1-h = 1.72,yes,S05,consensus (range); demo
+lucia (sample),iss,41,cabin_co2,2.02,daily value (SD 0.4 day to day); max 1-h = 2.02,yes,S05,consensus (range); demo
+lucia (sample),iss,42,cabin_co2,2.25,daily value (SD 0.4 day to day); max 1-h = 2.25,yes,S05,consensus (range); demo
+lucia (sample),iss,43,cabin_co2,2.09,daily value (SD 0.4 day to day); max 1-h = 2.09,yes,S05,consensus (range); demo
+lucia (sample),iss,44,cabin_co2,2.5,daily value (SD 0.4 day to day); max 1-h = 2.5,yes,S05,consensus (range); demo
+lucia (sample),iss,45,cabin_co2,2.42,daily value (SD 0.4 day to day); max 1-h = 2.42,yes,S05,consensus (range); demo
+lucia (sample),iss,46,cabin_co2,1.89,daily value (SD 0.4 day to day); max 1-h = 1.89,yes,S05,consensus (range); demo
+lucia (sample),iss,47,cabin_co2,1.72,daily value (SD 0.4 day to day); max 1-h = 1.72,yes,S05,consensus (range); demo
+lucia (sample),iss,48,cabin_co2,2.24,daily value (SD 0.4 day to day); max 1-h = 2.24,yes,S05,consensus (range); demo
+lucia (sample),iss,49,cabin_co2,2.38,daily value (SD 0.4 day to day); max 1-h = 2.38,yes,S05,consensus (range); demo
+lucia (sample),iss,50,cabin_co2,1.63,daily value (SD 0.4 day to day); max 1-h = 1.63,yes,S05,consensus (range); demo
+lucia (sample),iss,51,cabin_co2,2.38,daily value (SD 0.4 day to day); max 1-h = 2.38,yes,S05,consensus (range); demo
+lucia (sample),iss,52,cabin_co2,2.88,daily value (SD 0.4 day to day); max 1-h = 4.0,yes,S05,consensus (range); demo
+lucia (sample),iss,53,cabin_co2,2.81,daily value (SD 0.4 day to day); max 1-h = 2.81,yes,S05,consensus (range); demo
+lucia (sample),iss,54,cabin_co2,2.37,daily value (SD 0.4 day to day); max 1-h = 2.37,yes,S05,consensus (range); demo
+lucia (sample),iss,55,cabin_co2,2.18,daily value (SD 0.4 day to day); max 1-h = 2.18,yes,S05,consensus (range); demo
+lucia (sample),iss,56,cabin_co2,1.8,daily value (SD 0.4 day to day); max 1-h = 1.8,yes,S05,consensus (range); demo
+lucia (sample),iss,57,cabin_co2,2.88,daily value (SD 0.4 day to day); max 1-h = 2.88,yes,S05,consensus (range); demo
+lucia (sample),iss,58,cabin_co2,2.48,daily value (SD 0.4 day to day); max 1-h = 2.48,yes,S05,consensus (range); demo
+lucia (sample),iss,59,cabin_co2,2.89,daily value (SD 0.4 day to day); max 1-h = 2.89,yes,S05,consensus (range); demo
+lucia (sample),iss,60,cabin_co2,2.32,daily value (SD 0.4 day to day); max 1-h = 2.32,yes,S05,consensus (range); demo

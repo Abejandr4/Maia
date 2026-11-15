@@ -1,0 +1,67 @@
+================================================================================
+CBC  |  OSD-569  |  LSDS-7_Complete_Blood_Count_CBC_TRANSFORMED.csv
+rows = 28   columns = 61
+sample type: ['whole-blood']
+crew_id: ['C001', 'C002', 'C003', 'C004']
+timepoints: ['L-92', 'L-44', 'L-3', 'R+1', 'R+45', 'R+82', 'R+194']
+samples per crew: C001=7, C002=7, C003=7, C004=7
+tests = 20   tests with reference-range columns = 20
+units (from column names): percent (8); cells_per_microliter (5); femtoliter (2); thousand_per_microliter (2); picogram (1); grams_per_deciliter (1); million_per_microliter (1)
+tests: absolute_basophils, absolute_eosinophils, absolute_lymphocytes, absolute_monocytes, absolute_neutrophils, basophils, eosinophils, hematocrit, hemoglobin, lymphocytes, mch, mchc, mcv, monocytes, mpv, neutrophils, platelet_count, rdw, red_blood_cell_count, white_blood_cell_count
+================================================================================
+CMP  |  OSD-575  |  LSDS-8_Comprehensive_Metabolic_Panel_CMP_TRANSFORMED.csv
+rows = 28   columns = 58
+sample type: ['serum']
+crew_id: ['C001', 'C002', 'C003', 'C004']
+timepoints: ['L-92', 'L-44', 'L-3', 'R+1', 'R+45', 'R+82', 'R+194']
+samples per crew: C001=7, C002=7, C003=7, C004=7
+tests = 19   tests with reference-range columns = 19
+units (from column names): milligram_per_deciliter (5); millimol_per_liter (4); gram_per_deciliter (3); units_per_liter (3); ratio (no unit) (2); milliliter_per_minute_per_1.73_meter_squared (2)
+tests: albumin, albumin_to_globulin_ratio, alkaline_phosphatase, alt, ast, total_bilirubin, bun_to_creatinine_ratio, calcium, carbon_dioxide, chloride, creatinine, egfr_african_american, egfr_non_african_american, globulin, glucose, potassium, total_protein, sodium, urea_nitrogen_bun
+================================================================================
+IMMUNE  |  OSD-575  |  LSDS-8_Multiplex_serum_immune_EvePanel_TRANSFORMED.csv
+rows = 28   columns = 143
+sample type: ['serum']
+crew_id: ['C001', 'C002', 'C003', 'C004']
+timepoints: ['L-92', 'L-44', 'L-3', 'R+1', 'R+45', 'R+82', 'R+194']
+samples per crew: C001=7, C002=7, C003=7, C004=7
+tests = 71   tests with reference-range columns = 0
+units (from column names): picogram_per_milliliter (71)
+NOTE: each analyte also has a '<analyte>_percent' column; its meaning is not documented in the file [UNVERIFIED] -> not used.
+tests: 6ckine, bca_1, ctack, egf, ena_78, eotaxin, eotaxin_2, eotaxin_3, fgf_2, flt_3l, fractalkine, g_csf, gm_csf, groα, i_309, ifn_α2, ifnγ, il_10, il_12p40, il_12p70, il_13, il_15, il_16, il_17a, il_17e_per_il_25, il_17f, il_18, il_1ra, il_1α, il_1β, il_2, il_20, il_21, il_22, il_23, il_27, il_28a, il_3, il_33, il_4, il_5, il_6, il_7, il_8, il_9, ip_10, lif, m_csf, mcp_1, mcp_2, mcp_3, mcp_4, mdc, mig_per_cxcl9, mip_1α, mip_1β, mip_1δ, pdgf_aa, pdgf_ab_per_bb, rantes, scd40l, scf, sdf_1α_plus_β, tarc, tgfα, tnfα, tnfβ, tpo, trail, tslp, vegf_a
+================================================================================
+CARDIO  |  OSD-575  |  LSDS-8_Multiplex_serum_cardiovascular_EvePanel_TRANSFORMED.csv
+rows = 28   columns = 19
+sample type: ['serum']
+crew_id: ['C001', 'C002', 'C003', 'C004']
+timepoints: ['L-92', 'L-44', 'L-3', 'R+1', 'R+45', 'R+82', 'R+194']
+samples per crew: C001=7, C002=7, C003=7, C004=7
+tests = 9   tests with reference-range columns = 0
+units (from column names): nanogram_per_milliliter (6); picogram_per_milliliter (3)
+NOTE: each analyte also has a '<analyte>_percent' column; its meaning is not documented in the file [UNVERIFIED] -> not used.
+tests: a2_macroglobulin, agp, crp, fetuin_a36, fibrinogen, haptoglobin, l_selectin, pf4, sap
+================================================================================
+DATA PROBLEMS FOUND AUTOMATICALLY
+[1] CBC hemoglobin column says 'percent' but values are 11.5–17.0 with range 11.7–17.1: this matches g/dL, not %. Unit treated as g/dL [UNVERIFIED].
+[2] CBC consistency check: absolute count vs WBC × % (tolerance 15%)
+    C003_whole-blood_L-92_cbc: absolute_neutrophils = 10.1 but WBC×% = 6826
+    C003_whole-blood_L-92_cbc: absolute_lymphocytes = 6826 but WBC×% = 1997
+    C003_whole-blood_L-92_cbc: absolute_monocytes = 1997 but WBC×% = 614
+    C003_whole-blood_L-92_cbc: absolute_eosinophils = 614 but WBC×% = 125
+    -> the row C003 L-92 looks shifted by one or more columns (platelets 12.9, MPV 330, RDW 32.4). Its absolute counts and platelet/MPV/RDW/MCH/MCHC are excluded; WBC and % values look consistent and are kept.
+[3] CBC hematocrit: C003 has different lower limits across timepoints [38.5, 35.0] (pre-flight vs post-flight). Ranges look sex-specific; for C003 they switch [UNVERIFIED].
+[3] CMP ALT: C003 has different lower limits across timepoints [9.0, 6.0] (pre-flight vs post-flight). Ranges look sex-specific; for C003 they switch [UNVERIFIED].
+[4] CMP glucose R+45 and R+82 (mg/dL, lab low limit):
+    C001 R+45: 84  (low 65)  ok
+    C002 R+45: 44  (low 65)  BELOW range
+    C003 R+45: 36  (low 65)  BELOW range
+    C004 R+45: 43  (low 65)  BELOW range
+    C001 R+82: 91  (low 65)  ok
+    C002 R+82: 77  (low 65)  ok
+    C003 R+82: 80  (low 65)  ok
+    C004 R+82: 80  (low 65)  ok
+[5] IMMUNE ifn_α2_concentration_picogram_per_milliliter: 4 of 28 samples have exactly the same value 120.88 (probably an assay limit – the true value is not exact) [UNVERIFIED]
+[5] IMMUNE il_28a_concentration_picogram_per_milliliter: 5 of 28 samples have exactly the same value 15.56 (probably an assay limit – the true value is not exact) [UNVERIFIED]
+[5] IMMUNE il_3_concentration_picogram_per_milliliter: 3 of 28 samples have exactly the same value 1.1 (probably an assay limit – the true value is not exact) [UNVERIFIED]
+[5] CARDIO haptoglobin_concentration_nanogram_per_milliliter: 7 of 28 samples have exactly the same value 17907000.0 (probably an assay limit – the true value is not exact) [UNVERIFIED]
+[6] CRP is present in the cardiovascular panel (crp_concentration_picogram_per_milliliter). The guide (4.2) says 'CRP [UNVERIFIED] in the files' -> it IS in the file. 1 mg/L = 1,000,000 pg/mL.

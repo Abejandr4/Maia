@@ -1,0 +1,21 @@
+id,reference,link,used_in,source,evidence_level
+S78,NASA OSDR OSD-569 – Inspiration4 complete blood count (LSDS-7 CBC),https://osdr.nasa.gov/osdr/data/osd/files/569,lab_results.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",real
+S79,NASA OSDR OSD-575 – Inspiration4 CMP and multiplex serum panels (LSDS-8),https://osdr.nasa.gov/osdr/data/osd/files/575,lab_results.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",real
+S80,"Overbey et al. 2024, Nature – SOMA atlas",https://doi.org/10.1038/s41586-024-07639-y,immune_domains.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S81,"Jones et al. 2024, Nature – Inspiration4",https://nature.com/articles/s41586-024-07648-x,immune_domains.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S82,"Sanders et al. 2024, npj Microgravity – Inspiration4 data in OSDR",https://www.nature.com/articles/s41526-024-00393-5,lab_results.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S83,"Crucian et al. 2018, Front Immunol – immune dysregulation in spaceflight",https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2018.01437/pdf,immune_domains.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S84,"Crucian et al. 2015, npj Microgravity – in-flight immune changes",https://www.nature.com/articles/npjmgrav201513,immune_domains.csv; lab_tests.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S85,NASA HRP Evidence Report – altered immune response,https://ntrs.nasa.gov/api/citations/20150008177/downloads/20150008177.pdf,immune_domains.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S86,"Mehta et al. 2017, npj Microgravity – latent virus reactivation",https://www.nature.com/articles/s41526-017-0015-y.pdf,saliva_samples.csv; immune_domains.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S87,Crucian et al. 2016 – clinical immune events in ISS crew,https://www.dovepress.com/article/download/29846,immune_domains.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S88,EFLM Biological Variation Database,https://biologicalvariation.eu/meta_calculations,lab_tests.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S89,Worked RCV values (PMC12334944),https://pmc.ncbi.nlm.nih.gov/articles/PMC12334944/,lab_tests.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S90,"Shibata et al. 2023, JACC – heart and exercise on the ISS",https://www.jacc.org/doi/10.1016/j.jacc.2023.05.058,targets.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",estimate
+S91,Ahmed et al. 2025 – bone density after flight,https://pmc.ncbi.nlm.nih.gov/articles/PMC12626757/,measurements context,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",estimate
+S92,"Fu et al. 2019, Circulation – blood pressure in long-duration flight",https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.119.041050,daily_synthetic.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",estimate
+S93,Cucinotta 2008 – ISS radiation,https://pubmed.ncbi.nlm.nih.gov/18582161/,daily_synthetic.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S94,NASA OCHMO water technical brief,https://www.nasa.gov/wp-content/uploads/2023/03/water-technical-brief-ochmo.pdf,targets.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S95,NASA ISS blog 2022-07-27 – crew schedule focuses on exercise,https://www.nasa.gov/blogs/spacestation/2022/07/27/crews-wednesday-schedule-focuses-on-exercise-science-and-maintenance/,targets.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",estimate
+S96,NASA OCHMO sleep accommodations technical brief,https://www.nasa.gov/wp-content/uploads/2023/03/sleep-accomodations-technical-brief-ochmo.pdf,targets.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus
+S97,NASA-STD-3001 Vol. 2 Section 11 – Spacesuits (web page),https://www.nasa.gov/reference/11-0-spacesuits-vol-2/,targets.csv,"Maia Build Guide (Nov 14, 2026), sections 2 and 10",consensus

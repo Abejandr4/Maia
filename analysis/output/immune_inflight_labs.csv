@@ -1,0 +1,4 @@
+person,day,test_id,value,unit,baseline_mean,baseline_from,pct_change,rcv_pct,beyond_rcv,is_synthetic,source,evidence_level
+lucia (sample),40,absolute_neutrophils,4968.0,cells/µL,3426.3,"C002 L-92, L-44, L-3 (REAL)",45.0,39.0,yes,yes,S78; S84; S48,demo (size); real (baseline)
+lucia (sample),40,absolute_lymphocytes,1511.0,cells/µL,2324.7,"C002 L-92, L-44, L-3 (REAL)",-35.0,31.5,yes,yes,S78; S84; S48,demo (size); real (baseline)
+lucia (sample),40,nlr,3.29,ratio,1.47,C002 (derived),123.1,,no RCV – shown only,yes,S78; S48,demo

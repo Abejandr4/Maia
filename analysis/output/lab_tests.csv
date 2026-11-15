@@ -1,0 +1,11 @@
+test_id,name,unit,cv_i_pct,cv_a_pct,rcv_pct,rcv_formula_pct,concern_direction,notes,source,evidence_level
+white_blood_cell_count,White cells (WBC),10^3/µL,11.1,,31.0,30.8,up,RCV from worked value (PMC12334944); CV_A not given in the guide,S88; S89,consensus
+absolute_neutrophils,Neutrophils (absolute),cells/µL,14.6,,39.0,40.5,up,CHECK: with CV_I 14.6% the RCV cannot be below 40.5% (CV_A = 0); guide value 39% kept [UNVERIFIED],S88; S89,consensus
+absolute_lymphocytes,Lymphocytes (absolute),cells/µL,10.9,,31.5,30.2,down,RCV from worked value (PMC12334944); CV_A not given in the guide,S88; S89,consensus
+crp,C-reactive protein (CRP),pg/mL (file) = mg/L × 10^6,34.7,5.0,97.0,97.2,up,only a doubling matters; CRP is in OSD-575 cardiovascular panel,S88; S79,consensus (CV_I); [UNVERIFIED] (CV_A 5%)
+nlr,Neutrophil-to-lymphocyte ratio (derived),ratio,,,,,up,judged only vs own baseline; no astronaut cut-off and no RCV [UNVERIFIED],S78,demo
+il_6,Interleukin-6,pg/mL,,,,,up,"rule: above the person's pre-flight range (max of L-92, L-44, L-3)",S79; S80,demo
+mcp_1,CCL2 / MCP-1,pg/mL,,,,,up,rule: above the person's pre-flight range; MCP-1 is CCL2,S79; S80,demo
+il_10,Interleukin-10,pg/mL,,,,,up,shown as context only (not in the 4.3 rule),S79; S80,demo
+tnfα,TNF-α,pg/mL,,,,,up,shown as context only,S79,demo
+glucose,Glucose,mg/dL,,,,,both,compared with the lab range in the file; cohort-wide low at one time point = data quality,S79,consensus (lab range)

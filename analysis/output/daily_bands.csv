@@ -1,0 +1,7 @@
+measurement_id,valid_learning_days,median,mad,robust_sd,halfwidth,band_low,band_high,band_ready,mad_zero,is_synthetic,source,evidence_level
+heart_rate,14,60.5,2.5,3.706,9.266,51.234,69.766,True,False,yes,S56; S57; S02; S48,demo
+bp_systolic,12,114.5,3.5,5.189,12.973,101.527,127.473,True,False,yes,S56; S57; S02; S48,demo
+bp_diastolic,12,74.0,1.5,2.224,5.56,68.44,79.56,True,False,yes,S56; S57; S02; S48,demo
+spo2,14,98.0,0.5,0.741,1.853,96.147,99.853,True,False,yes,S56; S57; S02; S48,demo
+temperature,14,36.9,0.1,0.148,0.371,36.529,37.271,True,False,yes,S56; S57; S02; S48,demo
+sleep,14,5.6,0.55,0.815,2.039,3.561,7.639,True,False,yes,S56; S57; S02; S48,demo

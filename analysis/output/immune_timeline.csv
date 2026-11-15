@@ -1,0 +1,61 @@
+day,cellular,cellular_evidence,inflammatory,inflammatory_evidence,viral,viral_evidence,clinical,clinical_evidence,n_domains,immune_review,context,is_synthetic,source,evidence_level
+1,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+2,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+3,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+4,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+5,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+6,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+7,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+8,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+9,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+10,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+11,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+12,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+13,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+14,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+15,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+16,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+17,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+18,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+19,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+20,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+21,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+22,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+23,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+24,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+25,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+26,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+27,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+28,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+29,negative,,no data in flight,,negative,,negative,,0,,,yes,S83; S84; S86; S87; S48,demo
+30,negative,,no data in flight,,negative,,negative,,0,,solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+31,negative,,no data in flight,,negative,,negative,,0,,solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+32,negative,,no data in flight,,negative,,negative,,0,,solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+33,negative,,no data in flight,,negative,,negative,,0,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+34,negative,,no data in flight,,negative,,negative,,0,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+35,negative,,no data in flight,,positive,saliva EBV positive (day 35),negative,,1,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+36,negative,,no data in flight,,positive,saliva EBV positive (day 35),negative,,1,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+37,negative,,no data in flight,,positive,saliva EBV positive (day 35),negative,,1,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+38,negative,,no data in flight,,positive,saliva EBV positive (day 35),negative,,1,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+39,negative,,no data in flight,,positive,saliva EBV positive (day 35),negative,,1,,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+40,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),negative,,2,Immune stress – review,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+41,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+42,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+43,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,schedule shift: sleep −2 h days 33–35 (day 33); solar_event (day 30),yes,S83; S84; S86; S87; S48,demo
+44,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,schedule shift: sleep −2 h days 33–35 (day 33),yes,S83; S84; S86; S87; S48,demo
+45,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,eva (day 45); schedule shift: sleep −2 h days 33–35 (day 33),yes,S83; S84; S86; S87; S48,demo
+46,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,eva (day 45); schedule shift: sleep −2 h days 33–35 (day 33),yes,S83; S84; S86; S87; S48,demo
+47,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,eva (day 45),yes,S83; S84; S86; S87; S48,demo
+48,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,positive,saliva EBV positive (day 35),positive,rash logged (photo) (day 41),3,Immune stress – review,,yes,S83; S84; S86; S87; S48,demo
+49,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,negative,,positive,rash logged (photo) (day 41),2,Immune stress – review,,yes,S83; S84; S86; S87; S48,demo
+50,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,negative,,positive,rash logged (photo) (day 41),2,Immune stress – review,,yes,S83; S84; S86; S87; S48,demo
+51,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,negative,,positive,rash logged (photo) (day 41),2,Immune stress – review,,yes,S83; S84; S86; S87; S48,demo
+52,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,negative,,positive,rash logged (photo) (day 41),2,Immune stress – review,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+53,positive,absolute_neutrophils +45% (RCV 39.0%) (day 40); absolute_lymphocytes -35% (RCV 31.5%) (day 40),no data in flight,,negative,,positive,rash logged (photo) (day 41),2,Immune stress – review,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+54,negative,,no data in flight,,negative,,positive,rash logged (photo) (day 41),1,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+55,negative,,no data in flight,,negative,,negative,,0,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+56,negative,,no data in flight,,negative,,positive,"fever: temperature marked change, high side (day 56)",1,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+57,negative,,no data in flight,,negative,,positive,"fever: temperature marked change, high side (day 56); fever: temperature marked change, high side (day 57)",1,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+58,negative,,no data in flight,,negative,,positive,"fever: temperature marked change, high side (day 56); fever: temperature marked change, high side (day 57); fever: temperature marked change, high side (day 58)",1,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+59,negative,,no data in flight,,negative,,positive,"fever: temperature marked change, high side (day 56); fever: temperature marked change, high side (day 57); fever: temperature marked change, high side (day 58); fever: temperature marked change, high side (day 59)",1,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo
+60,negative,,no data in flight,,negative,,positive,"fever: temperature marked change, high side (day 56); fever: temperature marked change, high side (day 57); fever: temperature marked change, high side (day 58); fever: temperature marked change, high side (day 59); fever: temperature marked change, high side (day 60)",1,,co2_peak (day 52),yes,S83; S84; S86; S87; S48,demo

@@ -2,21 +2,31 @@ import type {
   AlertEntry,
   BodyZone,
   DayRecord,
+  Metric,
   RoutineBlock,
   RoutineTask,
   Status,
   SymptomEntry,
   VitalSample,
 } from './types';
+import { REPORT_DAY, alerts as maiaAlerts, daily, routine, targets, upTo } from '../data/maiaData';
+
+/*
+ * Every value below comes from the data analysis (src/data/generated/*.json, made by
+ * analysis/code/step9_export_for_app.py) or from the team CSV files. Daily vital signs are
+ * SAMPLE data (generator of guide section 6); nothing here is typed in by hand.
+ */
 
 /* ------------------------------------------------------------------ */
-/* Mission clock — "today" is always mission day 42 so the demo stays */
-/* fresh whatever date you present it on.                             */
+/* Mission clock — "today" is the report day of the analysis (day 42)  */
 /* ------------------------------------------------------------------ */
 
-export const ASTRONAUT = { name: 'Ana' };
-export const TODAY_DAY = 42;
-export const EVENTS = { eva: 18, solar: 30, co2Rise: 34 };
+export const ASTRONAUT = { name: 'Ana', fullName: 'Ana Ruiz', role: 'Flight Engineer' };
+export const TODAY_DAY = REPORT_DAY;
+
+const eventDay = (id: string) => daily.events.find((e) => e.id === id)?.day ?? NaN;
+/** Mission events of the demo storyline (guide section 6). co2Rise = cabin CO₂ peak. */
+export const EVENTS = { eva: eventDay('eva'), solar: eventDay('solar_event'), co2Rise: eventDay('co2_peak'), scheduleShift: eventDay('schedule_shift') };
 
 function startOfToday() {
   const d = new Date();
@@ -44,214 +54,184 @@ export function dayForDate(date: Date) {
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3_600_000).toISOString();
 
-/* Deterministic random so charts look the same on every reload. */
-function mulberry32(seed: number) {
-  return () => {
-    seed |= 0;
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-const round = (v: number, d: number) => Math.round(v * 10 ** d) / 10 ** d;
-
-/* ------------------------------------------------------------------ */
-/* 42 days of daily records: vitals + environment + habits            */
-/* ------------------------------------------------------------------ */
-
-export const MISSION_DAYS: DayRecord[] = (() => {
-  const rng = mulberry32(2026);
-  const j = (amp: number) => (rng() - 0.5) * 2 * amp;
-  const out: DayRecord[] = [];
-  let cum = 0;
-
-  for (let day = 1; day <= TODAY_DAY; day++) {
-    const co2High = day >= EVENTS.co2Rise;
-    const co2 = round(co2High ? 2.25 + (day - EVENTS.co2Rise) * 0.02 + j(0.15) : 1.55 + j(0.2), 2);
-    const dose = round(
-      2.6 + j(0.12) + (day === EVENTS.solar ? 2.1 : 0) + (day === EVENTS.eva ? 0.45 : 0),
-      2,
-    );
-    cum += dose;
-    const sleep = round(7 + j(0.5) - (co2High ? 0.5 : 0) - (day === EVENTS.solar + 1 ? 0.9 : 0), 1);
-    const drift = day >= 36 ? (day - 35) * 1.1 : 0;
-
-    out.push({
-      day,
-      date: dateForDay(day).toISOString(),
-      systolic: Math.round(122 + j(2.5) + drift + (co2High ? 1.5 : 0)),
-      diastolic: Math.round(78 + j(2) + drift * 0.8),
-      hr: Math.round(60 + j(4) + (day === EVENTS.eva ? 6 : 0) + (7 - sleep) * 1.5),
-      spo2: Math.min(99, Math.round(98 + j(0.8))),
-      temp: round(36.6 + j(0.15) + (day === EVENTS.solar + 1 ? 0.3 : 0), 1),
-      co2,
-      dose,
-      cumulativeDose: round(cum, 1),
-      sleep,
-      water: round(2.3 + j(0.35) - (day >= 38 ? 0.4 : 0), 1),
-      exercise: round(2.2 + j(0.35), 1),
-      event: day === EVENTS.eva ? 'EVA' : day === EVENTS.solar ? 'Solar particle event' : undefined,
-    });
-  }
-
-  // This morning's vitals came in high → triggers the 15:00 re-check.
-  out[out.length - 1] = { ...out[out.length - 1], systolic: 133, diastolic: 84 };
-  return out;
-})();
-
-/** Morning measurement flagged for a re-check (shown on Home). */
-export const MORNING_FLAG = {
-  metric: 'systolic' as const,
-  value: 133,
-  at: '07:14',
-  status: 'caution' as Status,
-  recheckAt: '15:00',
+/** ISO time of a mission day at a given hour (for alerts and symptoms of the analysis). */
+const atDay = (day: number, hour = 9) => {
+  const d = dateForDay(day);
+  d.setHours(hour, 0, 0, 0);
+  return d.toISOString();
 };
+
+/* ------------------------------------------------------------------ */
+/* Daily records from the analysis                                     */
+/* ------------------------------------------------------------------ */
+
+const SERIES: Record<Metric | 'sleep', string> = {
+  systolic: 'bp_systolic',
+  diastolic: 'bp_diastolic',
+  hr: 'heart_rate',
+  spo2: 'spo2',
+  temp: 'temperature',
+  sleep: 'sleep',
+};
+/** Value of one measurement on one day; NaN when the day is missing (never filled in). */
+export const valueOn = (m: Metric | 'sleep', day: number) =>
+  daily.series[SERIES[m]]?.find((p) => p.day === day)?.value ?? NaN;
+
+const CAREER_LIMIT_MSV = 600; // NASA-STD-3001 [V1 4030]
+const radPct = new Map(daily.radiation_pct_of_career_limit.map((r) => [r.day, r.value]));
+const doseOn = (day: number) => (((radPct.get(day) ?? NaN) - (radPct.get(day - 1) ?? NaN)) / 100) * CAREER_LIMIT_MSV;
+const firstPct = daily.radiation_pct_of_career_limit[0]?.value ?? 0;
+const DAILY_DOSE = ((daily.radiation_pct_of_career_limit[1]?.value ?? firstPct) - firstPct) / 100 * CAREER_LIMIT_MSV;
+const PRIOR_PCT = firstPct - (DAILY_DOSE / CAREER_LIMIT_MSV) * 100;
+
+const EVENT_NAME: Record<string, string> = {
+  solar_event: 'Solar particle event (replay)',
+  schedule_shift: 'Schedule shift',
+  eva: 'EVA',
+  co2_peak: 'Cabin CO₂ peak',
+};
+
+/** One record per mission day up to today. Missing days stay NaN (water and exercise have no data). */
+export const MISSION_DAYS: DayRecord[] = Array.from({ length: TODAY_DAY }, (_, i) => {
+  const day = i + 1;
+  const ev = daily.events.find((e) => e.kind === 'event' && e.day === day);
+  return {
+    day,
+    date: dateForDay(day).toISOString(),
+    systolic: valueOn('systolic', day),
+    diastolic: valueOn('diastolic', day),
+    hr: valueOn('hr', day),
+    spo2: valueOn('spo2', day),
+    temp: valueOn('temp', day),
+    co2: daily.cabin_co2.find((c) => c.day === day)?.mean ?? NaN,
+    dose: day === 1 ? DAILY_DOSE : doseOn(day),
+    cumulativeDose: (((radPct.get(day) ?? NaN) - PRIOR_PCT) / 100) * CAREER_LIMIT_MSV,
+    sleep: valueOn('sleep', day),
+    water: NaN,
+    exercise: NaN,
+    event: ev ? EVENT_NAME[ev.id] ?? ev.description : undefined,
+  };
+});
+
+/** Today's reading that is outside the personal band (shown on Home); null when all are inside. */
+export const MORNING_FLAG = (() => {
+  for (const m of ['systolic', 'diastolic', 'hr', 'spo2', 'temp'] as const) {
+    const p = daily.series[SERIES[m]]?.find((q) => q.day === TODAY_DAY);
+    if (p && p.value != null && (p.side === 'high' || p.side === 'low')) {
+      return { metric: m, value: p.value, at: '06:30', status: 'advisory' as Status, recheckAt: 'tomorrow 06:30' };
+    }
+  }
+  return null;
+})();
 
 /* ------------------------------------------------------------------ */
 /* Environment                                                         */
 /* ------------------------------------------------------------------ */
 
+const co2Today = daily.cabin_co2.find((c) => c.day === TODAY_DAY);
 export const ENVIRONMENT = {
-  careerLimit: 600,
-  priorDose: 2.0,
-  todayDose: 0.5,
-  todayHoursInLab: 5.5,
-  dailyPlanning: 2.5,
-  spaceWeather: {
-    level: 'Quiet',
-    detail: 'No solar particle event forecast in the next 48 h',
-    source: 'DONKI 14:00 GMT',
-  },
-  co2: { value: 2.4, target: 2.0, since: EVENTS.co2Rise },
-  cabin: [
-    { label: 'ppO₂', value: '21.3', unit: 'kPa', ref: 'ref 19.5–23.1', status: 'normal' as Status },
-    { label: 'Humidity', value: '47', unit: '%', ref: 'ref 25–70', status: 'normal' as Status },
-    { label: 'Cabin temp', value: '22.4', unit: '°C', ref: 'ref 18–27', status: 'normal' as Status },
-    { label: 'Noise', value: '61', unit: 'dBA', ref: 'sleep target ≤ 50', status: 'advisory' as Status },
-  ],
+  careerLimit: CAREER_LIMIT_MSV,
+  careerPct: radPct.get(TODAY_DAY) ?? NaN,
+  careerMsv: ((radPct.get(TODAY_DAY) ?? NaN) / 100) * CAREER_LIMIT_MSV,
+  todayDose: DAILY_DOSE,
+  co2: { value: co2Today?.mean ?? NaN, mean7d: co2Today?.mean_7d ?? NaN, limit7d: daily.reference.cabin_co2?.green_max ?? NaN },
 };
 
 /* ------------------------------------------------------------------ */
-/* Symptoms & alerts                                                   */
+/* Symptoms & alerts of the analysis                                   */
 /* ------------------------------------------------------------------ */
 
-export const INITIAL_SYMPTOMS: SymptomEntry[] = [
-  { id: 's1', name: 'Nausea', severity: 'mild', time: hoursAgo(2.9) },
-  { id: 's2', name: 'Dizziness', severity: 'mild', time: hoursAgo(3) },
-  {
-    id: 's3',
-    name: 'Fatigue',
-    severity: 'mild',
-    note: 'Lower energy than usual during the second exercise block.',
-    time: hoursAgo(19.9),
-  },
-  {
-    id: 's4',
-    name: 'Headache',
-    severity: 'mild',
-    note: 'Mild frontal headache in the afternoon, improved with hydration and a 20 minute rest.',
-    time: hoursAgo(31.9),
-  },
-  {
-    id: 's5',
-    name: 'Dizziness',
-    severity: 'moderate',
-    note: 'Light-headed standing up after the EVA suit donning drill; resolved within a few minutes seated.',
-    time: hoursAgo(53.5),
-  },
-  {
-    id: 's6',
-    name: 'Headache',
-    severity: 'mild',
-    note: 'Dull headache after a long session in the lab module.',
-    time: hoursAgo(24 * 7 + 6),
-  },
-  {
-    id: 's7',
-    name: 'Headache',
-    severity: 'moderate',
-    note: 'Pressure behind the eyes, eased by the evening.',
-    time: hoursAgo(24 * 8 + 3),
-  },
-  {
-    id: 's8',
-    name: 'Fatigue',
-    severity: 'moderate',
-    note: 'Poor sleep the night after sheltering for the solar particle event.',
-    time: hoursAgo(24 * 11 + 10),
-  },
-  {
-    id: 's9',
-    name: 'Lower back pain',
-    severity: 'mild',
-    note: 'Stiffness after the EVA; stretching helped.',
-    time: hoursAgo(24 * 23 + 8),
-  },
-  {
-    id: 's10',
-    name: 'Congestion',
-    severity: 'mild',
-    note: 'Facial fullness, typical early fluid shift.',
-    time: hoursAgo(24 * 38),
-  },
-];
+const SYMPTOM_NAME: Record<string, string> = { rash: 'Rash', headache: 'Headache' };
+export const INITIAL_SYMPTOMS: SymptomEntry[] = upTo(daily.events.filter((e) => e.kind === 'symptom'))
+  .map((e) => ({
+    id: `maia-${e.id}-${e.day}`,
+    name: SYMPTOM_NAME[e.id] ?? e.id,
+    severity: 'mild' as const, // severity is not in the data: shown as mild, note says so
+    note: `${e.description}`,
+    time: atDay(e.day, 10),
+  }))
+  .reverse();
 
-export const INITIAL_ALERTS: AlertEntry[] = [
-  { id: 'a1', vital: 'Blood Pressure', message: 'Blood pressure 156/98 mmHg — above the safe range for microgravity.', level: 'warning', time: hoursAgo(1.2), source: 'sensor' },
-  { id: 'a2', vital: 'Blood Pressure', message: 'Morning reading 133/84 mmHg — +10 mmHg above your normal. Re-check scheduled 15:00.', level: 'advisory', time: hoursAgo(7.3), source: 'system' },
-  { id: 'a3', vital: 'Heart Rate', message: 'Heart rate 112 bpm at rest for 4 minutes.', level: 'warning', time: hoursAgo(9.5), source: 'sensor' },
-  { id: 'a4', vital: 'Cabin CO₂', message: 'Cabin CO₂ 2.6 mmHg — above the 2.0 mmHg target.', level: 'advisory', time: hoursAgo(14), source: 'system' },
-  { id: 'a5', vital: 'SpO₂', message: 'SpO₂ 93 % — below your normal during the exercise block.', level: 'advisory', time: hoursAgo(21), source: 'sensor' },
-  { id: 'a6', vital: 'Blood Pressure', message: 'Blood pressure 149/95 mmHg after waking.', level: 'warning', time: hoursAgo(30), source: 'sensor' },
-  { id: 'a7', vital: 'Core Temperature', message: 'Core temperature 37.7 °C after exercise; back to normal in 25 min.', level: 'advisory', time: hoursAgo(50), source: 'sensor' },
-  { id: 'a8', vital: 'Radiation', message: 'Solar particle event — shelter in shielded quarters. +2.1 mSv today.', level: 'critical', time: hoursAgo(24 * 12 + 5), source: 'system' },
-  { id: 'a9', vital: 'Heart Rate', message: 'Heart rate 138 bpm during EVA translation.', level: 'warning', time: hoursAgo(24 * 24 + 4), source: 'sensor' },
-];
+/** Names used by the alert filters of Body & Sensors (Trends) and the top bar. */
+const ALERT_VITAL: Record<string, string> = {
+  heart_rate: 'Heart Rate',
+  bp_systolic: 'Blood Pressure',
+  bp_diastolic: 'Blood Pressure',
+  'blood pressure': 'Blood Pressure',
+  spo2: 'SpO₂',
+  temperature: 'Core Temperature',
+  sleep: 'Sleep',
+  immune: 'Immune',
+  '': 'Mission event',
+};
+const LEVEL: Record<string, AlertEntry['level']> = { advisory: 'advisory', caution: 'caution', warning: 'warning', critical: 'critical' };
+export const INITIAL_ALERTS: AlertEntry[] = upTo(maiaAlerts).map((a, i) => ({
+  id: `maia-${a.alert_id}-${a.day}-${i}`,
+  vital: ALERT_VITAL[a.measurement] ?? a.title,
+  message: `${a.title}. ${a.text}`,
+  level: LEVEL[a.level] ?? 'advisory',
+  time: atDay(a.day),
+  source: 'system' as const,
+}));
 
-/** 248 sensor samples across the last 7 days (for "time in nominal range"). */
-export const WEEK_SAMPLES: VitalSample[] = (() => {
-  const r = mulberry32(7);
-  const n = 248;
-  const span = 7 * 86_400_000;
-  const now = Date.now();
-  return Array.from({ length: n }, (_, i) => {
-    const spike = r() < 0.09;
-    return {
-      t: now - span + (span * i) / (n - 1),
-      systolic: 123 + (r() - 0.5) * 5 + (spike ? 18 + r() * 15 : 0),
-      diastolic: 79 + (r() - 0.5) * 4 + (spike ? 12 : 0),
-      hr: 60 + (r() - 0.5) * 12,
-      spo2: 98 + (r() - 0.5) * 1.6,
-      temp: 36.6 + (r() - 0.5) * 0.4,
-    };
+/** One sample per day for the last 7 days (morning check), only days with all four signals. */
+export const WEEK_SAMPLES: VitalSample[] = MISSION_DAYS.slice(-7)
+  .filter((d) => [d.systolic, d.diastolic, d.hr, d.spo2, d.temp].every(Number.isFinite))
+  .map((d) => {
+    const t = dateForDay(d.day);
+    t.setHours(6, 30, 0, 0);
+    return { t: t.getTime(), systolic: d.systolic, diastolic: d.diastolic, hr: d.hr, spo2: d.spo2, temp: d.temp };
   });
-})();
 
 /* ------------------------------------------------------------------ */
-/* Routine                                                             */
+/* Routine (daily_routine.csv) and goals (targets.csv)                 */
 /* ------------------------------------------------------------------ */
+
+const hour = (hhmm: string) => {
+  const [h, m] = hhmm.split(':').map(Number);
+  return h + (m || 0) / 60;
+};
+const issRoutine = routine.filter((r) => r.location === 'iss' && /^\d{2}:\d{2}$/.test(r.time));
+const wake = issRoutine.find((r) => r.type === 'sleep' && /wake/i.test(r.task));
+const sleepStart = issRoutine.find((r) => r.type === 'sleep' && /begins/i.test(r.task));
+const exercise = issRoutine.find((r) => r.type === 'exercise');
+const fatigue = routine.find((r) => r.type === 'fatigue');
+const fatigueHours = fatigue?.time.match(/(\d{2}):(\d{2})\D+(\d{2}):(\d{2})/);
+const exerciseTarget = targets.find((t) => t.goal === 'exercise_per_day')?.value ?? NaN;
 
 export const ROUTINE_BLOCKS: RoutineBlock[] = [
-  { label: 'Sleep', start: 22, end: 6, kind: 'sleep' },
-  { label: 'Exercise', start: 10.5, end: 12.5, kind: 'exercise' },
-  { label: 'Highest fatigue', start: 14, end: 16, kind: 'fatigue' },
+  ...(sleepStart && wake ? [{ label: 'Sleep', start: hour(sleepStart.time), end: hour(wake.time), kind: 'sleep' as const }] : []),
+  ...(exercise ? [{ label: 'Exercise', start: hour(exercise.time), end: hour(exercise.time) + exerciseTarget, kind: 'exercise' as const }] : []),
+  ...(fatigueHours
+    ? [{ label: 'Fatigue hours', start: +fatigueHours[1] + +fatigueHours[2] / 60, end: +fatigueHours[3] + +fatigueHours[4] / 60, kind: 'fatigue' as const }]
+    : []),
 ];
 
-export const ROUTINE_TASKS: RoutineTask[] = [
-  { id: 't1', time: '07:10', label: 'Morning vitals', state: 'done', doneAt: '07:14', target: 'body' },
-  { id: 't2', time: '08:00', label: 'Water · 500 ml', state: 'done', doneAt: '08:05', target: 'home' },
-  { id: 't3', time: '15:00', label: 'Blood pressure re-check', state: 'next', target: 'body' },
-  { id: 't4', time: '18:00', label: 'Send report to flight surgeon', state: 'scheduled', target: 'report' },
-  { id: 't5', time: '21:00', label: 'Evening check-in', state: 'scheduled', target: 'body' },
-];
+const TARGET: Record<string, RoutineTask['target']> = { measurement: 'body', symptoms: 'body', water: 'home', exercise: 'home', sleep: 'home' };
+const shortTask = (t: string) => t.replace(/\s*\(task[^)]*\)/i, '').replace(/:.*$/, (m) => (m.length > 40 ? '' : m));
 
+/** Tasks of today: earlier than now = done, the first later one = next. */
+export const ROUTINE_TASKS: RoutineTask[] = (() => {
+  const now = new Date();
+  const nowH = now.getHours() + now.getMinutes() / 60;
+  let nextGiven = false;
+  return issRoutine
+    .filter((r) => r.type !== 'sleep')
+    .map((r, i) => {
+      const past = hour(r.time) <= nowH;
+      const state: RoutineTask['state'] = past ? 'done' : nextGiven ? 'scheduled' : 'next';
+      if (!past) nextGiven = true;
+      return { id: `t${i}`, time: r.time, label: shortTask(r.task), state, target: TARGET[r.type] ?? 'home' };
+    });
+})();
+
+const lastSleep = MISSION_DAYS.slice(-7).map((d) => d.sleep).filter(Number.isFinite);
 export const GOALS = {
-  water: { value: 1.5, target: 2.5, unit: 'L', lastDrinkHoursAgo: 3 },
-  exercise: { value: 2.0, target: 2.5, unit: 'h' },
-  sleepAvg: 6.4,
+  water: { value: 0, target: targets.find((t) => t.goal === 'water_per_day')?.value ?? NaN, unit: 'L' },
+  exercise: { value: 0, target: exerciseTarget, unit: 'h' },
+  /** Mean sleep of the last 7 nights (analysis). */
+  sleepAvg: Math.round((lastSleep.reduce((a, b) => a + b, 0) / (lastSleep.length || 1)) * 10) / 10,
+  sleepTarget: daily.reference.sleep?.green_min ?? NaN,
 };
 
 export const FAMILY_MESSAGES = [
@@ -272,18 +252,38 @@ export const FAMILY_MESSAGES = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Body map — 10 sensor zones                                          */
+/* Body map — 10 sensor zones. Readings only where the analysis has data. */
 /* ------------------------------------------------------------------ */
 
+const fmt = (v: number, d = 0) => (Number.isFinite(v) ? v.toFixed(d) : '—');
+const bandSide = (key: string) => daily.series[key]?.find((p) => p.day === TODAY_DAY)?.side ?? '';
+const zoneStatus = (keys: string[]): Status => (keys.some((k) => ['high', 'low'].includes(bandSide(k))) ? 'advisory' : 'normal');
+const today = MISSION_DAYS[MISSION_DAYS.length - 1];
+const READING: Record<number, { reading: string; note: string; keys: string[] }> = {
+  3: { reading: `${fmt(today.temp, 1)} °C core`, note: 'Day ' + TODAY_DAY + ' morning check vs your band.', keys: ['temperature'] },
+  4: { reading: `${fmt(today.systolic)}/${fmt(today.diastolic)} mmHg`, note: 'Day ' + TODAY_DAY + ' morning check vs your band.', keys: ['bp_systolic', 'bp_diastolic'] },
+  5: { reading: `SpO₂ ${fmt(today.spo2)} %`, note: 'Day ' + TODAY_DAY + ' morning check vs your band.', keys: ['spo2'] },
+  8: { reading: `${fmt(today.hr)} bpm · ${fmt(today.spo2)} %`, note: 'Day ' + TODAY_DAY + ' morning check vs your band.', keys: ['heart_rate', 'spo2'] },
+};
+function zone(id: number, name: string, sensor: string, about: string, x: number, y: number): BodyZone {
+  const r = READING[id];
+  return {
+    id, name, sensor, about, x, y,
+    status: r ? zoneStatus(r.keys) : 'normal',
+    reading: r?.reading ?? '—',
+    note: r?.note ?? 'No data for this sensor in the demo.',
+  };
+}
+
 export const BODY_ZONES: BodyZone[] = [
-  { id: 1, name: 'Forehead', sensor: 'Skin temperature patch', about: 'Tracks skin temperature and sweat — early sign of fever or overheating in the suit.', x: 103, y: 22, status: 'normal', reading: '34.1 °C skin', note: 'Within your normal.' },
-  { id: 2, name: 'Neck', sensor: 'Carotid PPG', about: 'Pulse wave at the carotid. Fluid shift toward the head shows up here first.', x: 101, y: 44, status: 'normal', reading: 'Pulse transit 212 ms', note: 'Stable over 7 days.' },
-  { id: 3, name: 'Ear', sensor: 'In-ear core thermometer', about: 'Best estimate of core body temperature; also used for vestibular symptom logging.', x: 124, y: 54, status: 'normal', reading: '36.6 °C core', note: 'Within your normal.' },
-  { id: 4, name: 'Chest · heart', sensor: 'ECG lead + BP reference', about: 'Heart rhythm and pressure. Microgravity shifts fluid and can change cardiac load.', x: 86, y: 92, status: 'caution', reading: 'Systolic +10 mmHg', note: 'Morning BP above your normal. Re-check at 15:00.' },
-  { id: 5, name: 'Chest · lungs', sensor: 'Respiration belt + SpO₂ relay', about: 'Breathing rate and oxygen saturation. CO₂ build-up raises breathing rate.', x: 116, y: 88, status: 'normal', reading: '14 breaths/min', note: 'Normal pattern.' },
-  { id: 6, name: 'Abdomen', sensor: 'Bio-impedance (hydration)', about: 'Estimates body water — dehydration is common in the first weeks of flight.', x: 92, y: 126, status: 'normal', reading: 'TBW 54 %', note: 'Slightly low hydration trend.' },
-  { id: 7, name: 'Lower back', sensor: 'Posture IMU', about: 'Spine elongates in microgravity; this tracks posture and back strain.', x: 120, y: 132, status: 'advisory', reading: 'Spine +1.8 cm', note: 'Do the stretch block after exercise.' },
-  { id: 8, name: 'Wrist', sensor: 'Optical HR + SpO₂', about: 'Main heart rate and blood oxygen sensor; backup when the chest strap is off.', x: 53, y: 128, status: 'normal', reading: '60 bpm · 98 %', note: 'Good contact.' },
-  { id: 9, name: 'Thigh', sensor: 'EMG + bone loading', about: 'Muscle activity and loading during exercise — protects against bone and muscle loss.', x: 83, y: 228, status: 'advisory', reading: 'Load 71 % of target', note: 'Add 10 min of resistive exercise.' },
-  { id: 10, name: 'Calf', sensor: 'Leg circumference band', about: '"Bird legs": fluid leaves the legs in microgravity. Tracks the shift over time.', x: 117, y: 264, status: 'normal', reading: '−6 % vs pre-flight', note: 'Expected for day 42.' },
+  zone(1, 'Forehead', 'Skin temperature patch', 'Tracks skin temperature and sweat — early sign of fever or overheating in the suit.', 103, 22),
+  zone(2, 'Neck', 'Carotid PPG', 'Pulse wave at the carotid. Fluid shift toward the head shows up here first.', 101, 44),
+  zone(3, 'Ear', 'In-ear core thermometer', 'Best estimate of core body temperature; also used for vestibular symptom logging.', 124, 54),
+  zone(4, 'Chest · heart', 'ECG lead + BP reference', 'Heart rhythm and pressure. Microgravity shifts fluid and can change cardiac load.', 86, 92),
+  zone(5, 'Chest · lungs', 'Respiration belt + SpO₂ relay', 'Breathing rate and oxygen saturation. CO₂ build-up raises breathing rate.', 116, 88),
+  zone(6, 'Abdomen', 'Bio-impedance (hydration)', 'Estimates body water — dehydration is common in the first weeks of flight.', 92, 126),
+  zone(7, 'Lower back', 'Posture IMU', 'Spine elongates in microgravity; this tracks posture and back strain.', 120, 132),
+  zone(8, 'Wrist', 'Optical HR + SpO₂', 'Main heart rate and blood oxygen sensor; backup when the chest strap is off.', 53, 128),
+  zone(9, 'Thigh', 'EMG + bone loading', 'Muscle activity and loading during exercise — protects against bone and muscle loss.', 83, 228),
+  zone(10, 'Calf', 'Leg circumference band', '"Bird legs": fluid leaves the legs in microgravity. Tracks the shift over time.', 117, 264),
 ];

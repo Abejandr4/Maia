@@ -1,0 +1,122 @@
+// Maia data layer: the ONLY place the app reads the analysis results.
+// The JSON files in ./generated are created by analysis/code/step9_export_for_app.py.
+// Do not edit them by hand: re-run the Python and they are replaced.
+
+import reportJson from './generated/maia_report.json'
+import labRealJson from './generated/maia_lab_real.json'
+import dailyJson from './generated/maia_daily.json'
+import immuneJson from './generated/maia_immune.json'
+import evaluationJson from './generated/maia_evaluation.json'
+import targetsJson from './generated/maia_targets.json'
+import sourcesJson from './generated/maia_sources.json'
+
+// ---------- types ----------
+export type Side = '' | 'high' | 'low' | 'missing' | 'eva_shown'
+export type RefStatus = 'green' | 'yellow' | 'red' | 'missing'
+
+export interface DailyPoint {
+  day: number
+  value: number | null
+  side: Side
+  ref_status: RefStatus
+  marked_change: '' | 'high' | 'low'
+  stale: boolean
+  phase: string
+}
+export interface Band { low: number | null; high: number | null; median: number; robust_sd: number; ready: boolean }
+export interface Reference {
+  green_min: number | null; green_max: number | null
+  red_below: number | null; red_above: number | null; source: string
+}
+export interface MarkedChange {
+  measurement_id: string; side: 'high' | 'low'
+  first_out_day: number; detection_day: number; last_day: number
+  max_n_of_6: number; max_size_robust_sd: number
+  confidence: 'high' | 'medium' | 'low'
+  overlapping_events: string | null; missing_in_window: boolean
+}
+export interface DailyData {
+  person: string; location: string; is_synthetic: boolean; label: string
+  learning_window_days: number[]
+  bands: Record<string, Band>
+  reference: Record<string, Reference>
+  series: Record<string, DailyPoint[]>
+  changes: MarkedChange[]
+  cabin_co2: { day: number; mean: number; max_1h: number; hours_over_3: number; mean_7d: number | null; air_quality_rule: boolean }[]
+  radiation_pct_of_career_limit: { day: number; value: number }[]
+  events: { day: number; kind: 'event' | 'symptom'; id: string; description: string }[]
+}
+export interface ImmuneDay {
+  day: number; cellular: string; inflammatory: string; viral: string; clinical: string
+  n_domains: number; immune_review: string; context: string
+}
+export interface ImmuneData {
+  is_synthetic: boolean; label: string; window_days: number; baseline_crew: string
+  timeline: ImmuneDay[]
+  inflight_labs: { day: number; test_id: string; value: number; unit: string; baseline_mean: number; pct_change: number; rcv_pct: number | null; beyond_rcv: string }[]
+  saliva: { day: number; virus: string; result: string }[]
+  domains: { domain: string; condition: string; window_days: number; counts_alone: string }[]
+  rule_on_real_postflight: { crew_id: string; timepoint: string; cellular: string; inflammatory: string; n_domains: number; immune_review: string }[]
+}
+export interface LabPost { timepoint: string; value: number | null; change_pct: number | null; status: string }
+export interface LabTest { unit: string; baseline: number | null; baseline_n: number; post: LabPost[] }
+export interface LabRealData {
+  dataset: string; is_real: boolean; caveat: string; method: string
+  crew: Record<string, Record<string, LabTest>>
+  data_quality: { test_id: string; timepoint: string; side: string; crew_outside: number; crew_total: number; crew_ids: string; back_in_range_next_timepoint: string; next_timepoint: string; message: string }[]
+  immune_rule_on_real_data: { crew_id: string; timepoint: string; cellular: string; inflammatory: string }[]
+}
+export interface ReportSection { order: number; section: string; priority_rule: string; data: unknown }
+export interface Report { report: string; is_synthetic: boolean; label: string; generated_for_mission_day: number; sections: ReportSection[] }
+export interface EvaluationRow {
+  section: string; item: string; runs: number | null
+  detection_rate_pct: number | null; false_alarms_per_100_crew_days: number | null
+  days_to_detection_median: number | null; days_to_detection_p10_p90: string | null
+  note: string | null; source: string; evidence_level: string
+}
+export interface Target { goal: string; comparator: string | null; value: number; unit: string; location: string; standard_id: string | null; notes: string | null; source: string; evidence_level: string }
+export interface Source { reference: string; link: string | null }
+
+// ---------- data ----------
+export const report = reportJson as Report
+export const labReal = labRealJson as LabRealData
+export const daily = dailyJson as DailyData
+export const immune = immuneJson as ImmuneData
+export const evaluation = evaluationJson as EvaluationRow[]
+export const targets = targetsJson as Target[]
+export const sources = sourcesJson as Record<string, Source>
+
+// ---------- helpers ----------
+/** Size of the report that would be sent with the next downlink. */
+export function reportSizeKb(): number {
+  const send = report.sections.find((s) => s.section === 'Send')?.data as { size_kb?: number } | undefined
+  return send?.size_kb ?? 0
+}
+
+/** One section of the report by its name in report_template ("Header", "Ordered changes", ...). */
+export function reportSection<T = unknown>(name: string): T | undefined {
+  return report.sections.find((s) => s.section === name)?.data as T | undefined
+}
+
+/** Daily series of one measurement up to a given mission day (for the 7-day evidence chart use last 7). */
+export function series(measurement: string, untilDay = 60, lastN?: number): DailyPoint[] {
+  const s = (daily.series[measurement] ?? []).filter((p) => p.day <= untilDay)
+  return lastN ? s.slice(-lastN) : s
+}
+
+/** Immune state on one mission day. */
+export function immuneOnDay(day: number): ImmuneDay | undefined {
+  return immune.timeline.find((d) => d.day === day)
+}
+
+/** "S78; S79" -> [{id, reference, link}] so every alert can link to its evidence. */
+export function sourceLinks(ids: string): { id: string; reference: string; link: string | null }[] {
+  return ids
+    .split(/[;,]/)
+    .map((x) => x.trim().split(' ')[0])
+    .filter((id) => id in sources)
+    .map((id) => ({ id, ...sources[id] }))
+}
+
+/** Label every number that is not REAL, as the guide requires. */
+export const SAMPLE_LABEL = 'sample'

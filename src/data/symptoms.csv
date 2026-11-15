@@ -1,8 +1,8 @@
-﻿id,zone,name,severity_scale,environment_link,notes,source,evidence_level
-headache,brain,Headache,0 none|1 mild|2 moderate|3 severe,cabin_co2,Odds of reported headache doubled per +1 mmHg CO₂ (2001–2012 ISS data).,"S63; S05",estimate
+id,zone,name,severity_scale,environment_link,notes,source,evidence_level
+headache,brain,Headache,0 none|1 mild|2 moderate|3 severe,cabin_co2,Odds of reported headache doubled per +1 mmHg CO₂ (2001–2012 ISS data).,S63; S05,estimate
 congestion,lungs,Stuffy nose / congestion,0 none|1 mild|2 moderate|3 severe,cabin_co2,Congestion associated with CO₂ and appears ~1 mmHg lower than headache.,S64,estimate
-fatigue,brain,Fatigue,0 none|1 mild|2 moderate|3 severe,sleep|schedule_shift,,"S40; S52",estimate
-trouble_sleeping,brain,Trouble sleeping,0 none|1 mild|2 moderate|3 severe,schedule_shift|cabin_co2,,"S40; S63",estimate
+fatigue,brain,Fatigue,0 none|1 mild|2 moderate|3 severe,sleep|schedule_shift,,S40; S52,estimate
+trouble_sleeping,brain,Trouble sleeping,0 none|1 mild|2 moderate|3 severe,schedule_shift|cabin_co2,,S40; S63,estimate
 dizziness,brain,Dizziness,0 none|1 mild|2 moderate|3 severe,,Back on Earth: link with standing test.,S65,consensus
 blurred_vision,eyes,Blurred or changed vision,0 none|1 mild|2 moderate|3 severe,,SANS sign: decreased near vision / hyperopic shift.,S67,estimate
 eye_irritation,eyes,Eye irritation,0 none|1 mild|2 moderate|3 severe,dust|toxic,,S52,consensus (risk)
@@ -10,7 +10,7 @@ ear_pain,ears,Ear pain,0 none|1 mild|2 moderate|3 severe,pressure_change,,S52,[U
 ringing,ears,Ringing in the ears,0 none|1 mild|2 moderate|3 severe,noise,,S52,consensus (risk)
 palpitations,heart,Racing or irregular heartbeat,0 none|1 mild|2 moderate|3 severe,,Links to arrhythmia card.,S28,demo
 chest_pain,heart,Chest pain,0 none|1 mild|2 moderate|3 severe,,Severity ≥1 opens the chest pain card.,S28,consensus (warning sign)
-dizziness_standing,heart,Dizzy when standing,0 none|1 mild|2 moderate|3 severe,,Back on Earth.,"S50; S65",consensus
+dizziness_standing,heart,Dizzy when standing,0 none|1 mild|2 moderate|3 severe,,Back on Earth.,S50; S65,consensus
 short_of_breath,lungs,Short of breath,0 none|1 mild|2 moderate|3 severe,cabin_co2,,S32,demo
 cough,lungs,Cough,0 none|1 mild|2 moderate|3 severe,dust|toxic,,S52,[UNVERIFIED] severity mapping
 back_pain,bones,Back pain,0 none|1 mild|2 moderate|3 severe,,,S47,[UNVERIFIED] in-flight prevalence

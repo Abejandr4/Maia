@@ -1,24 +1,24 @@
-﻿edition_or_location,level,recipient_role,channel,order,includes,notes,source,evidence_level
+edition_or_location,level,recipient_role,channel,order,includes,notes,source,evidence_level
 iss,repeated_yellow,flight_surgeon,internet,1,value|time|trend,,S48,demo
-iss,red,crew_medical_officer,onboard,1,value|time,At least 2 crew medical officers per vehicle.,"S04 [V1 3006] (team-cited); S48","consensus (role); demo (routing)"
+iss,red,crew_medical_officer,onboard,1,value|time,At least 2 crew medical officers per vehicle.,S04 [V1 3006] (team-cited); S48,consensus (role); demo (routing)
 iss,red,flight_surgeon,internet,2,value|time|trend,,S48,demo
 iss,emergency,crew_medical_officer,onboard,1,guide|time,,S48,demo
 iss,emergency,crewmates,onboard,2,guide|time,,S48,demo
 iss,emergency,flight_surgeon,internet,3,report,Biomedical engineer in Mission Control supports the flight surgeon.,S48,demo
 spacewalk,red,iv_crew,onboard,1,value|time,Voice loop.,S48,demo
 spacewalk,red,eva_partner,onboard,2,value|time,,S48,demo
-spacewalk,red,mission_control,internet,3,value|time,Suit data recipients are defined by each program.,"S03 [V2 11023]; S48","consensus (program defines); demo"
+spacewalk,red,mission_control,internet,3,value|time,Suit data recipients are defined by each program.,S03 [V2 11023]; S48,consensus (program defines); demo
 spacewalk,emergency,iv_crew,onboard,1,guide|time,,S48,demo
 spacewalk,emergency,eva_partner,onboard,2,guide|time,,S48,demo
 spacewalk,emergency,mission_control,internet,3,report,,S48,demo
 back_on_earth,repeated_yellow,flight_surgeon,internet,1,value|time|trend,,S48,demo
 back_on_earth,red,flight_surgeon,internet,1,value|time|trend,,S48,demo
 back_on_earth,red,crew_medical_support,internet,2,value|time,,S48,demo
-back_on_earth,emergency,local_emergency_services,call (person calls),1,—,"The app shows the number; it does not call by itself.",S48,demo
+back_on_earth,emergency,local_emergency_services,call (person calls),1,—,The app shows the number; it does not call by itself.,S48,demo
 back_on_earth,emergency,flight_surgeon,internet,2,report,,S48,demo
 lunar_surface,repeated_yellow,crew_medical_officer,onboard,1,value|time|trend,,S48,demo
 lunar_surface,repeated_yellow,flight_surgeon,internet (queued),2,value|time|trend,Sent when the link allows.,S48,demo
-lunar_surface,red,crew_medical_officer,onboard,1,value|time,"Crew medical officer acts first; Earth reply comes later.",S48,demo
+lunar_surface,red,crew_medical_officer,onboard,1,value|time,Crew medical officer acts first; Earth reply comes later.,S48,demo
 lunar_surface,red,crewmates,onboard,2,value|time,,S48,demo
 lunar_surface,red,flight_surgeon,internet (queued),3,value|time|trend,,S48,demo
 lunar_surface,emergency,crew_medical_officer,onboard,1,guide|time,,S48,demo
@@ -26,14 +26,14 @@ lunar_surface,emergency,crewmates,onboard,2,guide|time,,S48,demo
 lunar_surface,emergency,flight_surgeon,internet (queued),3,report,Top priority in the send queue.,S48,demo
 mars_transit,repeated_yellow,crew_medical_officer,onboard,1,value|time|trend,,S48,demo
 mars_transit,repeated_yellow,flight_surgeon,internet (queued),2,value|time|trend,Sent when the link allows.,S48,demo
-mars_transit,red,crew_medical_officer,onboard,1,value|time,"Crew medical officer acts first; Earth reply comes later.",S48,demo
+mars_transit,red,crew_medical_officer,onboard,1,value|time,Crew medical officer acts first; Earth reply comes later.,S48,demo
 mars_transit,red,crewmates,onboard,2,value|time,,S48,demo
 mars_transit,red,flight_surgeon,internet (queued),3,value|time|trend,,S48,demo
 mars_transit,emergency,crew_medical_officer,onboard,1,guide|time,,S48,demo
 mars_transit,emergency,crewmates,onboard,2,guide|time,,S48,demo
 mars_transit,emergency,flight_surgeon,internet (queued),3,report,Top priority in the send queue.,S48,demo
-iss,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,"Letter-style report; size shown in KB before sending.","S12; S70; S48",demo
-spacewalk,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,"Letter-style report; size shown in KB before sending.","S12; S70; S48",demo
-back_on_earth,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,"Letter-style report; size shown in KB before sending.","S12; S70; S48",demo
-lunar_surface,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,"Letter-style report; size shown in KB before sending.","S12; S70; S48",demo
-mars_transit,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,"Letter-style report; size shown in KB before sending.","S12; S70; S48",demo
+iss,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,Letter-style report; size shown in KB before sending.,S12; S70; S48,demo
+spacewalk,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,Letter-style report; size shown in KB before sending.,S12; S70; S48,demo
+back_on_earth,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,Letter-style report; size shown in KB before sending.,S12; S70; S48,demo
+lunar_surface,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,Letter-style report; size shown in KB before sending.,S12; S70; S48,demo
+mars_transit,report,flight_surgeon,next downlink,1,ordered changes|evidence|data quality|astronaut note,Letter-style report; size shown in KB before sending.,S12; S70; S48,demo

@@ -1,16 +1,16 @@
-﻿order,question,answer,emergency_id,source,evidence_level
-1,What do you see?,"Swelling, hives or trouble breathing after a trigger",allergic_reaction,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-2,What do you see?,Solar storm alert,solar_event,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-3,What do you see?,"Not responding, not breathing",cardiac_arrest,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-4,What do you see?,Racing or irregular heartbeat,arrhythmia,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-5,What do you see?,Chest pain or very high blood pressure,chest_pain,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-6,What do you see?,Short of breath or low oxygen,breathing_difficulty,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-7,What do you see?,"Smoke, smell or alarm",toxic_exposure,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-8,What do you see?,Joint pain or numbness after EVA,decompression,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-9,What do you see?,"Fever, very hot or very thirsty",dehydration_heat,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-10,What do you see?,Injury or bleeding,trauma_bleeding,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-11,What do you see?,Seizure,seizure,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-12,What do you see?,Choking,choking,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-13,What do you see?,Sudden vision problem,sudden_eye,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-14,What do you see?,Headache with high CO₂,co2_headache,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
-15,What do you see?,Dizzy or fell after landing,fall_dizziness,"S69 (body-system organisation); S68","demo (layout); estimate (organisation)"
+order,question,answer,emergency_id,source,evidence_level
+1,What do you see?,"Swelling, hives or trouble breathing after a trigger",allergic_reaction,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+2,What do you see?,Solar storm alert,solar_event,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+3,What do you see?,"Not responding, not breathing",cardiac_arrest,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+4,What do you see?,Racing or irregular heartbeat,arrhythmia,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+5,What do you see?,Chest pain or very high blood pressure,chest_pain,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+6,What do you see?,Short of breath or low oxygen,breathing_difficulty,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+7,What do you see?,"Smoke, smell or alarm",toxic_exposure,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+8,What do you see?,Joint pain or numbness after EVA,decompression,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+9,What do you see?,"Fever, very hot or very thirsty",dehydration_heat,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+10,What do you see?,Injury or bleeding,trauma_bleeding,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+11,What do you see?,Seizure,seizure,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+12,What do you see?,Choking,choking,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+13,What do you see?,Sudden vision problem,sudden_eye,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+14,What do you see?,Headache with high CO₂,co2_headache,S69 (body-system organisation); S68,demo (layout); estimate (organisation)
+15,What do you see?,Dizzy or fell after landing,fall_dizziness,S69 (body-system organisation); S68,demo (layout); estimate (organisation)

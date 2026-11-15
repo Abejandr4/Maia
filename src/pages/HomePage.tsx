@@ -133,6 +133,29 @@ const EARTH_ENV = {
   label: EARTH_CTX?.daily_dose_msv_max != null ? `${EARTH_CTX.daily_dose_msv_max} mSv/day` : 'Gravity',
 };
 
+/* ---------- where the crew member is (contexts.csv) ---------- */
+const PLACE_CTX: Record<string, string> = { iss: 'iss', earth: 'back_on_earth', lunar: 'lunar_surface', mars: 'mars_transit' };
+const PLACE_NAME: Record<string, string> = { iss: 'ISS', earth: 'Earth', lunar: 'Moon', mars: 'Mars transit' };
+/** Location circle: signal delay to Mission Control (or days since landing) + gravity. */
+function placeFocus(place: string) {
+  const c = contexts.find((x) => x.id === PLACE_CTX[place]);
+  const gravity = c?.gravity === 'microgravity' ? 'μg' : (c?.gravity ?? '').split(' (')[0];
+  if (place === 'earth') {
+    return { value: `R+${EARTH_TODAY.day_after_landing}`, unit: '', status: 'normal' as Status, label: `Earth · ${gravity}` };
+  }
+  const max = c?.delay_one_way_max_s ?? 0;
+  const min = c?.delay_one_way_min_s ?? 0;
+  const delay = max >= 60
+    ? { value: `${Math.round(min / 60)}–${Math.round(max / 60)}`, unit: 'min' }
+    : { value: max <= 1 ? '≤1' : String(max), unit: 's' };
+  const blackout = (c?.blackout_days_max ?? 0) > 0;
+  return {
+    ...delay,
+    status: (max >= 60 ? 'caution' : 'normal') as Status,
+    label: `${PLACE_NAME[place]} · ${gravity}${blackout ? ' · blackouts' : ''}`,
+  };
+}
+
 /** Time until a task, e.g. "in 1 h 20 m". */
 function untilText(hhmmText: string, now: number) {
   const [h, m] = hhmmText.split(':').map(Number);
@@ -167,6 +190,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   const body = onEarth ? EARTH_BODY : issBody;
   const env = onEarth ? EARTH_ENV : envFocus();
   const rep = reportFocus(false);
+  const loc = placeFocus(place);
   // routine follows the real clock: tasks before now are done, the first one after now is next
   const nowMin = new Date(now).getHours() * 60 + new Date(now).getMinutes();
   const toMin = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
@@ -245,6 +269,15 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
               status={nextTask ? 'advisory' : 'normal'}
               statusLabel={nextTask ? `${nextTask.label.split(/[:·(]/)[0].trim().slice(0, 16)} · ${untilText(nextTask.time, now)}` : 'All done'}
               onClick={scrollToRoutine}
+            />
+            <OrbitNode
+              position="place"
+              label={place === 'earth' ? 'Since landing' : 'Signal delay'}
+              value={loc.value}
+              unit={loc.unit}
+              status={loc.status}
+              statusLabel={loc.label}
+              onClick={() => onNavigate('environment')}
             />
           </OrbitRing>
 

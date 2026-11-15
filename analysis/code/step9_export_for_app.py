@@ -149,6 +149,24 @@ write("maia_contexts.json", records(ctx[["id", "name", "status", "gravity", "com
                                           "daily_dose_msv_max", "stricter_rules", "description", "comm_policy", "source",
                                           "evidence_level"]]))
 
+# ---- spacewalk and back-on-Earth samples (step4b) + their limits (measurement_ranges) -----
+from step4b_generate_eva_earth import generate_eva, generate_earth
+mr = pd.read_excel(XLSX, sheet_name="measurement_ranges")
+def limits(location):
+    rows = mr[mr.location == location][["measurement_id", "ref_green_min", "ref_green_max",
+                                        "ref_red_below", "ref_red_above", "notes", "source"]]
+    return records(rows)
+ctx = pd.read_excel(XLSX, sheet_name="contexts").set_index("id")
+def ctx_text(cid):
+    r = ctx.loc[cid]
+    return {"description": r["description"], "comm_policy": r["comm_policy"], "source": r["source"]}
+write("maia_spacewalk.json", {"samples": records(generate_eva()), "limits": limits("spacewalk"),
+                              "context": ctx_text("spacewalk"), "is_synthetic": True,
+                              "person": "tomas (sample)", "interval_min": 2, "duration_min": 390})
+write("maia_earth.json", {"days": records(generate_earth()), "limits": limits("back_on_earth"),
+                          "context": ctx_text("back_on_earth"), "is_synthetic": True,
+                          "person": "iris (sample)"})
+
 # ---- body zones and symptoms (body_zones.csv, symptoms.csv) for the body map ------------
 bz = pd.read_excel(XLSX, sheet_name="body_zones")
 write("maia_body_zones.json", records(bz))

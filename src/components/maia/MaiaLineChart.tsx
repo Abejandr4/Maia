@@ -32,6 +32,8 @@ interface MaiaLineChartProps {
   step?: boolean;
   fromDay?: number;
   toDay?: number;
+  /** Label before the day number on the axis ("D" in flight, "R+" after landing). */
+  dayPrefix?: string;
 }
 
 const M = { t: 28, r: 64, b: 30, l: 44 };
@@ -52,6 +54,7 @@ export default function MaiaLineChart({
   step = false,
   fromDay,
   toDay,
+  dayPrefix = 'D',
 }: MaiaLineChartProps) {
   const [ref, width] = useMeasure<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
@@ -147,7 +150,7 @@ export default function MaiaLineChart({
             ))}
             {xTicks.map((t) => (
               <text key={t} x={x(t)} y={M.t + h + 18} textAnchor="middle">
-                D{t}
+                {dayPrefix}{t}
               </text>
             ))}
           </g>
@@ -187,7 +190,7 @@ export default function MaiaLineChart({
       )}
       {hp && (
         <div className="chart-tooltip" style={{ left: x(hp.day), top: hp.value != null ? y(hp.value) : M.t + h / 2 }}>
-          <strong>D{hp.day}</strong>
+          <strong>{dayPrefix}{hp.day}</strong>
           <br />
           {hp.value != null ? `${fmt(hp.value)} ${unit}` : 'missing'}
           {hp2 && hp2.value != null && (

@@ -9,7 +9,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 N = sys.argv[1] if len(sys.argv) > 1 else "1000"
-STEPS = ["step1_inspect.py", "step2_build_csvs.py", "step3_lab_method.py", "step4_generate.py",
+STEPS = ["step1_inspect.py", "step2_build_csvs.py", "step3_lab_method.py", "step4_generate.py", "step4b_generate_eva_earth.py",
          "step5_daily_method.py", "step6_immune_case.py", "step7_evaluation.py", "step8_report.py",
          "step9_export_for_app.py"]
 for s in STEPS:

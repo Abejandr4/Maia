@@ -12,7 +12,7 @@ interface OrbitNodeProps {
   size?: 'md' | 'lg';
   /** Draws the thick status ring (use for the node that needs attention). */
   ring?: boolean;
-  position: 'env' | 'reports' | 'body' | 'routine' | 'family';
+  position: 'env' | 'reports' | 'body' | 'routine';
   onClick: () => void;
 }
 

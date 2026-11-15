@@ -120,8 +120,26 @@ const STATUS_WORD: Record<Status, string> = {
   warning: 'Warning',
   critical: 'Critical',
 };
-
+function getCrewFirstName(): string {
+  try {
+    const raw =
+      localStorage.getItem('aboutYou') ||
+      localStorage.getItem('userProfile') ||
+      localStorage.getItem('astronautProfile');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const fullName = parsed.fullName || parsed.name || parsed.firstName;
+      if (typeof fullName === 'string' && fullName.trim()) {
+        return fullName.trim().split(/\s+/)[0];
+      }
+    }
+  } catch {
+    // Si falla el parseo, usa el valor por defecto
+  }
+  return ASTRONAUT.name;
+}
 export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => void }) {
+  const crewName = useMemo(() => getCrewFirstName(), []);
   const { evaluations } = useVitals();
   const now = useNow(15_000);
   const routineRef = useRef<HTMLElement>(null);
@@ -162,7 +180,7 @@ export default function HomePage({ onNavigate }: { onNavigate: (p: PageId) => vo
   return (
     <div className="page page--home">
       <section className="home-hero">
-        <h1 className="home-greeting">Hi, {ASTRONAUT.name}</h1>
+        <h1 className="home-greeting">Hi, {crewName}</h1>
         <span className="needs-chip" title={NEEDS_TEXT}>
           <i className={`needs-chip__dot needs-chip__dot--${needs ? (body.status === 'normal' ? 'caution' : body.status) : 'normal'}`} />
           {needs ? `${needs} ${needs === 1 ? 'thing needs' : 'things need'} you · ${NEEDS_TEXT}` : 'All good right now'}

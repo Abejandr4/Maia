@@ -9,7 +9,7 @@
   --orbit-radius-scale: 1;
   --orbit-min-scale: 0.78;
   --orbit-max-scale: 1.08;
-  --orbit-min-opacity: 1; /* 1 = sin transparencia, siempre nítido */
+  --orbit-min-opacity: 1; /* 1 = no transparency, always crisp */
 }
 
 .orbit-ring__slot {
@@ -18,7 +18,6 @@
   top: 50%;
   width: 0;
   height: 0;
-  /* se quitó will-change por petición */
 }
 
 @media (max-width: 640px) {

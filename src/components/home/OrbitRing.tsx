@@ -9,10 +9,10 @@ interface OrbitRingProps {
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
 /**
- * Coloca a sus hijos en una órbita elíptica alrededor del centro del contenedor.
- * Se ajusta desde CSS con variables (ver home.css). No usa estado de React:
- * escribe transform/opacity directo en el DOM para no re-renderizar cada frame.
- */
+ * Positions its children in an elliptical orbit around the container center.
+ * Adjusted from CSS using variables (see home.css). Does not use React state:
+ * writes transform/opacity directly to the DOM to avoid re-rendering every frame.
+ **/
 export default function OrbitRing({ children, className }: OrbitRingProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const items = Children.toArray(children);
@@ -59,7 +59,7 @@ export default function OrbitRing({ children, className }: OrbitRingProps) {
     };
 
     const draw = () => {
-      // En pantallas angostas los nodos se achican y la órbita con ellos.
+      // On narrow screens, the nodes shrink along with the orbit.
       const sizeK = clamp(w / 1000, 0.6, 1);
       const pad = 110 * sizeK * maxScale;
       const rx = Math.max(0, w / 2 - pad) * radiusScale;
@@ -87,7 +87,7 @@ export default function OrbitRing({ children, className }: OrbitRingProps) {
     const tick = (now: number) => {
       const dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
       last = now;
-      // Frena y arranca con suavidad al pasar el cursor o enfocar con teclado.
+      // Smoothly pauses and resumes on hover or keyboard focus.
       const target = hovered || focused ? 0 : 1;
       speedK += (target - speedK) * Math.min(1, dt * 6);
       phase += ((Math.PI * 2) / period) * dt * speedK;
@@ -99,7 +99,7 @@ export default function OrbitRing({ children, className }: OrbitRingProps) {
       cancelAnimationFrame(raf);
       last = 0;
       if (reduce.matches) {
-        phase = -Math.PI / 2; // quietos, repartidos en círculo
+        phase = -Math.PI / 2; // static, distributed in a circle
         draw();
       } else {
         raf = requestAnimationFrame(tick);

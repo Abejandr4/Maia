@@ -204,7 +204,7 @@ export function createAsteroidScene(
   mouthFill.position.z = -0.01;
   mouth.add(mouthFill);
 
-  const cheekMat = new MeshBasicMaterial({ color: 0xff8fb1, transparent: true, opacity: 0.5 });
+  const cheekMat = new MeshBasicMaterial({ color: 0xff8fb1, transparent: true, opacity: 0.5, depthWrite: false });
   for (const side of [-1, 1]) {
     const cheek = new Mesh(new CircleGeometry(0.17, 20), cheekMat);
     cheek.scale.set(1, 0.7, 1);
@@ -214,12 +214,12 @@ export function createAsteroidScene(
   }
   scene.add(star);
 
-  /* Sparkles (happy / celebrating) */
+/* Sparkles (happy / celebrating) */
   const sparks: Mesh<OctahedronGeometry, MeshBasicMaterial>[] = [];
   for (let i = 0; i < 10; i++) {
     const spark = new Mesh(
       new OctahedronGeometry(0.1),
-      new MeshBasicMaterial({ color: 0xfff2a8, transparent: true, opacity: 0 }),
+      new MeshBasicMaterial({ color: 0xfff2a8, transparent: true, opacity: 0, depthWrite: false }),
     );
     scene.add(spark);
     sparks.push(spark);
@@ -359,7 +359,11 @@ export function createAsteroidScene(
       const ang = (idx / sparks.length) * Math.PI * 2 + t * 0.8;
       const rr = 2.5 + 0.25 * Math.sin(t * 2 + idx);
       const pulse = 0.5 + 0.5 * Math.sin(t * 4 + idx * 1.7);
-      s.position.set(Math.cos(ang) * rr, Math.sin(ang) * rr * 0.8 + hop * 0.5, 0.4);
+      s.position.set(
+      Math.cos(ang) * rr,
+      Math.sin(ang) * rr * 0.3 + hop * 0.5,
+      Math.sin(ang) * rr,
+      );
       s.scale.setScalar(0.5 + pulse);
       s.rotation.y = t * 2 + idx;
       s.rotation.z = t + idx;

@@ -1,9 +1,9 @@
-﻿command,action,context,feedback,source,evidence_level
-"'Maia, status'","Reads suit pressure, CO₂, time remaining, pulse",spacewalk,spoken summary,"S73; S75","estimate (concept); demo (phrase)"
-"'Maia, read alerts'",Reads active alerts by priority,all,spoken list,"S02; S73",demo
+command,action,context,feedback,source,evidence_level
+"'Maia, status'","Reads suit pressure, CO₂, time remaining, pulse",spacewalk,spoken summary,S73; S75,estimate (concept); demo (phrase)
+"'Maia, read alerts'",Reads active alerts by priority,all,spoken list,S02; S73,demo
 "'Maia, take photo'",Captures a photo and attaches it to the log/incident,spacewalk|emergency,shutter sound + 'photo attached',S73,demo
 "'Maia, log symptom headache 2'",Logs a symptom with severity,all,spoken confirmation,S48,demo
 "'Maia, repeat'",Repeats the last spoken alert,all,spoken,S48,demo
-"'Maia, mute 5 minutes'","Silences non-critical speech; red alerts still speak",all,spoken,"S02 (crew can stop flashing; critical alerts remain)",demo
-VoiceOver labels,Every control has a spoken label (colour + icon + word),all,screen reader,S02,"consensus (redundant coding); demo"
-Fallback,"If voice fails, every command has a large-button equivalent",all,—,"S74; S73",estimate (speech accuracy drops in suits)
+"'Maia, mute 5 minutes'",Silences non-critical speech; red alerts still speak,all,spoken,S02 (crew can stop flashing; critical alerts remain),demo
+VoiceOver labels,Every control has a spoken label (colour + icon + word),all,screen reader,S02,consensus (redundant coding); demo
+Fallback,"If voice fails, every command has a large-button equivalent",all,—,S74; S73,estimate (speech accuracy drops in suits)

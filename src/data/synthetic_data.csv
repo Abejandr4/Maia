@@ -1,22 +1,22 @@
-﻿person,profile,location,measurement_id,baseline,sd,unit,time_of_day,drift,injected_event,days,source,evidence_level
-lucia (sample),"crew, female",iss,heart_rate,62,4,bpm,6:30,none,day 41: +12 bpm after sleepless night,1–60,S48,demo (synthetic)
-lucia (sample),"crew, female",iss,bp_systolic,116,6,mmHg,6:30,none,day 41: 128,1–60,S48,demo (synthetic)
-lucia (sample),"crew, female",iss,bp_diastolic,74,4,mmHg,6:30,none,day 41: 82,1–60,S48,demo (synthetic)
-lucia (sample),"crew, female",iss,spo2,98,1,%,6:30,none,none,1–60,S48,demo (synthetic)
-lucia (sample),"crew, female",iss,temperature,36.6,0.2,°C,6:30,'+1.0 °C linear over 75 days,none,1–60,S21,"estimate (drift); demo"
-lucia (sample),"crew, female",iss,sleep,6,0.7,h,6:30,none,day 40: 2 h,1–60,S40,"estimate (mean); demo"
+person,profile,location,measurement_id,baseline,sd,unit,time_of_day,drift,injected_event,days,source,evidence_level
+lucia (sample),"crew, female",iss,heart_rate,62,4,bpm,06:30:00,none,day 41: +12 bpm after sleepless night,1–60,S48,demo (synthetic)
+lucia (sample),"crew, female",iss,bp_systolic,116,6,mmHg,06:30:00,none,day 41: 128,1–60,S48,demo (synthetic)
+lucia (sample),"crew, female",iss,bp_diastolic,74,4,mmHg,06:30:00,none,day 41: 82,1–60,S48,demo (synthetic)
+lucia (sample),"crew, female",iss,spo2,98,1,%,06:30:00,none,none,1–60,S48,demo (synthetic)
+lucia (sample),"crew, female",iss,temperature,36.6,0.2,°C,06:30:00,+1.0 °C linear over 75 days,none,1–60,S21,estimate (drift); demo
+lucia (sample),"crew, female",iss,sleep,6,0.7,h,06:30:00,none,day 40: 2 h,1–60,S40,estimate (mean); demo
 lucia (sample),"crew, female",iss,cabin_co2,2.2,0.4,mmHg,hourly,none,day 52: 4.0 for 6 h + headache entry,1–60,S05,demo (synthetic)
-lucia (sample),"crew, female",iss,radiation_dose,18,,% of 600 mSv,daily,'+0.5 mSv/day,day 30: solar_event replay (2024-05-10),1–60,"S06; S33","estimate; demo"
-lucia (sample),"crew, female",iss,bone_density,0,,% vs pre-flight,monthly,−1.25% per month,none,1–60,S48,"consensus (rate); demo"
-tomas (sample),"crew, male",spacewalk,suit_pressure,4.3,0.03,psi,every 2 min,none,none,EVA day,"S01; S11","consensus (nominal); demo"
+lucia (sample),"crew, female",iss,radiation_dose,18,,% of 600 mSv,daily,+0.5 mSv/day,day 30: solar_event replay (2024-05-10),1–60,S06; S33,estimate; demo
+lucia (sample),"crew, female",iss,bone_density,0,,% vs pre-flight,monthly,−1.25% per month,none,1–60,S48,consensus (rate); demo
+tomas (sample),"crew, male",spacewalk,suit_pressure,4.3,0.03,psi,every 2 min,none,none,EVA day,S01; S11,consensus (nominal); demo
 tomas (sample),"crew, male",spacewalk,suit_co2,1.5,0.5,mmHg,every 2 min,rises with workload,hour 4: 3.5 (yellow),EVA day,S08,demo (synthetic)
 tomas (sample),"crew, male",spacewalk,heart_rate,95,12,bpm,every 2 min,none,hour 4: 125 (yellow),EVA day,S03 [V2 11011],demo (synthetic)
-tomas (sample),"crew, male",spacewalk,eva_time_remaining,420,,min,every 2 min,−1 min per min,none,EVA day,S09,"estimate (6.5 h + reserve); demo"
-iris (sample),"crew, female",back_on_earth,orthostatic_sys_drop,25,4,mmHg,8:00,falls to 8 by day 10,day 1: dizziness entry,1–14 after landing,"S48; S49","consensus (definition); demo"
-iris (sample),"crew, female",back_on_earth,heart_rate,76,5,bpm,8:00,falls to 66 by day 14,none,1–14 after landing,S48,demo (synthetic)
-iris (sample),"crew, female",back_on_earth,sleep,7.2,0.6,h,8:00,none,none,1–14 after landing,S48,demo (synthetic)
-lucia (sample),"crew, female",iss,all banded,see rows,see rows,—,—,days 1–14: learning window (no marked changes),—,1–14,S56,demo
-lucia (sample),"crew, female",iss,heart_rate,62,4,bpm,"chest sensor, 1/min",none,"days 33, 35–38: +14 bpm (4 of 6 → marked change, aligned with schedule shift on day 33)",1–60,"S57; S48",demo
+tomas (sample),"crew, male",spacewalk,eva_time_remaining,420,,min,every 2 min,−1 min per min,none,EVA day,S09,estimate (6.5 h + reserve); demo
+iris (sample),"crew, female",back_on_earth,orthostatic_sys_drop,25,4,mmHg,08:00:00,falls to 8 by day 10,day 1: dizziness entry,1–14 after landing,S48; S49,consensus (definition); demo
+iris (sample),"crew, female",back_on_earth,heart_rate,76,5,bpm,08:00:00,falls to 66 by day 14,none,1–14 after landing,S48,demo (synthetic)
+iris (sample),"crew, female",back_on_earth,sleep,7.2,0.6,h,08:00:00,none,none,1–14 after landing,S48,demo (synthetic)
+lucia (sample),"crew, female",iss,all banded,see rows,see rows,—,—,days 1–7: adaptation (skipped); days 8–21: learning window (no marked changes),—,1–21,S56,demo
+lucia (sample),"crew, female",iss,heart_rate,62,4,bpm,"chest sensor, 1/min",none,"days 33, 35–38: +14 bpm (4 of 6 → marked change, aligned with schedule shift on day 33)",1–60,S57; S48,demo
 lucia (sample),"crew, female",iss,sleep,—,—,h,—,none,day 33: schedule shift event (sleep −2 h for 3 nights),1–60,S40,demo
 lucia (sample),"crew, female",iss,bp_systolic,—,—,mmHg,—,none,days 20–22: missing (sensor off) → data quality,1–60,S02,demo
-lucia (sample),"crew, female",iss,heart_rate,—,—,bpm,—,none,"day 45: EVA day (event marker; higher HR expected)",1–60,S48,demo
+lucia (sample),"crew, female",iss,heart_rate,—,—,bpm,—,none,day 45: EVA day (event marker; higher HR expected),1–60,S48,demo

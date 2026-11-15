@@ -1,10 +1,10 @@
-﻿id,rule,applies_to,effect_on_analysis,shown_as,source,evidence_level
-baseline_min_days,Personal band needs ≥10 valid days in the 14-day learning window,all banded measurements,No band yet: only reference limits are used,'Learning your normal – day x of 14',"S56; S48",demo
+id,rule,applies_to,effect_on_analysis,shown_as,source,evidence_level
+baseline_min_days,Personal band needs ≥10 valid days in the 14-day learning window (flight days 8–21),all banded measurements,No band yet: only reference limits are used,'Learning your normal – day x of 14',S56; S48,demo
 mad_zero,"If MAD = 0 (identical readings), use min_band_halfwidth",all banded measurements,Prevents a zero-width band,—,S48,demo
-missing_day,"A day with no reading counts as missing, not as normal",daily measurements,"Missing days do not count toward 4 of 6; confidence drops",grey gap + 'Missing',S02 (F.4.3.1),"consensus (mark); demo"
+missing_day,"A day with no reading counts as missing, not as normal",daily measurements,Missing days do not count toward 4 of 6; confidence drops,grey gap + 'Missing',S02 (F.4.3.1),consensus (mark); demo
 stale,Reading older than stale_after_days,all,Value shown but not used for 'current' status,'Old reading · x days',S02 (F.4.3.1),consensus
-sensor_dropout,Chest sensor gap > 10 min,sensor measurements,"Gap shaded; no alert from interpolated data",shaded gap,S48,demo
-implausible,"Physiologically implausible values (e.g. HR <25 or >250; SpO₂ <50)",sensor measurements,"Discarded as artefact, logged",'Artefact removed',S48,[UNVERIFIED] limits
-event_window,"DONKI SEP, schedule shift or EVA within ±1 day",all,"Flag 'possible related event'; does not change the band",event marker on the timeline,"S34; S48",demo
-adaptation_window,First 7 flight days may reflect Space Adaptation Syndrome,in-flight baseline,Recommend starting the learning window after day 7 (see gaps),note in report,S77,estimate
+sensor_dropout,Chest sensor gap > 10 min,sensor measurements,Gap shaded; no alert from interpolated data,shaded gap,S48,demo
+implausible,Physiologically implausible values (e.g. HR <25 or >250; SpO₂ <50),sensor measurements,"Discarded as artefact, logged",'Artefact removed',S48,[UNVERIFIED] limits
+event_window,"DONKI SEP, schedule shift or EVA within ±1 day",all,Flag 'possible related event'; does not change the band,event marker on the timeline,S34; S48,demo
+adaptation_window,First 7 flight days may reflect Space Adaptation Syndrome,in-flight baseline,"Applied: days 1–7 are skipped; the learning window is days 8–21 (team decision, Nov 14)",note in report,S77,estimate
 confidence,"Change confidence = high (≥5 of 6, no event, no missing) · medium (4 of 6 or 1 event) · low (missing data)",marked changes,Orders the report,High / Medium / Low,S48,demo

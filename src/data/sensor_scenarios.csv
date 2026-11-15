@@ -1,6 +1,6 @@
-﻿id,name,signal_changes,onset,expected_alert,card_id,spoken_alert,source,evidence_level
-normal,Normal,HR ~62 bpm · BP ~112/72 · SpO₂ ~98% · temp ~36.8 °C (in-flight baseline),—,none,,,"S61; S62; S66",demo (simulated values)
-high_pressure,High blood pressure,BP rises from baseline to 185/122 mmHg,over 3 min,sensor_critical (severe hypertension),card_chest_pain,Emergency. Blood pressure critical. Action card open.,S27,"consensus (threshold); demo (curve)"
+id,name,signal_changes,onset,expected_alert,card_id,spoken_alert,source,evidence_level
+normal,Normal,HR ~62 bpm · BP ~112/72 · SpO₂ ~98% · temp ~36.8 °C (in-flight baseline),—,none,,,S61; S62; S66,demo (simulated values)
+high_pressure,High blood pressure,BP rises from baseline to 185/122 mmHg,over 3 min,sensor_critical (severe hypertension),card_chest_pain,Emergency. Blood pressure critical. Action card open.,S27,consensus (threshold); demo (curve)
 tachycardia,Tachycardia,HR rises to 155 bpm at rest,over 1 min,sensor_critical after 2 min > 150,card_arrhythmia,Emergency. Heart rate critical. Action card open.,S28,demo (threshold 150 bpm [UNVERIFIED])
-hypoxia,Hypoxia,SpO₂ falls to 86%,over 2 min,sensor_critical after 1 min < 90,card_breathing_difficulty,Emergency. Oxygen low. Action card open.,S32,"consensus (target); demo (90% trigger)"
-fever,Fever,Temperature rises to 39.2 °C,over 20 min (accelerated),sensor_critical ≥ 39.0,card_dehydration_heat,Warning. Fever. Action card open.,S21,"consensus (fever); demo"
+hypoxia,Hypoxia,SpO₂ falls to 86%,over 2 min,sensor_critical after 1 min < 90,card_breathing_difficulty,Emergency. Oxygen low. Action card open.,S32,consensus (target); demo (90% trigger)
+fever,Fever,Temperature rises to 39.2 °C,over 20 min (accelerated),sensor_critical ≥ 39.0,card_dehydration_heat,Warning. Fever. Action card open.,S21,consensus (fever); demo

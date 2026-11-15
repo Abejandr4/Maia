@@ -1,5 +1,5 @@
 export type Status = 'normal' | 'advisory' | 'caution' | 'warning' | 'critical';
-export type PageId = 'home' | 'body' | 'environment' | 'report';
+export type PageId = 'home' | 'body' | 'environment' | 'routine' | 'report';
 export type Scenario = 'nominal' | 'hypertension' | 'tachycardia' | 'hypoxia' | 'fever';
 export type VitalKey = 'bp' | 'hr' | 'spo2' | 'temp';
 export type Metric = 'systolic' | 'diastolic' | 'hr' | 'spo2' | 'temp';

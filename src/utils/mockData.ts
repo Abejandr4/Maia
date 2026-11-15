@@ -14,7 +14,7 @@ import type {
 /* fresh whatever date you present it on.                             */
 /* ------------------------------------------------------------------ */
 
-export const ASTRONAUT = { name: 'Ana' };
+export const ASTRONAUT = { name: 'Ana', fullName: 'Ana Ruiz', role: 'Flight Engineer' };
 export const TODAY_DAY = 42;
 export const EVENTS = { eva: 18, solar: 30, co2Rise: 34 };
 

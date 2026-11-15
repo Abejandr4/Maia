@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400&family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
-  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   --bg: #f4f3ef;
@@ -128,4 +128,13 @@ p {
     animation: none !important;
     transition: none !important;
   }
+}
+
+html body :is(h1, h2, h3, h4, h5, h6, .card__title, .env-chart-title, .habit-bubble__title, .analysis-label) {
+  font-family: Outfit, var(--font-sans);
+  font-weight: 400;
+}
+
+button, input, select, textarea {
+  font-family: var(--font-sans);
 }

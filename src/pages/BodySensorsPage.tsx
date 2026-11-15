@@ -150,16 +150,16 @@ function ProfileBodyMap({ tab, onSelectTab, onLogSymptom, children }: {
           {zones.map((zone, index) => {
             const [x, y] = orbit ? zone.orbit : zone.point;
             const chosen = zone.id === zoneId;
-            const color = zone.id === 'heart' ? '#b87900' : ['muscles', 'skin'].includes(zone.id) ? '#1682bc' : '#5c900c';
             return (
               <button
                 key={zone.id}
                 type="button"
                 aria-label={`Zone ${index + 1}: ${zone.label}`}
+                className="profile-body-zone"
                 aria-pressed={chosen}
                 title={zone.label}
                 onClick={() => openAnalysis(zone.id)}
-                style={{ position: 'absolute', left: x + '%', top: y + '%', transform: 'translate(-50%, -50%)', width: 26, height: 26, padding: 0, border: '2px solid ' + color, borderRadius: '50%', background: chosen ? '#dcf4a4' : '#fff', color: '#1c252a', fontWeight: 700, zIndex: chosen ? 1 : undefined }}
+                style={{ position: 'absolute', left: x + '%', top: y + '%', transform: 'translate(-50%, -50%)', width: 22, height: 22, padding: 0, fontSize: 11, border: '1px solid #ffffff48', borderRadius: '50%', color: '#1c252a', fontWeight: 700, zIndex: chosen ? 1 : undefined }}
               >
                 {index + 1}
               </button>
@@ -502,6 +502,13 @@ export default function BodySensorsPage({ onLogSymptom }: { onLogSymptom: () => 
       />
 
       <style>{`
+        .page--body .page-title { font-size: 48px; }
+        .page--body h2 { font-size: 2.25em; }
+        .page--body h3 { font-size: 1.755em; }
+        .page--body .card__title { font-size: 16.5px; }
+        .profile-body-zone { background: #ffffff59; cursor: pointer; text-shadow: 0 0 2px #fff8; }
+        .profile-body-zone:hover, .profile-body-zone:focus-visible { background: #fff; }
+        .profile-body-zone[aria-pressed="true"] { box-shadow: 0 0 0 1px #ffffff9c; }
         .page--body .profile-analysis { grid-column: 2 / -1; }
         @media (max-width: 1050px) { .page--body .profile-analysis { grid-column: 1 / -1; } }
         .analysis-view { display: grid; gap: 12px; min-width: 0; }

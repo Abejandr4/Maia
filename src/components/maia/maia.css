@@ -234,3 +234,24 @@
   white-space: nowrap;
 }
 .maia-doctor-btn:hover { background: #181816 !important; color: #ffffff !important; }
+
+
+/* ---------- prettier charts ---------- */
+.maia-chart { overflow: hidden; }
+.maia-line { stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.maia-line--2 { stroke-width: 2; stroke-dasharray: 6 5; }
+.maia-area { stroke: none; }
+.maia-last { fill: var(--series-a); stroke: var(--surface); stroke-width: 2.5; }
+.maia-chart .chart-grid line { stroke-dasharray: 2 4; opacity: .7; }
+.maia-ref { stroke-dasharray: 4 4; opacity: .85; }
+/* labels get a halo in the card colour so lines never cross the text */
+.maia-ref__label, .maia-chart .chart-event text {
+  paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round;
+  font-size: 10.5px; font-weight: 600;
+}
+.theme-dark .maia-ref__label, .theme-dark .maia-chart .chart-event text,
+.eva-shell .maia-ref__label, .eva-shell .maia-chart .chart-event text { stroke: #1d2023; }
+.theme-dark .maia-last { stroke: #1d2023; }
+
+/* doctor preview: same gap between 'How Maia decides' and the values log */
+.maia-doctor + .values-log { margin-top: 36px; }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useMeasure } from '../../utils/hooks';
 import { niceTicks, scaleLinear } from '../../utils/stats';
 import './maia.css';
@@ -36,7 +36,7 @@ interface MaiaLineChartProps {
   dayPrefix?: string;
 }
 
-const M = { t: 28, r: 64, b: 30, l: 44 };
+const M = { t: 42, r: 18, b: 30, l: 44 };
 
 /** Daily series with personal band, reference limits, events and missing-day gaps. */
 export default function MaiaLineChart({
@@ -58,6 +58,7 @@ export default function MaiaLineChart({
 }: MaiaLineChartProps) {
   const [ref, width] = useMeasure<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
+  const gradId = `maia-area-${useId().replace(/:/g, '')}`;
 
   const d0 = fromDay ?? Math.min(...points.map((p) => p.day));
   const d1 = toDay ?? Math.max(...points.map((p) => p.day));
@@ -103,6 +104,12 @@ export default function MaiaLineChart({
     return d;
   };
   const missing = pts.filter((p) => p.value == null).map((p) => p.day);
+  const drawn = pts.filter((p) => p.value != null) as { day: number; value: number }[];
+  const last = drawn.at(-1);
+  // soft fill under the daily line (only when there are no gaps, so it never lies)
+  const area = missing.length === 0 && drawn.length > 1
+    ? `${path(pts)}L${x(drawn[drawn.length - 1].day).toFixed(1)},${(M.t + h).toFixed(1)}L${x(drawn[0].day).toFixed(1)},${(M.t + h).toFixed(1)}Z`
+    : '';
   const hp = hover != null ? pts.find((p) => p.day === hover) : undefined;
   const hp2 = hover != null ? pts2.find((p) => p.day === hover) : undefined;
   const fmt = (v: number) => v.toFixed(digits);
@@ -120,6 +127,12 @@ export default function MaiaLineChart({
           }}
           onMouseLeave={() => setHover(null)}
         >
+          <defs>
+            <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--series-a)" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="var(--series-a)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
           {zones.map((z) => (
             <g key={z.label}>
               <rect
@@ -160,21 +173,23 @@ export default function MaiaLineChart({
           {refLines.map((r) => (
             <g key={r.label}>
               <line x1={M.l} x2={M.l + w} y1={y(r.value)} y2={y(r.value)} className={`maia-ref maia-ref--${r.tone}`} />
-              <text x={M.l + w + 6} y={y(r.value) + 3.5} className={`maia-ref__label maia-ref__label--${r.tone}`}>
+              <text x={M.l + w - 4} y={y(r.value) - 5} textAnchor="end" className={`maia-ref__label maia-ref__label--${r.tone}`}>
                 {r.label}
               </text>
             </g>
           ))}
-          {events.map((ev) => (
+          {events.map((ev, i) => (
             <g key={`${ev.day}${ev.label}`} className="chart-event">
-              <line x1={x(ev.day)} x2={x(ev.day)} y1={M.t - 14} y2={M.t + h} />
-              <text x={x(ev.day) + 4} y={M.t - 4}>
+              <line x1={x(ev.day)} x2={x(ev.day)} y1={M.t - 16 - (i % 2) * 14} y2={M.t + h} />
+              <text x={x(ev.day) > M.l + w * 0.7 ? x(ev.day) - 4 : x(ev.day) + 4} y={M.t - 6 - (i % 2) * 14} textAnchor={x(ev.day) > M.l + w * 0.7 ? 'end' : 'start'}>
                 {ev.label}
               </text>
             </g>
           ))}
           {pts2.length > 0 && <path d={path(pts2)} className="maia-line maia-line--2" />}
+          {area && <path d={area} fill={`url(#${gradId})`} className="maia-area" />}
           <path d={path(pts)} className="maia-line" />
+          {last && !hp && <circle cx={x(last.day)} cy={y(last.value)} r={4} className="maia-last" />}
           {pts
             .filter((p) => p.value != null && markDays.includes(p.day))
             .map((p) => (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DEMO_CONSENT } from "../../utils/demoProfile";
+import { DEMO_CONSENT, saveDemoAnswers } from "../../utils/demoProfile";
 import "../pages.css";
 
 const TOTAL_STEPS = 8;
@@ -98,11 +98,12 @@ export default function ConsentPage({ onComplete, onSkipDemo }: ConsentPageProps
                 onClick={() => {
                   setStoreLocal(DEMO_CONSENT.storeLocal);
                   setShareTeam(DEMO_CONSENT.shareTeam);
+                  saveDemoAnswers();
                 }}
               >
                 Autofill demo
               </button>
-              <span className="demo-box__desc">Ticks the consent boxes for you, so you can walk through the setup step by step.</span>
+              <span className="demo-box__desc">Ticks the consent boxes and fills every step with a sample astronaut, so you only press Continue.</span>
             </div>
             {onSkipDemo && (
               <div className="demo-box__row">

@@ -87,12 +87,12 @@ export default function MeetMaiaPage({
           <p>Your companion for healthy habits.</p>
         </section>
 
-        <section>
+        <section className="maia__card">
           <div className="maia__content">
                         <div className="maia__animation-slot">
               {animationSlot ?? (
                 <>
-                  {animationSlot ?? <Mascot size={200} state="celebrating" />}
+                  {animationSlot ?? <Mascot size={280} state="celebrating" />}
                 </>
               )}
             </div>

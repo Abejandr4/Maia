@@ -1267,3 +1267,74 @@ select.field__input,
   box-shadow: 0 6px 18px rgba(20, 20, 10, .10); cursor: pointer;
 }
 .demo-skip:hover { border-color: #181816; }
+
+
+/* ---------- setup pages: same frame as step 1 (margins and padding) ---------- */
+.page:has(> .consent__header) {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  box-sizing: border-box;
+}
+.page:has(> .consent__header) > .progress { margin-bottom: 40px; }
+@media (max-width: 720px) {
+  .page:has(> .consent__header) { padding: 20px; }
+}
+
+
+/* ---------- same layout on every setup step ---------- */
+/* title on the left, card on the right, same distances on all 8 steps */
+.page:has(> .consent__header) > main {
+  flex: 0 0 auto;  /* buttons always 32px under the card, not pushed to the bottom */
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
+  gap: 56px;
+  align-items: start;
+}
+.page:has(> .consent__header) > main > section:first-child { align-self: start; }
+.page:has(> .consent__header) > main > section:first-child h1 {
+  font-family: Outfit, var(--font-sans);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 6px 0 14px;
+  color: var(--text);
+}
+.page:has(> .consent__header) > main > section:first-child > p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.55;
+  margin: 0;
+}
+/* the card on the right always has the same padding */
+.page:has(> .consent__header) > main > section:nth-child(2) {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* Meet Maia: bigger mascot, text beside it */
+.maia__card .maia__content { gap: 40px; justify-content: flex-start; }
+.maia__card .maia__animation-slot { width: 280px; height: 280px; }
+
+@media (max-width: 860px) {
+  .page:has(> .consent__header) > main { grid-template-columns: 1fr; gap: 24px; }
+  .page:has(> .consent__header) > main > section:first-child h1 { font-size: 36px; }
+  .maia__card .maia__content { flex-direction: column; align-items: center; }
+}
+
+/* ---------- hide "Skip for now" in the setup footers ---------- */
+.about__footer .medical__actions > .btn-text { display: none; }

@@ -11,6 +11,19 @@ import Icon from '../ui/Icon';
 import StatusPill from '../ui/StatusPill';
 import './layout.css';
 
+import { AvatarPortrait } from '../../pages/Initial record/AboutyouPage';
+
+/** Avatar and skin tone chosen in setup (falls back to the sample profile). */
+function readTopbarAvatar() {
+  try {
+    const profile = JSON.parse(localStorage.getItem('userProfile') ?? '{}');
+    const male = profile?.sex === 'Male' || String(profile?.avatarId ?? '').startsWith('male-');
+    return { avatarId: male ? 'male-1' : 'female-1', tone: typeof profile?.avatarStyle === 'string' ? profile.avatarStyle : undefined };
+  } catch {
+    return { avatarId: 'female-1', tone: undefined };
+  }
+}
+
 const NAV: { id: PageId; label: string }[] = [
   { id: 'home', label: 'Home' },
   { id: 'body', label: 'Body & Sensors' },
@@ -132,6 +145,9 @@ export default function TopBar({ page, onNavigate, emergencySlot }: TopBarProps)
       </button>
 
       <div className="topbar__person" title="Sample crew profile">
+        <span className="topbar__avatar" aria-hidden="true">
+          {(() => { const a = readTopbarAvatar(); return <AvatarPortrait avatarId={a.avatarId} tone={a.tone} headOnly />; })()}
+        </span>
         <span className="topbar__person-name">
           {ASTRONAUT.fullName}<span className="topbar__role"> · {ASTRONAUT.role}</span>
         </span>

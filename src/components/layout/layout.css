@@ -322,3 +322,27 @@
   background-color: rgba(24, 27, 31, 0.97) !important;
   color: #f2f4f5;
 }
+
+
+/* ---------- small avatar next to the astronaut's name ---------- */
+@media (min-width: 1181px) {
+  .topbar__person:has(.topbar__avatar) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 2px;
+    align-items: center;
+  }
+}
+.topbar__avatar {
+  grid-row: 1 / span 2;
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  flex: 0 0 auto;
+}
+.topbar__avatar img { pointer-events: none; }

@@ -1338,3 +1338,6 @@ select.field__input,
 
 /* ---------- hide "Skip for now" in the setup footers ---------- */
 .about__footer .medical__actions > .btn-text { display: none; }
+
+/* ---------- Maia on Home: keeps her gentle turn, no floating up and down ---------- */
+.orbit__center { animation: none !important; }

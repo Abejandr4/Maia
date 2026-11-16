@@ -22,24 +22,33 @@ import { REPORT_DAY, alerts as maiaAlerts, daily, routine, targets, upTo } from 
 /* ------------------------------------------------------------------ */
 
 /** Reads the name typed on the About You page (falls back to the demo name). */
-function savedFullName(): string {
+interface SavedProfile {
+  fullName?: string;
+  crewRole?: string;
+}
+
+/** Reads what the user typed on the About You page. */
+function savedProfile(): SavedProfile {
   try {
     const raw = localStorage.getItem('userProfile');
-    const name = raw ? (JSON.parse(raw) as { fullName?: string }).fullName?.trim() : '';
-    return name || 'Ana Ruiz';
+    return raw ? (JSON.parse(raw) as SavedProfile) : {};
   } catch {
-    return 'Ana Ruiz';
+    return {};
   }
 }
 
 export const ASTRONAUT = {
-  /** First name, for greetings ("Hi, Ana") */
-  get name() {
-    return savedFullName().split(/\s+/)[0];
-  },
   /** Full name, for reports */
   get fullName() {
-    return savedFullName();
+    return savedProfile().fullName?.trim() || 'Ana Ruiz';
+  },
+  /** First name, for greetings ("Hi, Ana") */
+  get name() {
+    return this.fullName.split(/\s+/)[0];
+  },
+  /** Crew role from About You */
+  get role() {
+    return savedProfile().crewRole?.trim() || 'Flight Engineer';
   },
 };
 

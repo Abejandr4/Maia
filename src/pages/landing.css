@@ -473,3 +473,13 @@
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; filter: none; }
 }
+/* ---------- hazard cards: titles, red bars and text aligned across cards ---------- */
+.hazards { align-items: stretch; }
+.hazard {
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  align-content: stretch;
+}
+.hazard__head { align-self: start; }
+.hazard__bar { align-self: end; }
+.hazard__what { align-self: start; margin: 0; }

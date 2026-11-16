@@ -21,7 +21,28 @@ import { REPORT_DAY, alerts as maiaAlerts, daily, routine, targets, upTo } from 
 /* Mission clock — "today" is the report day of the analysis (day 42)  */
 /* ------------------------------------------------------------------ */
 
-export const ASTRONAUT = { name: 'Ana', fullName: 'Ana Ruiz', role: 'Flight Engineer' };
+/** Reads the name typed on the About You page (falls back to the demo name). */
+function savedFullName(): string {
+  try {
+    const raw = localStorage.getItem('userProfile');
+    const name = raw ? (JSON.parse(raw) as { fullName?: string }).fullName?.trim() : '';
+    return name || 'Ana Ruiz';
+  } catch {
+    return 'Ana Ruiz';
+  }
+}
+
+export const ASTRONAUT = {
+  /** First name, for greetings ("Hi, Ana") */
+  get name() {
+    return savedFullName().split(/\s+/)[0];
+  },
+  /** Full name, for reports */
+  get fullName() {
+    return savedFullName();
+  },
+};
+
 export const TODAY_DAY = REPORT_DAY;
 
 const eventDay = (id: string) => daily.events.find((e) => e.id === id)?.day ?? NaN;

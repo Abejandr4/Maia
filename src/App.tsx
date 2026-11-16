@@ -107,7 +107,7 @@ function Shell() {
           <EmergencyScreen
             open
             onClose={closeEmergency}
-            crew={{ id: "CM-01", name: ASTRONAUT.name, mission: "Space Apps 2026" }}
+            crew={{ id: "CM-01", name: ASTRONAUT.fullName, mission: "Space Apps 2026" }}
             onSend={sendEmergency}
           />
         )}

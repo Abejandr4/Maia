@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import "./App.css";
 import type { PageId } from "./utils/types";
 import { VitalsProvider, useVitals } from "./utils/VitalsContext";
@@ -160,13 +160,20 @@ export default function App() {
     goTo("done");
   };
 
+  // The 'Skip setup' button in each setup header sends this event.
+  useEffect(() => {
+    const onSkip = () => skipWithDemo();
+    window.addEventListener("maia-skip-setup", onSkip);
+    return () => window.removeEventListener("maia-skip-setup", onSkip);
+  });
+
   return (
     <VitalsProvider>
       {setupStep === "landing" && (
         <LandingPage onStart={() => goTo("consent")} onDemo={skipWithDemo} />
       )}
 
-      {setupStep === "consent" && <ConsentPage onComplete={() => goTo("aboutYou")} />}
+      {setupStep === "consent" && <ConsentPage onComplete={() => goTo("aboutYou")} onSkipDemo={skipWithDemo} />}
 
       {setupStep === "aboutYou" && (
         <AboutYouPage onBack={() => goTo("consent")} onComplete={() => goTo("medicalHistory")} />
@@ -208,12 +215,6 @@ export default function App() {
         />
       )}
 
-      {/* Floating demo skip during setup (the landing page has its own link) */}
-      {setupStep !== "done" && setupStep !== "landing" && (
-        <button type="button" className="demo-skip" onClick={skipWithDemo}>
-          Skip setup · demo profile
-        </button>
-      )}
 
       {setupStep === "done" && <Shell />}
     </VitalsProvider>

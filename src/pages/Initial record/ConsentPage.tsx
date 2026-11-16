@@ -34,9 +34,10 @@ function AccessMark({ allowed }: { allowed: Access }) {
 
 interface ConsentPageProps {
   onComplete: () => void;
+  onSkipDemo?: () => void;
 }
 
-export default function ConsentPage({ onComplete }: ConsentPageProps) {
+export default function ConsentPage({ onComplete, onSkipDemo }: ConsentPageProps) {
   const [storeLocal, setStoreLocal] = useState(false);
   const [shareTeam, setShareTeam] = useState(false);
 
@@ -60,16 +61,6 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
           <span className="consent__context">Setup &middot; Space Mission</span>
         </div>
         <div className="setup-actions">
-          <button
-            type="button"
-            className="btn btn--secondary btn--small"
-            onClick={() => {
-              setStoreLocal(DEMO_CONSENT.storeLocal);
-              setShareTeam(DEMO_CONSENT.shareTeam);
-            }}
-          >
-            Autofill demo
-          </button>
           <span className="consent__step">
             Step {CURRENT_STEP} of {TOTAL_STEPS}
           </span>
@@ -98,6 +89,30 @@ export default function ConsentPage({ onComplete }: ConsentPageProps) {
         <section className="consent__intro">
           <h1>Privacy &amp; Consent</h1>
           <p>Before we start: what Maia does with your data and who can see it.</p>
+          <div className="demo-box" role="group" aria-label="Demo shortcuts">
+            <p className="demo-box__label">Just exploring?</p>
+            <div className="demo-box__row">
+              <button
+                type="button"
+                className="demo-box__btn"
+                onClick={() => {
+                  setStoreLocal(DEMO_CONSENT.storeLocal);
+                  setShareTeam(DEMO_CONSENT.shareTeam);
+                }}
+              >
+                Autofill demo
+              </button>
+              <span className="demo-box__desc">Ticks the consent boxes for you, so you can walk through the setup step by step.</span>
+            </div>
+            {onSkipDemo && (
+              <div className="demo-box__row">
+                <button type="button" className="demo-box__btn demo-box__btn--solid" onClick={onSkipDemo}>
+                  Skip setup
+                </button>
+                <span className="demo-box__desc">Jumps straight into the app with a sample astronaut profile (synthetic data).</span>
+              </div>
+            )}
+          </div>
         </section>
 
         <section className="card consent__card">

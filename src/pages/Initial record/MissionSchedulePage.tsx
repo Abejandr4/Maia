@@ -154,9 +154,19 @@ export default function MissionSchedulePage({
           <span className="consent__logo">Maia</span>
           <span className="consent__context">Setup &middot; Space Mission</span>
         </div>
-        <span className="consent__step">
+        <div className="setup-actions">
+          <button
+            type="button"
+            className="setup-skip"
+            title="Jump straight into the app with a sample astronaut profile (synthetic data)"
+            onClick={() => window.dispatchEvent(new Event("maia-skip-setup"))}
+          >
+            Skip setup · demo
+          </button>
+          <span className="consent__step">
           Step {CURRENT_STEP} of {TOTAL_STEPS}
         </span>
+        </div>
       </header>
 
       <div

@@ -76,16 +76,85 @@ export function AvatarPortrait({ avatarId, tone, headOnly = false }: {
       const frame = context.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = frame.data;
       const reference = [225, 151, 96];
-      const ratio = reference.map((value, channel) => Number.parseInt(target.slice(1 + channel * 2, 3 + channel * 2), 16) / value);
       const clamp = (value: number) => Math.max(0, Math.min(1, value));
-      for (let i = 0; i < pixels.length; i += 4) {
+      const tone = [0, 1, 2].map((channel) => Number.parseInt(target.slice(1 + channel * 2, 3 + channel * 2), 16));
+      const luma = (r: number, g: number, b: number) => 0.299 * r + 0.587 * g + 0.114 * b;
+      const refLuma = luma(reference[0], reference[1], reference[2]);
+      const total = canvas.width * canvas.height;
+      const skin = new Float32Array(total);
+      const light = new Float32Array(total);
+      for (let k = 0; k < total; k++) {
+        const i = k * 4;
         const [r, g, b] = [pixels[i], pixels[i + 1], pixels[i + 2]];
-        if (!pixels[i + 3] || i / pixels.length > .96 || g <= b || r <= g) continue;
+        light[k] = luma(r, g, b) / refLuma;
+        if (!pixels[i + 3] || k / total > .96 || g <= b || r <= g) continue;
         const hue = (g - b) / (r - b);
-        const weight = clamp((hue - .32) / .12) * clamp((.83 - hue) / .12) *
+        skin[k] = clamp((hue - .32) / .12) * clamp((.83 - hue) / .12) *
           clamp((g - 62) / 31) * clamp((r - b - 12) / 21);
-        for (let channel = 0; channel < 3; channel++) {
-          pixels[i + channel] *= 1 + (ratio[channel] - 1) * weight;
+      }
+      const smoothTone = luma(tone[0], tone[1], tone[2]) < refLuma;
+      if (!smoothTone) {
+        // lighter tones: gentle per-channel shift (keeps the original look)
+        const ratio = reference.map((value, channel) => tone[channel] / value);
+        for (let k = 0; k < total; k++) {
+          if (!skin[k]) continue;
+          for (let channel = 0; channel < 3; channel++) pixels[k * 4 + channel] *= 1 + (ratio[channel] - 1) * skin[k];
+        }
+      } else {
+        // darker tones: soft mask + smoothed shading, so skin looks even and rich instead of grainy
+        const w = canvas.width, h = canvas.height;
+        const blur = (src: Float32Array, radius: number) => {
+          const tmp = new Float32Array(total), out = new Float32Array(total), size = radius * 2 + 1;
+          for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+            let sum = 0;
+            for (let d = -radius; d <= radius; d++) sum += src[y * w + Math.min(w - 1, Math.max(0, x + d))];
+            tmp[y * w + x] = sum / size;
+          }
+          for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+            let sum = 0;
+            for (let d = -radius; d <= radius; d++) sum += tmp[Math.min(h - 1, Math.max(0, y + d)) * w + x];
+            out[y * w + x] = sum / size;
+          }
+          return out;
+        };
+        const mask = blur(skin.map((value) => Math.min(1, value * 2.5)), 3);
+        // blush, nose tip and ears stay orange on dark skin: find them (warm, near the skin) and tone them too
+        const near = blur(skin.map((value) => (value > .05 ? 1 : 0)), 16);
+        const blush = new Float32Array(total);
+        for (let k = 0; k < total; k++) {
+          const i = k * 4;
+          const [r, g, b] = [pixels[i], pixels[i + 1], pixels[i + 2]];
+          if (!pixels[i + 3] || near[k] <= .01 || r <= 155 || !(r > g && g > b)) continue;
+          const hue = (g - b) / Math.max(r - b, 1);
+          if (hue > .15 && hue < .8 && light[k] > .35 && (r - b) / Math.max(r, 1) > .35) blush[k] = 1;
+        }
+        const blushSoft = blur(blush, 1);
+        const weight = new Float32Array(total);
+        for (let k = 0; k < total; k++) {
+          weight[k] = pixels[k * 4 + 3] ? Math.max(Math.min(1, mask[k] * 1.4), blushSoft[k]) : 0;
+        }
+        // shading: keep the 3D light of the original and stretch it, so dark skin keeps shadows and highlights
+        const shading = blur(light.map((value, k) => (blushSoft[k] > .3 && mask[k] * 1.4 < .5 ? Math.min(value, 1.05) : value)), 1);
+        const meanWeight = blur(weight, 10);
+        const meanShading = blur(shading.map((value, k) => value * weight[k]), 10);
+        const toneLuma = luma(tone[0], tone[1], tone[2]);
+        const base = tone.map((value) => Math.max(0, Math.min(255, toneLuma + (value - toneLuma) * 1.2)));
+        const shadow = [base[0] * .40, base[1] * .28, base[2] * .26];
+        const highlight = [255, 205, 160].map((value, channel) => base[channel] + (value - base[channel]) * .45);
+        for (let k = 0; k < total; k++) {
+          const w = weight[k];
+          if (!w) continue;
+          const i = k * 4;
+          const mean = meanShading[k] / Math.max(meanWeight[k], 1e-3);
+          const level = Math.max(.15, Math.min(1.7, mean + (shading[k] - mean) * 2.6));
+          const toBase = Math.min(1, level);
+          const toHigh = Math.max(0, Math.min(1, (level - 1) / .6));
+          for (let channel = 0; channel < 3; channel++) {
+            let value = shadow[channel] + (base[channel] * 1.08 - shadow[channel]) * toBase;
+            value += (highlight[channel] - value) * toHigh;
+            value = Math.max(0, Math.min(255, value));
+            pixels[i + channel] = pixels[i + channel] * (1 - w) + value * w;
+          }
         }
       }
       context.putImageData(frame, 0, 0);
@@ -245,9 +314,19 @@ export default function AboutYouPage({ onBack, onComplete }: AboutYouPageProps) 
           <span className="consent__logo">Maia</span>
           <span className="consent__context">Setup &middot; Space Mission</span>
         </div>
-        <span className="consent__step">
+        <div className="setup-actions">
+          <button
+            type="button"
+            className="setup-skip"
+            title="Jump straight into the app with a sample astronaut profile (synthetic data)"
+            onClick={() => window.dispatchEvent(new Event("maia-skip-setup"))}
+          >
+            Skip setup · demo
+          </button>
+          <span className="consent__step">
           Step {CURRENT_STEP} of {TOTAL_STEPS}
         </span>
+        </div>
       </header>
 
       <div

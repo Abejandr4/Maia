@@ -31,7 +31,7 @@ export interface MascotPose {
 
 /** To add a state: add its name to MascotState, then add a pose here. */
 export const MASCOT_POSES: Record<MascotState, MascotPose> = {
-  idle:        { bob: 0.08, speed: 1.3, tilt: 0,    eye: 1,   smile: 0.7,   open: 0,   cheek: 0.4,  spark: 0,   drop: 0, scale: 1 },
+  idle:        { bob: 0, speed: 1.3, tilt: 0,    eye: 1,   smile: 0.7,   open: 0,   cheek: 0.4,  spark: 0,   drop: 0, scale: 1 },
   happy:       { bob: 0.28, speed: 3.2, tilt: 0.1,  eye: 1,   smile: 1,     open: 0.5, cheek: 0.85, spark: 0.6, drop: 0, scale: 1.03 },
   thirsty:     { bob: 0.05, speed: 1.6, tilt: -0.1, eye: 0.8, smile: -0.3,  open: 0,   cheek: 0.2,  spark: 0,   drop: 1, scale: 0.94 },
   tired:       { bob: 0.03, speed: 0.7, tilt: 0.3,  eye: 0.3, smile: -0.12, open: 0,   cheek: 0.3,  spark: 0,   drop: 0, scale: 0.96 },

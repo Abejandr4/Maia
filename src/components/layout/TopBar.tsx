@@ -199,7 +199,6 @@ export default function TopBar({ page, onNavigate, emergencySlot }: TopBarProps)
                 <div className="topbar__loc-about">
                   <p>{currentCtx.description}</p>
                   <p className="topbar__loc-meta">{currentCtx.comm_policy}</p>
-                  <p className="topbar__loc-src">contexts.csv · {currentCtx.source}</p>
                 </div>
               )}
             </div>
